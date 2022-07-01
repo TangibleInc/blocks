@@ -1,0 +1,18 @@
+@import './fields';
+
+.tangible-block-control-container .tangible-block-control-button,
+.tangible-control-modal-button-container-elementor .tangible-control-btn {
+    padding: .5rem;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    background: transparent;
+}
+
+.tangible-control-modal-button-container-gutenberg {
+  justify-content: center;
+  display: flex;
+  padding-top: 10px;
+}

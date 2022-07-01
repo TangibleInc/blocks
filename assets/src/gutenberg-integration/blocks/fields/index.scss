@@ -1,0 +1,63 @@
+.tangible-block-editor-section .components-base-control {
+  width: 100%;
+}
+
+.tangible-block-editor-control-date .components-datetime__date {
+  border-top: none;
+}
+
+.tangible-block-editor-control-select,
+.tangible-block-editor-control-color {
+  width: 100%;
+}
+
+.tangible-block-editor-control-date {
+  overflow-x: hidden;
+}
+
+.tangible-block-editor-control-select-multiple {
+
+  // @see https://github.com/WordPress/gutenberg/issues/27166#issuecomment-820628652
+  
+  .components-input-control__container {
+
+    .components-select-control__input[multiple] {  
+      height: auto;  
+      padding-right: 8px; 
+  
+      option {
+        white-space: normal;	
+      
+        &:nth-of-type(2n) {	  
+          background-color: #efefef;	
+        }  
+      }
+    }
+  
+    .components-input-control__suffix {
+      display: none;
+    }
+
+  }
+  
+}
+
+.tangible-block-editor-control-dimension {
+
+  .components-input-control__suffix {
+    display: none;
+  }
+
+  &.tangible-block-editor-control-dimension-single-value {
+
+    .components-flex-item.components-flex-block {
+      margin-left: 0;
+    }
+
+    .component-box-control__header-control-wrapper > .components-flex-item:first-child {
+      display: none;
+    }
+  }
+}
+
+

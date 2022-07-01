@@ -1,0 +1,92 @@
+.tangible-block-editor-control-ajax-select {
+  position: relative;
+
+  .tangible-block-editor-control-ajax-select-ul {
+    z-index: 999;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    overflow: auto;
+    max-height: 140px;
+    width: 100%;
+    background: white;
+    padding: 0;
+    margin: 0;
+    border: solid 0.5px rgba(0,0,0,.3);
+    border-radius: 0px 5px;
+    border-top: none;
+  }
+  
+  .tangible-block-editor-control-ajax-select-ul > li {
+    cursor: pointer;
+    list-style-type: none;
+    padding: 10px;
+  
+    &:hover {
+      background: rgba(0,0,0,.05);
+      color: rgba(0,0,0,.95);
+    }
+
+    i {
+      color:  rgba(0,0,0,.6);
+    }
+  }
+  
+  .tangible-block-editor-control-ajax-select-input {
+    width: 100% !important;
+    border-radius: 5px;
+  
+    &.is-open {
+      border-radius: 5px 0px;
+    }
+  }
+
+  .tangible-block-editor-control-ajax-select-choice {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 10px 0px;
+    
+    &:empty {
+      padding: 0;
+      margin: 0;
+    }
+
+    & > li {
+      margin-right: 5px;
+      border: solid 0.5px rgba(0,0,0,.2);
+      background-color: #f1f1f1;
+      color: #555555;
+      border-radius: 5px;
+      list-style-type: none;
+
+      & > button {
+        padding: 5px;
+        color: #333333;
+        background-color: transparent;
+        cursor: pointer;
+        border: 0px;
+        border-right: solid 0.5px rgba(0,0,0,.2);
+
+        & > span {
+          color: gray;
+          font-size: 15px;
+          height: 15px;
+          width: 15px;
+        }
+      }
+
+      & > button:hover {
+        opacity: 0.5;
+
+        & > span {
+          color: rgba(0,0,0,.5);
+        }
+      }
+
+      & > span {
+        padding: 5px;
+        padding-right: 10px;
+      }
+    }
+  }
+}

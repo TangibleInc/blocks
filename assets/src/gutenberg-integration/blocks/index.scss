@@ -1,0 +1,18 @@
+@import './fields/';
+
+.tangible-block-editor-tabs {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-evenly;
+
+  .tangible-block-editor-tab {
+    flex: 1;
+    text-align: center;
+  }
+
+}
+
+.interface-complementary-area .components-panel.tangible-block-editor-section {
+  z-index: auto;
+}

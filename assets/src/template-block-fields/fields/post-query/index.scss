@@ -1,0 +1,57 @@
+$modal-select-height: 27px;
+
+.tangible-logic-modal {
+
+  position: relative;
+
+  .select2-selection,
+  .tangible-components-control__field,
+  .select2,
+  .select2-selection__rendered,
+  .selection,
+  select {
+    height: $modal-select-height;
+  }
+
+  .tangible-logic-rule {
+    display: flex;
+
+    & > div {
+      flex: 1;
+    }
+  }
+
+  h4 {
+    font-size: 100%;
+  }
+  
+}
+
+/*
+
+Basic fix to make select2 work in BeaverBuilder (there are syle conflicts)
+
+We can't add too much style here because the select2 dropdown is created outside of the select2 
+DOM element (directly inside <body>), which means our css will also affect select2 instances from
+other modules
+
+TODO: Ask a frontend dev to look into it
+
+*/
+.fl-builder-edit {
+
+  select {
+    width: 100%;
+    max-width: 100%;
+    min-height: $modal-select-height;
+  }
+
+  span.select2-container {
+    z-index: 9999999999;
+
+    &.select2-container--open {
+      z-index: 9999999999;
+    }
+  }
+
+}

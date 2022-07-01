@@ -8,6 +8,7 @@ add_action('wp_enqueue_scripts', function() use ($plugin) {
   $url = $plugin->url;
   $version = $plugin->version;
 
+/*
   wp_enqueue_style(
     'tangible-blocks',
     $url . 'assets/build/tangible-blocks.min.css',
@@ -21,5 +22,6 @@ add_action('wp_enqueue_scripts', function() use ($plugin) {
     ['jquery'],
     $version
   );
+*/
 
 });
