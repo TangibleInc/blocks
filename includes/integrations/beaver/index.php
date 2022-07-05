@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * @see /vendor/tangible/template-system/system/integrations/beaver
+ */
 namespace Tangible\Template\Integrations\Beaver\Dynamic;
 
 defined('ABSPATH') or die();
@@ -12,7 +14,14 @@ $plugin->beaver_dynamic_config = [
   'visibility'=> []
 ];
 
+/**
+ * Note: Do not change the folder and file name of this base module,
+ * Beaver Builder uses them in its registry.
+ */
 require_once __DIR__ . '/tangible-base/tangible-base.php';
+
+require_once __DIR__ . '/field-types/index.php';
+require_once __DIR__ . '/enqueue.php';
 require_once __DIR__ . '/utils.php';
 
 add_action('init', function() use($plugin) {

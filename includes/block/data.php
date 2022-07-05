@@ -7,11 +7,11 @@
 $plugin->all_blocks_cache = [];
 
 // Should the block data directly added and cached in the get_all_templates method?
-$plugin->get_all_blocks = function() use ($plugin) {
+$plugin->get_all_blocks = function() use ($plugin, $template_system) {
 
   if ( !empty($plugin->all_blocks_cache) ) return $plugin->all_blocks_cache;
 
-  $templates = $plugin->get_all_templates( 'tangible_block' );
+  $templates = $template_system->get_all_templates( 'tangible_block' );
   if( empty($templates) ) return [];
 
   $blocks = [];

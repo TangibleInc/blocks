@@ -7,7 +7,7 @@ defined('ABSPATH') or die();
 // Common config for all generated blocks
 $plugin->gutenberg_dynamic_config = [
   'package' => 'tangible',
-  'handle'  => 'tangible-gutenberg-template-editor',
+  'handle'  => 'tangible-blocks-gutenberg-integration', // 'tangible-gutenberg-template-editor',
   'icon'    => 'embed-generic',
   'category'=> 'common'
 ];
@@ -55,3 +55,8 @@ $plugin->register_dynamic_blocks = function() use($plugin) {
     );
   }
 };
+
+/**
+ * @see /vendor/tangible/template-system/system/integrations/gutenberg/blocks.php
+ */
+add_action('init', $plugin->register_dynamic_blocks, 11);

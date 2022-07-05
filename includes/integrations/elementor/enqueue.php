@@ -68,7 +68,9 @@ add_action('elementor/editor/after_enqueue_scripts', function() use($plugin) {
   }
 
   wp_add_inline_script(
-    'tangible-elementor-template-editor',
+
+    'tangible-blocks-elementor-integration', // 'tangible-elementor-template-editor',
+
     'window.Tangible = window.Tangible || {}; window.Tangible.blockConfig = ' . json_encode($config),
     'before'
   );

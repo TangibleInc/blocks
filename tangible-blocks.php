@@ -47,7 +47,15 @@ add_action('plugins_loaded', function() {
     // 'license' => ''
   ]);
 
-  // Features loaded will have $framework and $plugin in their scope
+  // Features loaded will have in their local scope: $framework, $plugin, ...
+
+  $template_system = tangible_template_system();
+
+  $loop      = $template_system->loop;
+  $logic     = $template_system->logic;
+  $html      = $template_system->html;
+  $interface = $template_system->interface;
+  $ajax      = $template_system->ajax;
 
   require_once __DIR__.'/includes/index.php';
 

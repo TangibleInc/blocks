@@ -115,19 +115,21 @@ function render( $attributes, $content, $data ) {
     }
   }
 
+  $template_system = tangible_template_system();
+
   /**
    * Disable links inside Gutenberg editor preview
    * @see ../disable-links.php
    */
-  $plugin->start_disable_links_inside_gutenberg_editor();
+  $template_system->start_disable_links_inside_gutenberg_editor();
 
   ob_start(); ?>
     <div class="<?php echo $render_data['wrapper']; ?>">
-      <?php echo $plugin->render_template_post( $template_post, $render_data ); ?>
+      <?php echo $template_system->render_template_post( $template_post, $render_data ); ?>
     </div>
   <?php
 
-  $plugin->stop_disable_links_inside_gutenberg_editor();
+  $template_system->stop_disable_links_inside_gutenberg_editor();
 
   return \ob_get_clean();
 }

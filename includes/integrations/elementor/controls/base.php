@@ -6,19 +6,19 @@ defined('ABSPATH') or die();
 
 /**
  * Register a new control for Elementor
- * 
+ *
  * @see https://developers.elementor.com/creating-a-new-control/
  * @see /includes/integrations/elementor/dynamic/controls/base.php
  */
 
 $plugin->register_elementor_control = function($config) {
-  
+
   return new class($config) extends \Elementor\Base_Data_Control {
-  
+
     public function __construct($config) {
 
       $this->tangible_config = $config;
-      
+
       parent::__construct();
     }
 
@@ -27,10 +27,11 @@ $plugin->register_elementor_control = function($config) {
     }
 
     public function enqueue() {
-      
+
       $plugin = \tangible_blocks();
-      
-      $plugin->enqueue_elementor_template_editor();
+      $template_system = \tangible_template_system();
+
+      $template_system->enqueue_elementor_template_editor();
       $handle = 'tangible-elementor-template-editor';
 
       $control = $plugin->get_control( $this->tangible_config['type'] );

@@ -4,14 +4,14 @@
  * Controls data
  */
 
-$plugin->get_block_controls = function( $settings ) use ($plugin) {
+$plugin->get_block_controls = function( $settings ) use ($plugin, $template_system) {
 
   // Backward compatibility, just in case - Migrating from post/content ID to universal ID
   if (is_numeric($settings)) $settings = [ 'content_id' => $settings ];
 
   $post = $plugin->get_block_post_from_settings( $settings );
 
-  $block = $plugin->get_template_fields( $post );
+  $block = $template_system->get_template_fields( $post );
 
   $block_data = $plugin->get_block_data( $block );
   $fields = [];
