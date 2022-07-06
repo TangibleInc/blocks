@@ -11,7 +11,12 @@ $plugin->beaver_dynamic_config = [
   'group'     => 'Tangible Blocks',
   'category'  => 'Tangible Blocks',
   'slug'      => 'tangible-module-',
-  'visibility'=> []
+  'visibility'=> [],
+
+  /**
+   * Script handle used in enqueue.php
+   */
+  'handle'  => 'tangible-blocks-beaver-integration',
 ];
 
 /**

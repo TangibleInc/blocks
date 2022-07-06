@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Common functions for blocks
  * @see /includes/integrations/gutenberg, beaver, elementor
@@ -31,3 +30,11 @@ $plugin->get_block_post_from_settings = function( $settings, $post_type = 'tangi
     return get_post( (int) $settings['content_id'] );
   }
 };
+
+/**
+ * Companion plugins
+ */
+$plugin->has_editor = function_exists('tangible_blocks_editor');
+$plugin->has_pro = function_exists('tangible_blocks_pro')
+  || function_exists('tangible_loops_and_logic_pro')
+;

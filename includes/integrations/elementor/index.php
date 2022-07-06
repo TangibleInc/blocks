@@ -4,8 +4,22 @@
  * @see /vendor/tangible/template-system/system/integrations/elementor
  */
 
-require_once __DIR__ . '/enqueue.php';
+// Common config for all generated widget
+$plugin->elementor_dynamic_config = [
+  'category' => [
+    'slug'  => 'Tangible',
+    'title' => 'Tangible',
+    'icon'  => 'fa fa-plug',
+  ],
+  'icon'  => 'eicon-code-highlight',
 
+  /**
+   * Script handle used in enqueue.php, controls/base.php
+   */
+  'handle'  => 'tangible-blocks-elementor-integration',
+];
+
+require_once __DIR__ . '/enqueue.php';
 require_once __DIR__ . '/widgets/index.php';
 require_once __DIR__ . '/controls/index.php';
 

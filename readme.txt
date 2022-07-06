@@ -24,3 +24,4 @@ Tags:
 Release Date: 2022-07-01
 
 - Initial release
+- Update Gradient Picker control type to be compatible with WP 6

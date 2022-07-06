@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Tangible Blocks
- * Plugin URI: https://tangibleplugins.com/tangible-blocks
+ * Plugin URI: https://tangibleblocks.com/
  * Description: Tangible Blocks provides universal blocks that work in Gutenberg, Elementor, and Beaver Builder
  * Version: 3.0.0
  * Author: Team Tangible

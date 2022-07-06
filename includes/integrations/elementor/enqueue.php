@@ -2,6 +2,21 @@
 
 defined('ABSPATH') or die();
 
+/**
+ * Called at the end of $template_system->enqueue_elementor_template_editor()
+ * @see /vendor/tangible/template-system/system/integrations/elementor/enqueue.php
+ */
+add_action('tangible_enqueue_elementor_template_editor', function() use($plugin) {
+
+  wp_enqueue_script(
+    $plugin->elementor_dynamic_config['handle'], // See ./index.php
+    $plugin->url . 'assets/build/elementor-integration.min.js',
+    ['tangible-elementor-template-editor'],
+    $plugin->version
+  );
+
+});
+
 add_action('elementor/editor/after_enqueue_scripts', function() use($plugin) {
 
   $blocks = $plugin->get_all_blocks();
@@ -69,7 +84,7 @@ add_action('elementor/editor/after_enqueue_scripts', function() use($plugin) {
 
   wp_add_inline_script(
 
-    'tangible-blocks-elementor-integration', // 'tangible-elementor-template-editor',
+    $plugin->elementor_dynamic_config['handle'],
 
     'window.Tangible = window.Tangible || {}; window.Tangible.blockConfig = ' . json_encode($config),
     'before'

@@ -4,6 +4,11 @@ defined('ABSPATH') or die();
 
 /**
  * Replace {{ controls }} by given value in builder/shorcode
+ *
+ * Called from Template System:
+ * @see /vendor/tangible/template-system/system/render/index.php, render_template_post()
+ *
+ * We're planning to deprecate this syntax, and use loop type "control" for block and other template types
  */
 $plugin->replace_control_values = function($content, $data, $context) use($plugin) {
 

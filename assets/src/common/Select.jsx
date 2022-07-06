@@ -26,6 +26,8 @@ const Select = ({
 
   useEffect(() => {
 
+    if ( !ref.current ) return
+
     const $el = $(ref.current)
     ref.current.$el = $el
 
@@ -43,12 +45,12 @@ const Select = ({
 
     $el.on('change', function(e) {
 
-      if ( !multiSelect ) {
+      if ( !multiSelect && !ref.current._silentChange ) {
         onChange(e.target.value)
         return
       }
 
-      if ( !ref.current ) return
+      if ( !ref.current || ref.current._silentChange ) return
 
       // Ensure array of values for multi-select
 
@@ -72,13 +74,25 @@ const Select = ({
       if (value.length!==currentValues.length && options.length) {
         // After select is rendered with options
         setImmediate(function() {
+          if (!ref.current || !ref.current.$el) return
           ref.current.$el.val(value)
           ref.current.$el.trigger('change')
         })
       }
     } else if (ref.current.value!==value) {
+
+      /**
+       * TODO: Temporary workaround to prevent PostQuery control from causing infinite loop in
+       * /assets/src/template-block-fields/fields/post-query/Order.jsx, onChange()
+       */
+      ref.current._silentChange = true
+
       ref.current.$el.val(value)
       ref.current.$el.trigger('change')
+
+      setImmediate(function() {
+        ref.current._silentChange = false
+      })
     }
   }
 

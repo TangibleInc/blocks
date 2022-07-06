@@ -32,7 +32,7 @@ $plugin->register_elementor_control = function($config) {
       $template_system = \tangible_template_system();
 
       $template_system->enqueue_elementor_template_editor();
-      $handle = 'tangible-elementor-template-editor';
+      $handle = $plugin->elementor_dynamic_config['handle'];
 
       $control = $plugin->get_control( $this->tangible_config['type'] );
       $control->enqueue_callback( $handle, 'elementor' );

@@ -7,9 +7,13 @@ defined('ABSPATH') or die();
 // Common config for all generated blocks
 $plugin->gutenberg_dynamic_config = [
   'package' => 'tangible',
-  'handle'  => 'tangible-blocks-gutenberg-integration', // 'tangible-gutenberg-template-editor',
   'icon'    => 'embed-generic',
-  'category'=> 'common'
+  'category'=> 'common',
+
+  /**
+   * Script handle used in
+   */
+  'handle'  => 'tangible-blocks-gutenberg-integration',
 ];
 
 require_once __DIR__ . '/enqueue.php';

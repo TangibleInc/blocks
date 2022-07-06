@@ -2,7 +2,20 @@
 
 defined('ABSPATH') or die();
 
-$plugin->add_inline_dynamic_block_data = function() use ($plugin) {
+/**
+ * Called at the end of $template_system->enqueue_gutenberg_template_editor()
+ * @see /vendor/tangible/template-system/system/integrations/gutenberg/enqueue.php
+ */
+add_action('tangible_enqueue_gutenberg_template_editor', function() use ($plugin) {
+
+  wp_enqueue_script(
+    $plugin->gutenberg_dynamic_config['handle'], // See ./index.php
+    $plugin->url . 'assets/build/gutenberg-integration.min.js',
+    ['tangible-gutenberg-template-editor'],
+    $plugin->version
+  );
+
+  // Add inline dynamic block data
 
   $blocks = $plugin->get_all_blocks();
   $config = $plugin->gutenberg_dynamic_config;
@@ -32,12 +45,4 @@ $plugin->add_inline_dynamic_block_data = function() use ($plugin) {
     $control->enqueue_callback( $config['handle'], 'gutenberg' );
   }
 
-};
-
-/**
- * Called at the end of $template_system->enqueue_gutenberg_template_editor()
- * @see /vendor/tangible/template-system/system/integrations/gutenberg/enqueue.php
- */
-add_action('tangible_enqueue_gutenberg_template_editor',
-  $plugin->add_inline_dynamic_block_data
-);
+});

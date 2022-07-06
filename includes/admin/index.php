@@ -7,11 +7,11 @@ $plugin->register_settings([
   'title_callback' => function() use ($plugin) {
     ?>
       <img class="plugin-logo"
-        src="<? echo $plugin->assets_url; ?>/images/tangible-logo.png"
+        src="<?php echo $plugin->assets_url; ?>/images/tangible-logo.png"
         alt="Tangible Logo"
         width="40"
       >
-      <? echo $plugin->title; ?>
+      <?php echo $plugin->title; ?>
     <?php
   },
   'tabs' => [
@@ -21,3 +21,11 @@ $plugin->register_settings([
     ]
   ],
 ]);
+
+/**
+ * Remove Helpscout script from plugin settings page
+ * @see /vendor/tangible/plugin-framework/settings/page.php, at the bottom
+ */
+if ($plugin->is_settings_page()) {
+  $framework->store_url = null;
+}

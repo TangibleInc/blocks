@@ -8,7 +8,17 @@ import Control from '../../../template-block-fields/Control'
 
 const { wp, Tangible } = window
 const {
-  components: { TextControl, __experimentalGradientPicker, SelectControl, ToggleControl, DatePicker, BaseControl, Button, ButtonGroup, Icon },
+  components: {
+    BaseControl,
+    Button,
+    ButtonGroup,
+    DatePicker,
+    GradientPicker, __experimentalGradientPicker, // Before WP v6
+    Icon,
+    SelectControl,
+    TextControl,
+    ToggleControl,
+  },
   blockEditor: { MediaUpload, MediaUploadCheck },
 } = wp
 const { blockConfig: { controls } } = Tangible
@@ -225,10 +235,11 @@ export const getField = (item, props) => {
     )
 
   case 'gradient':
+    let C = __experimentalGradientPicker || GradientPicker
     return (
       <BaseControl>
         <p>{ item.label }</p>
-        <__experimentalGradientPicker
+        <C
           value={ value }
           onChange={ value => { props.setAttributes({ [item.name]: value }) } }
           gradients={[

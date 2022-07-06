@@ -3,7 +3,7 @@ import Select from '../../../common/Select';
 const { Tangible, wp } = window
 const { useState, useEffect } = wp.element
 
-// Data from /includes/template/controls/fields/post-query/data.php
+// Data from /includes/block/controls/types/post-query.php
 const {
   allTaxonomies = {}
 } = Tangible.postQueryControlData
