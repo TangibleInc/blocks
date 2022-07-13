@@ -1,11 +1,15 @@
 # Tangible Blocks
 
-Here's a place for plugin documentation. It is included in the published plugin.
+## Table of Contents
+
+- [Architecture](architecture)
+- [Block controls](block-controls)
 
 ## Getting started
 
 ```sh
 git clone git@bitbucket.org:tangibleinc/tangible-blocks.git
+cd tangible-blocks
 npm install && composer install
 ```
 
@@ -28,4 +32,6 @@ Format to code standard
 ```sh
 npm run format
 ```
+
+
 
