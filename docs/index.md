@@ -1,5 +1,10 @@
 # Tangible Blocks
 
+#### Source code
+
+https://bitbucket.org/tangibleinc/blocks
+
+
 ## Table of Contents
 
 - [Architecture](architecture)
