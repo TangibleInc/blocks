@@ -21,7 +21,8 @@ Tags:
 
 = 3.0.0 =
 
-Release Date: 2022-07-01
+Release Date: 2022-08-20
 
 - Initial release
+- Improve compatibility with PHP 8.1
 - Update Gradient Picker control type to be compatible with WP 6
