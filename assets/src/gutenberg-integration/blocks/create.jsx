@@ -1,16 +1,25 @@
 import ControlVisibility from '../../template-controls-visibility'
 import { getField } from './fields/index'
 
-const { blockConfig } = window.Tangible
-const { wp } = window
+const { wp, Tangible } = window
 const {
   blockEditor: { InspectorControls },
   blocks: { registerBlockType },
   components: { Panel, PanelBody, PanelRow },
   element: { useState },
   i18n: { __ },
-  serverSideRender: ServerSideRender
+  serverSideRender: _ServerSideRender
 } = wp
+
+const {
+  blockConfig,
+  moduleLoader,
+  /**
+   * From Template System
+   * @see template-system/system/assets/src/gutenberg-template-editor/blocks/template/ServerSideRender.jsx
+   */
+  ServerSideRender = _ServerSideRender
+} = Tangible
 
 export const createBlock = data => {
 
@@ -89,6 +98,9 @@ export const createBlock = data => {
             attributes={props.attributes}
             EmptyResponsePlaceholder={ EmptyLoopBlock }
             LoadingResponsePlaceholder={ EmptyLoopBlock }
+            onFetchResponseRendered={el => {
+              moduleLoader(el)
+            }}
           />
         </>
       )
