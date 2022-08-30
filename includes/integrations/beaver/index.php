@@ -2,7 +2,7 @@
 /**
  * @see /vendor/tangible/template-system/system/integrations/beaver
  */
-namespace Tangible\Template\Integrations\Beaver\Dynamic;
+namespace Tangible\Blocks\Integrations\Beaver\Dynamic;
 
 defined('ABSPATH') or die();
 

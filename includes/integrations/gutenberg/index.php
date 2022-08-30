@@ -1,6 +1,6 @@
 <?php
 
-namespace Tangible\Template\Integrations\Gutenberg\Dynamic;
+namespace Tangible\Blocks\Integrations\Gutenberg\Dynamic;
 
 defined('ABSPATH') or die();
 
@@ -17,6 +17,7 @@ $plugin->gutenberg_dynamic_config = [
 ];
 
 require_once __DIR__ . '/enqueue.php';
+require_once __DIR__ . '/render.php';
 require_once __DIR__ . '/utils.php';
 
 /**

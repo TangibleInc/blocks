@@ -2,7 +2,7 @@
 
 defined('ABSPATH') or die();
 
-use Tangible\Template\Integrations\Elementor\Dynamic\Base;
+use Tangible\Blocks\Integrations\Elementor\Dynamic\Base;
 
 $plugin->register_control('image', [
   'elementor'       => $plugin->get_elementor_control_type('MEDIA'),
