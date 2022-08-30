@@ -196,7 +196,7 @@ class Base extends \Elementor\Widget_Base {
     $post = $this->plugin()->get_block_post_from_settings( $render_data );
 
     if (!empty($post)) {
-      echo $this->plugin()->render_template_post( $post, $render_data );
+      echo $this->plugin()->render( $post, $render_data );
     }
   }
 

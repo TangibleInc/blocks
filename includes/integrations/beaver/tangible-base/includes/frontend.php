@@ -38,6 +38,5 @@ foreach( $fields as $field ) {
 $post = $plugin->get_block_post_from_settings( $render_data );
 
 if (!empty($post)) {
-  $template_system = tangible_template_system();
-  echo $template_system->render_template_post( $post, $render_data );
+  echo $plugin->render( $post, $render_data );
 }

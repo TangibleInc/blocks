@@ -125,7 +125,7 @@ function render( $attributes, $content, $data ) {
 
   ob_start(); ?>
     <div class="<?php echo $render_data['wrapper']; ?>">
-      <?php echo $template_system->render_template_post( $template_post, $render_data ); ?>
+      <?php echo $plugin->render( $template_post, $render_data ); ?>
     </div>
   <?php
 

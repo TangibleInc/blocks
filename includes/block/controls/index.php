@@ -11,7 +11,6 @@ defined('ABSPATH') or die();
 
 require_once __DIR__ . '/data.php';
 require_once __DIR__ . '/register.php';
-require_once __DIR__ . '/render.php';
 require_once __DIR__ . '/control.php';
 
 require_once __DIR__ . '/template/index.php';

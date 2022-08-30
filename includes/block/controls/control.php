@@ -68,6 +68,10 @@ class Control {
     return $this;
   }
 
+  function has_context(string $context) {
+    return in_array($context, $this->context);
+  }
+
   /**
    * Data needed for generating the control for each builder
    */
@@ -195,7 +199,7 @@ class Control {
 
   function apply_render($value, $data, $context) {
 
-    if( !in_array($context, $this->context) ) return '';
+    if( ! in_array($context, $this->context) ) return '';
 
     $field = $this->filter_field_data($data['block']);
 
