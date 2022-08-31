@@ -21,7 +21,7 @@ Tags:
 
 = 3.0.0 =
 
-Release Date: 2022-08-30
+Release Date: 2022-08-31
 
 - Improve compatibility with WordPress 6
 - Improve compatibility with PHP 8
