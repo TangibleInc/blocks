@@ -21,9 +21,10 @@ Tags:
 
 = 3.0.0 =
 
-Release Date: 2022-08-23
+Release Date: 2022-08-30
 
-- Initial release
-- Improve compatibility with PHP 8.1
-- Update Gradient Picker control type to be compatible with WP 6
+- Improve compatibility with WordPress 6
+- Improve compatibility with PHP 8
 - Update template system
+- Consolidate namespace to Tangible/Blocks
+- Gutenberg integration: Ensure default loop context is set to current post in block preview
