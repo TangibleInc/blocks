@@ -78,7 +78,7 @@ add_action('admin_head', function() use ($template_system, $plugin) {
 
     foreach ($submenu['tangible'] as $menu_item) {
       if ($menu_item[3]==='Tangible Blocks'
-        || $menu_item[5]==='tangible_template_import_export'
+        || ($menu_item[5] ?? '') ==='tangible_template_import_export'
       ) {
         $filtered_items []= $menu_item;
       }
