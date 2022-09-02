@@ -1,6 +1,6 @@
 <?php
 
-namespace Tangible\Template\Integrations\Elementor\Dynamic\Field;
+namespace Tangible\Blocks\Integrations\Elementor\Dynamic\Field;
 
 defined('ABSPATH') or die();
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tangible\Template\Integrations\Elementor\Dynamic;
+namespace Tangible\Blocks\Integrations\Elementor\Dynamic;
 
 defined('ABSPATH') or die();
 
@@ -10,7 +10,7 @@ function create_widget($block) {
 
   // We can't use anonymous classes for this
   $generated_name = uniqid( 'TangibleBlock_' );
-  eval('class ' . $generated_name . ' extends \Tangible\Template\Integrations\Elementor\Dynamic\Base { static $tangible_block; }');
+  eval('class ' . $generated_name . ' extends \Tangible\Blocks\Integrations\Elementor\Dynamic\Base { static $tangible_block; }');
 
   /**
    * Universal ID - Unique and immutable across sites
@@ -22,7 +22,7 @@ function create_widget($block) {
   ;
 
   $class_name = 'TangibleBlock_' . $block_slug;
-  $class_name = 'Tangible\Template\Integrations\Elementor\Dynamic\\' . $class_name;
+  $class_name = 'Tangible\Blocks\Integrations\Elementor\Dynamic\\' . $class_name;
 
   if( class_exists($class_name) ) return;
 

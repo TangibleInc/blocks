@@ -1,6 +1,6 @@
 <?php
 
-namespace Tangible\Template\Integrations\Beaver\Dynamic;
+namespace Tangible\Blocks\Integrations\Beaver\Dynamic;
 
 defined('ABSPATH') or die();
 

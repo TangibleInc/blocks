@@ -1,6 +1,6 @@
 <?php
 
-namespace Tangible\Template;
+namespace Tangible\Blocks;
 
 defined('ABSPATH') or die();
 

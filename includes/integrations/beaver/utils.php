@@ -1,6 +1,6 @@
 <?php
 
-namespace Tangible\Template\Integrations\Beaver\Dynamic;
+namespace Tangible\Blocks\Integrations\Beaver\Dynamic;
 
 defined('ABSPATH') or die();
 
@@ -10,7 +10,7 @@ defined('ABSPATH') or die();
 function create_module($block) {
 
   $generated_name = uniqid( 'TangibleBlock_' );
-  eval( 'class ' . $generated_name . ' extends \Tangible\Template\Integrations\Beaver\Dynamic\Base { static $tangible_block; }' );
+  eval( 'class ' . $generated_name . ' extends \Tangible\Blocks\Integrations\Beaver\Dynamic\Base { static $tangible_block; }' );
   $generated_name::$tangible_block = $block;
 
   /**
@@ -23,7 +23,7 @@ function create_module($block) {
   ;
 
   $class_name = 'TangibleBlock_' . $block_slug;
-  $class_name = 'Tangible\Template\Integrations\Beaver\Dynamic\\' . $class_name;
+  $class_name = 'Tangible\Blocks\Integrations\Beaver\Dynamic\\' . $class_name;
 
   if( class_exists($class_name) ) return;
 

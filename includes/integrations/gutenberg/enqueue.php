@@ -23,6 +23,8 @@ add_action('tangible_enqueue_gutenberg_template_editor', function() use ($plugin
   $config['conditions'] = $plugin->block_visibility_conditions;
   $config['controls'] = $plugin->custom_controls;
 
+  $config['current_post_id'] = get_the_ID();
+
   wp_add_inline_script(
     $config['handle'],
     'window.Tangible = window.Tangible || {}; window.Tangible.blocks = ' . json_encode($blocks),

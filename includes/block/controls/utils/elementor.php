@@ -1,7 +1,7 @@
 <?php
 
 use Elementor\Plugin as Elementor;
-use Tangible\Template\Integrations\Elementor\Dynamic\Base;
+use Tangible\Blocks\Integrations\Elementor\Dynamic\Base;
 
 defined('ABSPATH') or die();
 

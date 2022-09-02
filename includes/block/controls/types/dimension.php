@@ -2,7 +2,7 @@
 
 defined('ABSPATH') or die();
 
-use Tangible\Template\Integrations\Elementor\Dynamic\Base;
+use Tangible\Blocks\Integrations\Elementor\Dynamic\Base;
 
 /**
  * Elementor: @see https://developers.elementor.com/elementor-controls/dimensions-control/
