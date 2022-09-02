@@ -34,13 +34,18 @@ $plugin->render = function($post, $data) use($plugin, $html) {
     if( $control === false ) continue;
 
     if( $control->has_context('style') ) {
+
       $value = $control->apply_render( $field['value'], $field, 'style' );
-      if( ! empty($value) ) $html->set_sass_variables( $name, $value );
+        
+      $sass_name = str_replace(' ', '-', $name);
+      $sass_type = $plugin->get_sass_variable_type( $value, $type );
+
+      $html->set_sass_variables( $sass_name, $value, [ 'type' => $sass_type ]  );
     }
-    
+
     if( $control->has_context('script') ) {
       $value = $control->apply_render( $field['value'], $field, 'script' );
-      if( ! empty($value) ) $html->set_js_variables( $name, $value );
+      $html->set_js_variables( $name, $value );
     }
 
   }
@@ -55,4 +60,14 @@ $plugin->render = function($post, $data) use($plugin, $html) {
   $plugin->reset_legacy_render();
 
   return $template_output;
+};
+
+$plugin->get_sass_variable_type = function($value, $control_type) use($plugin) {
+  
+  if( $control_type === 'dimension' && ! empty($value) ) return 'dimension';
+  if( $plugin->is_valid_color($value) ) return 'color';
+  if( $plugin->is_valid_gradient($value) ) return 'color';
+  if( is_numeric($value) ) return 'number';
+
+  return 'string';
 };
