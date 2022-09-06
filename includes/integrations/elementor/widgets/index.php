@@ -22,7 +22,7 @@ $plugin->register_dynamic_category = function($elements_manager) use($plugin) {
 /**
  * @see https://code.elementor.com/hooks/elementor-widgets-widgets_registered/
  */
-$plugin->register_dynamic_widgets = function() use($plugin) {
+$plugin->register_dynamic_widgets = function() use($plugin, $template_system) {
 
   require_once __DIR__ . '/base.php';
 

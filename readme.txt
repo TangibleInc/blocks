@@ -27,5 +27,5 @@ Release Date: 2022-09-06
 - Compatibility with WordPress 6
 - Update template system
 - Consolidate namespace to Tangible/Blocks
-- Gutenberg integration: Ensure default loop context is set to current post in block preview
+- Gutenberg and Elementor integration: Ensure default loop context is set to current post in block preview
 - Simplify admin menu and import/export
