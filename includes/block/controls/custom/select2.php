@@ -3,11 +3,8 @@
 $plugin->register_custom_control([
   'type' => 'select2',
 ])
-  ->enqueue(function($script_name) use($plugin) {
-
-    $interface = tangible_interface();
+  ->enqueue(function($script_name) use($plugin, $interface) {
     $interface->enqueue('select');
-
   })
   ->render(function($value, $field) {
     

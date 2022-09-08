@@ -11,8 +11,6 @@ defined('ABSPATH') or die();
  * @see https://github.com/elementor/elementor/issues/7174#issuecomment-466746848
  */
 
-// local scope: $ajax, $html, $interface
-
 add_action('elementor/editor/before_enqueue_scripts', $ajax->register_library, 1);
 add_action('elementor/editor/before_enqueue_scripts', $ajax->conditional_enqueue_library, 9999);
 

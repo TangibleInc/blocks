@@ -6,7 +6,6 @@ $plugin->register_control_alias('post_select', 'ajax_select', [
   'ajax_action_name' => 'tangible_blocks_select_post'
 ]);
 
-$ajax = $framework->ajax();
 $ajax->add_action('tangible_blocks_select_post', function($data, $ajax) use($plugin) {
 
   global $wpdb;

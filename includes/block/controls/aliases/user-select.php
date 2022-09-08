@@ -6,7 +6,6 @@ $plugin->register_control_alias('user_select', 'ajax_select', [
   'ajax_action_name' => 'tangible_blocks_select_user'
 ]);
 
-$ajax = $framework->ajax();
 $ajax->add_action('tangible_blocks_select_user', function($data, $ajax) {
 
   global $wpdb;
