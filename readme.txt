@@ -21,10 +21,11 @@ Tags:
 
 = 3.0.0 =
 
-Release Date: 2022-08-31
+Release Date: 2022-09-06
 
-- Improve compatibility with WordPress 6
-- Improve compatibility with PHP 8
+- Compatibility with PHP 8
+- Compatibility with WordPress 6
 - Update template system
 - Consolidate namespace to Tangible/Blocks
-- Gutenberg integration: Ensure default loop context is set to current post in block preview
+- Gutenberg and Elementor integration: Ensure default loop context is set to current post in block preview
+- Simplify admin menu and import/export

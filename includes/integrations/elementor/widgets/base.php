@@ -14,6 +14,9 @@ class Base extends \Elementor\Widget_Base {
   static $section_prefix = 'tangible_section_';
   static $control_prefix = 'tangible_control_';
 
+  static $plugin;
+  static $template_system;
+
   private function plugin() {
     return tangible_blocks();
   }
@@ -41,14 +44,14 @@ class Base extends \Elementor\Widget_Base {
    * @see https://elementor.github.io/elementor-icons/
    */
   public function get_icon() {
-    return $this->plugin()->elementor_dynamic_config['icon'];
+    return self::$plugin->elementor_dynamic_config['icon'];
   }
 
   /**
    * @see https://developers.elementor.com/widget-categories/
    */
   public function get_categories() {
-    return [ $this->plugin()->elementor_dynamic_config['category']['slug'] ];
+    return [ self::$plugin->elementor_dynamic_config['category']['slug'] ];
   }
 
   /**
@@ -84,7 +87,7 @@ class Base extends \Elementor\Widget_Base {
 
   protected function add_tangible_group_control( $control_name, $args ) {
 
-    $group_control_prefix = $this->plugin()->elementor_group_control_prefix;
+    $group_control_prefix = self::$plugin->elementor_group_control_prefix;
 
     $type = str_replace($group_control_prefix, '', $args['type']);
 
@@ -122,7 +125,7 @@ class Base extends \Elementor\Widget_Base {
 
         foreach( $section['fields'] as $field ) {
 
-          $args = $this->plugin()->get_builder_args($field, 'elementor');
+          $args = self::$plugin->get_builder_args($field, 'elementor');
           if( $args === false ) continue;
 
           /**
@@ -139,7 +142,7 @@ class Base extends \Elementor\Widget_Base {
 
           $control_name = static::$control_prefix . $field['name'];
 
-          $this->plugin()->is_elementor_group_control( $args['type'] )
+          self::$plugin->is_elementor_group_control( $args['type'] )
             ? $this->add_tangible_group_control( $control_name, $args )
             : $this->add_control( $control_name, $args );
           ;
@@ -169,7 +172,7 @@ class Base extends \Elementor\Widget_Base {
       'wrapper'     => 'elementor-element-' . $this->get_id()
     ];
 
-    $fields = $this->plugin()->get_block_controls( $render_data );
+    $fields = self::$plugin->get_block_controls( $render_data );
 
     foreach( $fields as $field ) {
 
@@ -179,7 +182,7 @@ class Base extends \Elementor\Widget_Base {
 
       $value = isset($settings[ $control_name ]) ? $settings[ $control_name ] : '';
 
-      $control = $this->plugin()->get_control( $field['type'] );
+      $control = self::$plugin->get_control( $field['type'] );
       if( $control === false ) continue;
 
       $render_data['fields'][ $field['name'] ] = $control->get_builder_value( $value, 'elementor', $field, $settings );
@@ -193,11 +196,20 @@ class Base extends \Elementor\Widget_Base {
       ;
     }
 
-    $post = $this->plugin()->get_block_post_from_settings( $render_data );
-
+    $post = self::$plugin->get_block_post_from_settings( $render_data );
+    
     if (!empty($post)) {
+
+      $system = self::$template_system;
+
+      // Ensure current post is set for builder preview
+      $system->loop->push_current_post_context();
       echo $this->plugin()->render( $post, $render_data );
+      $system->loop->pop_current_post_context();
     }
   }
 
 }
+
+Base::$plugin = $plugin;
+Base::$template_system = $template_system;

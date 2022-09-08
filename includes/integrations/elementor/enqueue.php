@@ -11,15 +11,11 @@ defined('ABSPATH') or die();
  * @see https://github.com/elementor/elementor/issues/7174#issuecomment-466746848
  */
 
-$ajax = $framework->ajax();
-
 add_action('elementor/editor/before_enqueue_scripts', $ajax->register_library, 1);
 add_action('elementor/editor/before_enqueue_scripts', $ajax->conditional_enqueue_library, 9999);
 
 add_action('elementor/editor/before_enqueue_scripts', $html->head_action, 99);
 add_action('elementor/editor/footer', $html->footer_action, 99);
-
-$interface = tangible_interface();
 
 add_action('elementor/editor/before_enqueue_scripts', $interface->admin_enqueue_modules, 9999);
 add_action('elementor/editor/before_enqueue_scripts', $interface->enqueue_modules, 9999);

@@ -14,7 +14,6 @@ define( 'TANGIBLE_BLOCKS_VERSION', '3.0.0' );
 require_once __DIR__ . '/vendor/tangible/plugin-framework/index.php';
 require_once __DIR__ . '/vendor/tangible/plugin-updater/index.php';
 require_once __DIR__ . '/vendor/tangible/template-system/index.php';
-require_once __DIR__ . '/vendor/tangible/interface/index.php';
 
 /**
  * Get plugin instance

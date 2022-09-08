@@ -4,9 +4,8 @@ $plugin->register_custom_control([
   'type'    => 'taxonomy',
 ])
   ->context(['template'])
-  ->enqueue(function($script_name) use($plugin) {
+  ->enqueue(function($script_name) use($plugin, $interface) {
 
-    $interface = tangible_interface();
     $interface->enqueue('select');
 
     // Post type data

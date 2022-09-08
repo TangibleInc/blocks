@@ -11,17 +11,12 @@
     {
       "type": "vcs",
       "url": "git@bitbucket.org:/tangibleinc/template-system.git"
-    },
-    {
-      "type": "vcs",
-      "url": "git@bitbucket.org:/tangibleinc/tangible-interface-module.git"
     }
   ],
   "require": {
     "tangible/plugin-framework": "dev-variant/without-updater",
     "tangible/plugin-updater": "dev-main",
-    "tangible/template-system": "dev-main",
-    "tangible/interface": "dev-master"
+    "tangible/template-system": "dev-main"
   },
   "require-dev": {},
   "minimum-stability": "dev"

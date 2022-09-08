@@ -24,18 +24,6 @@ require_once __DIR__ . '/widgets/index.php';
 require_once __DIR__ . '/controls/index.php';
 
 /**
- * Enqueue AJAX and Interface modules
- *
- * In local scope: $ajax, $interface
- */
-
-add_action('elementor/editor/before_enqueue_scripts', $ajax->register_library, 1);
-add_action('elementor/editor/before_enqueue_scripts', $ajax->conditional_enqueue_library, 9999);
-
-add_action('elementor/editor/before_enqueue_scripts', $interface->admin_enqueue_modules, 9999);
-add_action('elementor/editor/before_enqueue_scripts', $interface->enqueue_modules, 9999);
-
-/**
  * Widgets
  *
  * https://developers.elementor.com/creating-a-new-widget/
