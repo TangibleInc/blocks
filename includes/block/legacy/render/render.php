@@ -33,3 +33,18 @@ $plugin->legacy_render = function($content, $context) use($plugin) {
   return $content;
 };
 
+$plugin->legacy_style_render = function($style, $post) use($plugin) {
+
+  if( $post->post_type !== 'tangible_block' ) return $style;
+
+  return $plugin->legacy_render( $style, 'style' );
+};
+
+$plugin->legacy_script_render = function($script, $post) use($plugin) {
+
+  if( $post->post_type !== 'tangible_block' ) return $script;
+
+  return $plugin->legacy_render( $script, 'script' );
+};
+
+

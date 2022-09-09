@@ -9,30 +9,25 @@ defined('ABSPATH') or die();
  */
 
 require_once __DIR__ . '/render.php';
-require_once __DIR__ . '/style.php';
-require_once __DIR__ . '/script.php';
 
 $plugin->init_legacy_render = function($post, $data) use($plugin) {
 
-  $plugin->legacy_render_post_id = $post->ID;
-  $plugin->legacy_render_data    = $data;
+  $plugin->legacy_render_data = $data;
 
-  add_filter( 'get_post_metadata', $plugin->legacy_style_render, 10, 4 );
-  add_filter( 'get_post_metadata', $plugin->legacy_script_render, 10, 4 ); 
+  add_filter( 'tangible_template_post_style',  $plugin->legacy_style_render, 5, 2 );
+  add_filter( 'tangible_template_post_script', $plugin->legacy_script_render, 5, 2 );
 
   $plugin->define_subvalue_variables($data);
 
   return $plugin->legacy_render( $post->post_content, 'template' );
-};
+};  
 
 $plugin->reset_legacy_render = function() use($plugin) {
 
-  $plugin->legacy_render_post_id = false;
   $plugin->legacy_render_data    = false;
   
-  remove_filter( 'get_post_metadata', $plugin->legacy_style_render, 10 ); 
-  remove_filter( 'get_post_metadata', $plugin->legacy_script_render, 10 ); 
-
+  remove_filter( 'tangible_template_post_style', $plugin->legacy_style_render, 5 ); 
+  remove_filter( 'tangible_template_post_style', $plugin->legacy_script_render, 5 ); 
 };
 
 /**
@@ -76,3 +71,4 @@ $plugin->define_subvalue_variables = function($data) use($plugin, $html) {
 $plugin->replace_control_values = function($content, $data, $context) {
   return $content;
 };
+
