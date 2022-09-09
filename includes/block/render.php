@@ -54,12 +54,16 @@ $plugin->render = function($post, $data) use($plugin, $html) {
 
   }
 
+  $plugin->current_block_wrapper = $data['wrapper'];
+
   $template_system = tangible_template_system();
       
   $template_output = $template_system->render_template_post( $post, $data );
 
   $html->clear_sass_variables();
   $html->clear_js_variables();
+  
+  $plugin->current_block_wrapper = false;
 
   $plugin->reset_legacy_render();
 
@@ -75,3 +79,16 @@ $plugin->get_sass_variable_type = function($value, $control_type) use($plugin) {
 
   return 'string';
 };
+
+/**
+ * Encapsulate blocks style in the current block wrapper
+ * 
+ * @see /vendor/tangible/template-system/system/render/style.php
+ */
+add_filter( 'tangible_template_post_style', function($style, $post) use($plugin) {
+
+  if( $post->post_type !== 'tangible_block' ) return $style;
+
+  return $plugin->current_block_wrapper . " {\n" . $style . "\n}";
+
+}, 10, 2 );
