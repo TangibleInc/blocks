@@ -87,8 +87,10 @@ $plugin->get_sass_variable_type = function($value, $control_type) use($plugin) {
  */
 add_filter( 'tangible_template_post_style', function($style, $post) use($plugin) {
 
-  if( $post->post_type !== 'tangible_block' ) return $style;
-
+  if ( $post->post_type !== 'tangible_block' || empty($plugin->current_block_wrapper) ) {
+    return $style;
+  } 
+  
   return $plugin->current_block_wrapper . " {\n" . $style . "\n}";
 
 }, 10, 2 );
