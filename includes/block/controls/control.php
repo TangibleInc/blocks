@@ -170,6 +170,14 @@ class Control {
     return $this;
   }
 
+  function get_builder_data($value, $builder, $data, $settings) {
+    return [
+      'attributes'  => $this->filter_field_data( $data ),
+      'main_value'  => $this->get_builder_value( $value, $builder, $data, $settings ),
+      'sub_values'  => $this->get_builder_sub_values( $builder, $data, $settings )
+    ];
+  }
+
   function get_builder_value($value, $builder, $data, $settings) {
 
     $callback = isset($this->filter_value) ? $this->filter_value : false;
@@ -180,10 +188,7 @@ class Control {
       : $value
     ;
 
-    return [
-      'value' => $value,
-      'block' => $field
-    ];
+    return $value;
   }
 
   /**
@@ -200,17 +205,8 @@ class Control {
   function apply_render($value, $data, $context) {
 
     if( ! in_array($context, $this->context) ) return '';
-
-    $field = $this->filter_field_data($data['block']);
-
-    /**
-     * Sub value are not rendered using the main render callback
-     *
-     * @see render_sub_values()
-     */
-    $is_sub_value = isset($data['is_sub_value']) && $data['is_sub_value'] === true;
-    if( $is_sub_value ) return $value;
-
+   
+    $field = $this->filter_field_data( $data['attributes'] );
     $callback = isset($this->render) ? $this->render : false;
 
     return is_callable($callback)
@@ -236,28 +232,25 @@ class Control {
 
   function get_builder_sub_values($builder, $field, $settings) {
 
-    if( !is_array($this->sub_values) ) return false;
+    if( ! is_array($this->sub_values) ) return false;
 
     $sub_values = [];
     $field = $this->filter_field_data($field);
 
     foreach( $this->sub_values as $name ) {
 
-      $sub_values[ $field['name'] . '-' . $name ] = [
-        'block'         => $field,
-        'is_sub_value'  => true,
-        'value'         => (function($builder, $settings) use($name, $field) {
+      $sub_values[ $name ] = (function($builder, $settings) use($name, $field) {
 
-          $callback = isset($this->get_sub_value) && is_callable($this->get_sub_value)
-            ? $this->get_sub_value
-            : false
-          ;
+        $callback = isset($this->get_sub_value) && is_callable($this->get_sub_value)
+          ? $this->get_sub_value
+          : false
+        ;
 
-          if( empty($callback) ) return '';
+        if( empty($callback) ) return '';
 
-          return $callback($name, $builder, $field, $settings);
-        })($builder, $settings)
-      ];
+        return $callback($name, $builder, $field, $settings);
+
+      })($builder, $settings);
     }
 
     return $sub_values;

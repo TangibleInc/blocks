@@ -4,19 +4,10 @@ defined('ABSPATH') or die();
 
 $plugin->render = function($post, $data) use($plugin, $html) {
 
-  /**
-   * Legacy render using {{ control-name }} syntax
-   * 
-   * @see /legacy/render.php
-   */
-  $post->post_content = $plugin->init_legacy_render( $post, $data );
-  
+  $post = $plugin->init_render( $post, $data );
+
   $fields = $data['fields'] ?? [];
   
-  $fields = array_filter($fields, function($field) {
-    return ! ($field['is_sub_value'] ?? false);
-  });
-
   /**
    * Register sass and js variable in template system
    * 
@@ -26,8 +17,8 @@ $plugin->render = function($post, $data) use($plugin, $html) {
   
   foreach( $fields as $field ) {
     
-    $type = $field['block']['type'];
-    $name = $field['block']['name'];
+    $type = $field['attributes']['type'];
+    $name = $field['attributes']['name'];
     
     $control = $plugin->get_control( $type ); 
 
@@ -35,7 +26,7 @@ $plugin->render = function($post, $data) use($plugin, $html) {
 
     if( $control->has_context('style') ) {
 
-      $value = $control->apply_render( $field['value'], $field, 'style' );
+      $value = $control->apply_render( $field['main_value'], $field, 'style' );
         
       $sass_name = str_replace(' ', '-', $name);
       $sass_type = $plugin->get_sass_variable_type( $value, $type );
@@ -48,26 +39,45 @@ $plugin->render = function($post, $data) use($plugin, $html) {
     }
 
     if( $control->has_context('script') ) {
-      $value = $control->apply_render( $field['value'], $field, 'script' );
+      $value = $control->apply_render( $field['main_value'], $field, 'script' );
       $html->set_js_variable( $name, $value );
     }
 
   }
 
-  $plugin->current_block_wrapper = $data['wrapper'];
-
   $template_system = tangible_template_system();
       
   $template_output = $template_system->render_template_post( $post, $data );
 
+  $plugin->reset_render();
+
+  return $template_output;
+};
+
+$plugin->init_render = function( $post, $data ) use($plugin) {
+
+  $plugin->current_block_wrapper = $data['wrapper'];
+  
+  /**
+   * Legacy render using {{ control-name }} syntax
+   * 
+   * @see /legacy/render.php
+   */
+  $post->post_content = $plugin->init_legacy_render( $post, $data );
+  
+  return $post;
+};
+
+$plugin->reset_render = function() use($html, $plugin) {
+
   $html->clear_sass_variables();
   $html->clear_js_variables();
+  $html->clear_control_variables();
   
   $plugin->current_block_wrapper = false;
 
   $plugin->reset_legacy_render();
 
-  return $template_output;
 };
 
 $plugin->get_sass_variable_type = function($value, $control_type) use($plugin) {

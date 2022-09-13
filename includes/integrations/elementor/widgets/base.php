@@ -176,29 +176,21 @@ class Base extends \Elementor\Widget_Base {
 
     foreach( $fields as $field ) {
 
-      if (!is_array($field)) continue;
+      if ( ! is_array($field) ) continue;
 
-      $control_name = static::$control_prefix . $field['name'];
-
-      $value = isset($settings[ $control_name ]) ? $settings[ $control_name ] : '';
+      $name  = $field['name'];
+      $value = $settings[ static::$control_prefix . $name ] ?? '';
 
       $control = self::$plugin->get_control( $field['type'] );
+      
       if( $control === false ) continue;
 
-      $render_data['fields'][ $field['name'] ] = $control->get_builder_value( $value, 'elementor', $field, $settings );
-
-      // A control can have more than one value
-      $sub_values = $control->get_builder_sub_values( 'elementor', $field, $settings );
-
-      $render_data['fields'] = is_array($sub_values)
-        ? array_merge( $render_data['fields'], $sub_values )
-        : $render_data['fields']
-      ;
+      $render_data['fields'][ $name ] = $control->get_builder_data( $value, 'elementor', $field, $settings );
     }
 
     $post = self::$plugin->get_block_post_from_settings( $render_data );
     
-    if (!empty($post)) {
+    if ( ! empty($post) ) {
 
       $system = self::$template_system;
 

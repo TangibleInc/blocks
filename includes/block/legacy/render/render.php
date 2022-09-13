@@ -8,28 +8,37 @@ $plugin->legacy_render = function($content, $context) use($plugin) {
 
   if ( empty($data['fields']) ) return $content;
 
-  foreach( $data['fields'] as $name => $field_data ) {
-
-    $block = $field_data['block'];
-    $value = $field_data['value'];
+  foreach( $data['fields'] as $name => $field ) {
+    
+    $attributes = $field['attributes'];
+    $value = $field['main_value'];
 
     // @see control.php
 
-    $control = $plugin->get_control( $block['type'] );
+    $control = $plugin->get_control( $attributes['type'] );
 
     if( $control === false ) continue;
-
-    $value = $control->apply_render( $value, $field_data, $context );
-
+    
+    $value = $control->apply_render( $value, $field, $context );
+      
     // Custom field may return object
 
     $value = gettype( $value ) === 'object' ? json_encode( $value ) : wp_kses_post( $value );
     $content = str_replace( "{{ $name }}", $value, $content );
 
+    if( empty($field['sub_values']) ) continue;
+    
+    foreach( $field['sub_values'] as $sub_value_name => $sub_value ) {
+      
+      $sub_value_name = $name . '-' . $sub_value_name;
+
+      $value = gettype( $sub_value ) === 'object' ? json_encode( $sub_value ) : wp_kses_post( $sub_value );
+      $content = str_replace( "{{ $sub_value_name }}", $sub_value, $content );
+    }
   }
-
+  
   $content = str_replace( '{{ wrapper-class }}', $data['wrapper'], $content );
-
+  
   return $content;
 };
 

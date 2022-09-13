@@ -37,30 +37,33 @@ $plugin->define_subvalue_variables = function($data) use($plugin, $html) {
 
   $fields = $data['fields'] ?? [];
   
-  $sub_values = array_filter($fields, function($field) {
-    return isset($field['is_sub_value']) && $field['is_sub_value'] === true;
-  });
-  
-  foreach( $sub_values as $sub_value_name => $field ) {
+  foreach( $fields as $name => $field ) {
         
-    $type = $field['block']['type'];
+    if( empty($field['sub_values']) ) continue;
+     
+    $type = $field['attributes']['type'];
+    $name = $field['attributes']['name'];
 
     $control = $plugin->get_control( $type ); 
 
     if( $control === false || ! $control->has_context('style') ) {
       continue;
     }
-
-    $value = $control->apply_render( $field['value'], $field, 'style' );
-    $sass_name = str_replace(' ', '-', $sub_value_name);
     
-    $sass_type = $plugin->get_sass_variable_type( $value, false );
+    foreach( $field['sub_values'] as $sub_value_name => $sub_value ) {
+      
+      $sub_value_name = $name . '-' . $sub_value_name;
 
-    if( $sass_type === 'number' && is_int($value) ) {
-      $value = (string) $value;
+      $sass_name = str_replace(' ', '-', $sub_value_name);
+      $sass_type = $plugin->get_sass_variable_type( $sub_value, false );
+
+      if( $sass_type === 'number' && is_int($sub_value) ) {
+        $sub_value = (string) $sub_value;
+      }
+
+      $html->set_sass_variable( $sass_name, $sub_value_name, [ 'type' => $sass_type ] );
     }
 
-    $html->set_sass_variable( $sass_name, $value, [ 'type' => $sass_type ] );
   }
 
 };

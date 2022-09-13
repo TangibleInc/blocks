@@ -33,30 +33,22 @@ function render( $attributes, $content, $data ) {
 
   $fields = $plugin->get_block_controls( $render_data );
 
-  if ( !empty($fields) ) {
+  if ( ! empty($fields) ) {
 
     foreach( $fields as $field ) {
+      
+      if ( ! is_array( $field ) || empty( $field['name'] )) continue;
 
-      if (!is_array( $field ) || empty(  $field['name'] )) continue;
-
-      $value = isset($attributes[ $field['name'] ])
-        ? $attributes[ $field['name'] ]
-        : ''
-      ;
+      $name  = $field['name'];
+      $value = $attributes[ $name ] ?? '';
 
       $control = $plugin->get_control( $field['type'] );
+      
       if( $control === false ) continue;
 
-      $render_data['fields'][ $field['name'] ] = $control->get_builder_value( $value, 'gutenberg', $field, $attributes );
-
-      // A control can have more than one value
-      $sub_values = $control->get_builder_sub_values( 'gutenberg', $field, $attributes );
-
-      $render_data['fields'] = is_array($sub_values)
-        ? array_merge( $render_data['fields'], $sub_values )
-        : $render_data['fields']
-      ;
+      $render_data['fields'][ $name ] = $control->get_builder_data( $value, 'gutenberg', $field, $attributes );
     }
+
   }
 
   $template_system = tangible_template_system();

@@ -9,6 +9,7 @@ $plugin->register_control('gallery', [
   'beaver-builder'  => 'multiple-photos',
   'gutenberg'       => 'array',
 ])
+  ->context(['template'])
   ->elementor(function($field, $type) {
     $default = isset( $field['default'] )
       ? explode(',', str_replace(' ', '', $field['default']))
@@ -131,6 +132,9 @@ $plugin->register_control('gallery', [
           ? $settings->{ $field['name'] }
           : false
         ;
+
+        if( empty($value) ) break;
+        
         foreach ($value as $image) {
           $ids []= $image;
         }

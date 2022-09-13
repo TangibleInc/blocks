@@ -17,26 +17,20 @@ $fields = $plugin->get_block_controls( $render_data );
 
 foreach( $fields as $field ) {
 
-  if (!is_array($field)) continue;
-
-  $value = isset($settings->{ $field['name'] }) ? $settings->{ $field['name'] } : '';
+  if ( ! is_array($field) ) continue;
 
   $control = $plugin->get_control( $field['type'] );
+
   if( $control === false ) continue;
 
-  $render_data['fields'][ $field['name'] ] = $control->get_builder_value( $value, 'beaver-builder', $field, $settings );
+  $name  = $field['name'];
+  $value = $settings->{ $name } ?? '';
 
-  // A control can have more than one value
-  $sub_values = $control->get_builder_sub_values( 'beaver-builder', $field, $settings );
-
-  $render_data['fields'] = is_array($sub_values)
-    ? array_merge( $render_data['fields'], $sub_values )
-    : $render_data['fields']
-  ;
+  $render_data['fields'][ $name ] = $control->get_builder_data( $value, 'beaver-builder', $field, $settings );
 }
 
 $post = $plugin->get_block_post_from_settings( $render_data );
 
-if (!empty($post)) {
+if ( ! empty($post) ) {
   echo $plugin->render( $post, $render_data );
 }
