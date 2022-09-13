@@ -24,6 +24,11 @@ $plugin->render = function($post, $data) use($plugin, $html) {
 
     if( $control === false ) continue;
 
+    if( $control->has_context('template') ) {
+      $control_value = $plugin->format_control_variable($control, $field);
+      $html->set_control_variable( $name, $control_value );
+    }
+
     if( $control->has_context('style') ) {
 
       $value = $control->apply_render( $field['main_value'], $field, 'style' );
@@ -44,7 +49,7 @@ $plugin->render = function($post, $data) use($plugin, $html) {
     }
 
   }
-
+  
   $template_system = tangible_template_system();
       
   $template_output = $template_system->render_template_post( $post, $data );
@@ -72,6 +77,7 @@ $plugin->reset_render = function() use($html, $plugin) {
 
   $html->clear_sass_variables();
   $html->clear_js_variables();
+  $html->clear_control_variables();
   
   $plugin->current_block_wrapper = false;
 
@@ -87,6 +93,21 @@ $plugin->get_sass_variable_type = function($value, $control_type) use($plugin) {
   if( is_numeric($value) ) return 'number';
 
   return 'string';
+};
+
+$plugin->format_control_variable = function($control, $field) {
+
+  $data = [ 
+    'value' => $control->apply_render( $field['main_value'], $field, 'template' ) 
+  ];
+  
+  if( empty($field['sub_values']) ) return $data;
+  
+  foreach( $field['sub_values'] as $key => $value ) {
+    $data[$key] = $value;
+  }
+  
+  return $data;
 };
 
 /**
