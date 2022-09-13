@@ -72,7 +72,6 @@ $plugin->reset_render = function() use($html, $plugin) {
 
   $html->clear_sass_variables();
   $html->clear_js_variables();
-  $html->clear_control_variables();
   
   $plugin->current_block_wrapper = false;
 
