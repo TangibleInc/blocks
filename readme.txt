@@ -21,7 +21,7 @@ Tags:
 
 = 3.0.0 =
 
-Release Date: 2022-09-06
+Release Date: 2022-09-13
 
 - Compatibility with PHP 8
 - Compatibility with WordPress 6
@@ -29,3 +29,4 @@ Release Date: 2022-09-06
 - Consolidate namespace to Tangible/Blocks
 - Gutenberg and Elementor integration: Ensure default loop context is set to current post in block preview
 - Simplify admin menu and import/export
+- Block scripts: Define control values as variables
