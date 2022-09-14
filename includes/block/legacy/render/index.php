@@ -53,15 +53,15 @@ $plugin->define_subvalue_variables = function($data) use($plugin, $html) {
     foreach( $field['sub_values'] as $sub_value_name => $sub_value ) {
       
       $sub_value_name = $name . '-' . $sub_value_name;
-
+      
       $sass_name = str_replace(' ', '-', $sub_value_name);
       $sass_type = $plugin->get_sass_variable_type( $sub_value, false );
-
+      
       if( $sass_type === 'number' && is_int($sub_value) ) {
         $sub_value = (string) $sub_value;
       }
 
-      $html->set_sass_variable( $sass_name, $sub_value_name, [ 'type' => $sass_type ] );
+      $html->set_sass_variable( $sass_name, $sub_value, [ 'type' => $sass_type ] );
     }
 
   }
