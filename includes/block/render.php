@@ -100,6 +100,6 @@ add_filter( 'tangible_template_post_style', function($style, $post) use($plugin)
     return $style;
   } 
   
-  return $plugin->current_block_wrapper . " {\n" . $style . "\n}";
+  return '.' . $plugin->current_block_wrapper . " {\n" . $style . "\n}";
 
 }, 10, 2 );
