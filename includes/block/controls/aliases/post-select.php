@@ -9,7 +9,7 @@ $plugin->register_control_alias('post_select', 'ajax_select', [
 $ajax->add_action('tangible_blocks_select_post', function($data, $ajax) use($plugin) {
 
   /**
-   * Here, we should check that the current user as the right to edit in the current builder 
+   * Here, we should check that the current user has the right to edit in the current builder 
    * before returning anything
    * 
    * We would need an helper to evaluate this, according to the current builder

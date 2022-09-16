@@ -27,7 +27,7 @@ export const getControl = (control, handler, value, field) => {
     const selectValue = typeof value === 'string' && isMultiple
       ? ( value !== '' ? value.split(',') : [] )
       : ( value !== '' ? value : null )
-
+    
     return <Select
       labelForEmptyValue='Choose...'
       options={ field.options
