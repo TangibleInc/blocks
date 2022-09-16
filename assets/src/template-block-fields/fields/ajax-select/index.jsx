@@ -15,6 +15,13 @@ const AjaxSelect = ({ handler, initialValue, fields = [] }) => {
   const className = `tangible-block-editor-control-ajax-select`
   const isMultiple = fields.multiple && fields.multiple === 'true'
   
+  /**
+   * Value can be a string even if isMultiple is true, if default value is a string 
+   */
+  useEffect(() => {
+    if( isMultiple && ! Array.isArray(value) ) setValue([ value ])
+  })
+
   useEffect(() => {
 
     const data = {
@@ -53,10 +60,10 @@ const AjaxSelect = ({ handler, initialValue, fields = [] }) => {
 
   const selectedValues = Array.isArray(value) ? value.map(item => (item.value)) : []
   const crossIcon = <span className='dashicons dashicons-no-alt'></span>
-  
+
   return(
     <div className={ isOpen ? `${className} is-open` : className }>
-      { isMultiple ? 
+      { isMultiple && Array.isArray(value) ? 
         <ul className={ className + '-choice' } >  
           { value.map((val) => (
             <li 
@@ -75,7 +82,7 @@ const AjaxSelect = ({ handler, initialValue, fields = [] }) => {
           setSearch( e.target.value )
         }}
         placeholder={ fields.placeholder ? fields.placeholder : 'Select' }
-        value={ !isOpen && !isMultiple && value.length !== 0 ? value[0].label : search }
+        value={ !isOpen && !isMultiple && value[0] ? value[0].label : search }
       />  
       { isOpen && (<ul 
           class={className+'-ul'}

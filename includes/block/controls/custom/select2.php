@@ -15,7 +15,7 @@ $plugin->register_custom_control([
       : []
     ;
 
-    if( !$is_multiple ) {
+    if( ! $is_multiple ) {
       return in_array($value, $allowed_value) 
         ? $value
         : ''

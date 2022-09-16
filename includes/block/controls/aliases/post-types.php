@@ -2,7 +2,6 @@
 
 defined('ABSPATH') or die();
 
-
 // Post type data
 $post_type_objects = get_post_types([], 'objects');
 
