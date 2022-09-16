@@ -27,7 +27,7 @@ class Base extends \Elementor\Widget_Base {
      * @see /includes/template/universal-id/index.php
      */
     return static::$slug_prefix
-      . (!empty(static::$tangible_block['universal_id'])
+      . ( ! empty(static::$tangible_block['universal_id'] )
         ? static::$tangible_block['universal_id']
         : static::$tangible_block['content_id']
       )
@@ -125,7 +125,7 @@ class Base extends \Elementor\Widget_Base {
 
         foreach( $section['fields'] as $field ) {
 
-          $args = self::$plugin->get_builder_args($field, 'elementor');
+          $args = self::$plugin->get_builder_args($field, 'elementor'); 
           if( $args === false ) continue;
 
           /**
@@ -168,8 +168,8 @@ class Base extends \Elementor\Widget_Base {
     $render_data = [
       'content_id'   => $block_id,
       'universal_id' => $universal_id,
-      'fields'      => [],
-      'wrapper'     => 'elementor-element-' . $this->get_id()
+      'fields'       => [],
+      'wrapper'      => 'elementor-element-' . $this->get_id()
     ];
 
     $fields = self::$plugin->get_block_controls( $render_data );

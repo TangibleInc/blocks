@@ -1,6 +1,6 @@
 <?php
 
-namespace Tangible\Blocks;
+namespace Tangible\Blocks\Legacy;
 
 defined('ABSPATH') or die();
 
@@ -56,9 +56,9 @@ class Control {
      * definition is passed.
      */
 
-    if (!isset($field['type'])) $field['type'] = '';
-    if (!isset($field['name'])) $field['name'] = '';
-    if (!isset($field['label'])) $field['label'] = $field['name'];
+    $field['type']  = $field['type'] ?? '';
+    $field['name']  = $field['name'] ?? '';
+    $field['label'] = $field['label'] ?? '';
 
     return $this->is_alias ? array_merge($field, $this->alias_values) : $field;
   }
@@ -97,7 +97,7 @@ class Control {
    */
   function enqueue($callback) {
 
-    if( !$this->is_custom ) return $this;
+    if( ! $this->is_custom ) return $this;
 
     $this->get_enqueue_callback = $callback;
     return $this;
@@ -105,13 +105,14 @@ class Control {
 
   function enqueue_callback($handle, $builder) {
 
-    if( empty($this->get_enqueue_callback) || !is_callable($this->get_enqueue_callback) ) return;
+    if( empty($this->get_enqueue_callback) || ! is_callable($this->get_enqueue_callback) ) {
+      return;
+    } 
 
     // Not sure it belongs here
     $plugin = tangible_blocks();
     $assets_url = $plugin->assets_url . '/build/';
     $version = $plugin->version;
-
 
     call_user_func_array(
       $this->get_enqueue_callback,
@@ -145,7 +146,9 @@ class Control {
 
     $is_default_value = isset($data['default']) && !empty($data['default']);
 
-    if( !$is_default_value || !is_callable($this->default) ) return $data;
+    if( ! $is_default_value || ! is_callable($this->default) ) {
+      return $data;
+    }
 
     $data['default'] = call_user_func_array(
       $this->default,
@@ -159,7 +162,7 @@ class Control {
    * Return the right field slug according to the builder
    */
   function get_type($builder) {
-    return isset($this->types[ $builder ]) ? $this->types[ $builder ] : false;
+    return $this->types[ $builder ] ?? false;
   }
 
   /**
@@ -180,15 +183,13 @@ class Control {
 
   function get_builder_value($value, $builder, $data, $settings) {
 
-    $callback = isset($this->filter_value) ? $this->filter_value : false;
+    $callback = $this->filter_value ?? false;
     $field = $this->filter_field_data($data);
 
-    $value = is_callable($callback)
+    return is_callable($callback)
       ? $callback($value, $builder, $field, $settings)
       : $value
     ;
-
-    return $value;
   }
 
   /**
@@ -197,7 +198,6 @@ class Control {
    * @see /builders/render.php
    */
   function render($callback) {
-
     $this->render = $callback;
     return $this;
   }
@@ -207,7 +207,7 @@ class Control {
     if( ! in_array($context, $this->context) ) return '';
    
     $field = $this->filter_field_data( $data['attributes'] );
-    $callback = isset($this->render) ? $this->render : false;
+    $callback = $this->render ?? false;
 
     return is_callable($callback)
       ? $callback($value, $field, $context)
@@ -224,7 +224,7 @@ class Control {
    */
   function sub_values($values) {
 
-    if( !is_array($values) ) return;
+    if( ! is_array($values) ) return;
 
     $this->sub_values = $values;
     return $this;

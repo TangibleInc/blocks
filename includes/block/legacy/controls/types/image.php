@@ -4,7 +4,7 @@ defined('ABSPATH') or die();
 
 use Tangible\Blocks\Integrations\Elementor\Dynamic\Base;
 
-$plugin->register_control('image', [
+$plugin->register_legacy_control('image', [
   'elementor'       => $plugin->get_elementor_control_type('MEDIA'),
   'beaver-builder'  => 'photo',
   'gutenberg'       => 'object',

@@ -7,7 +7,7 @@ defined('ABSPATH') or die();
  * BeaverBuilder: @see https://docs.wpbeaverbuilder.com/beaver-builder/developer/custom-modules/cmdg-10-setting-fields-reference/#date-field
  */
 
-$plugin->register_control('date', [
+$plugin->register_legacy_control('date', [
   'elementor'       => $plugin->get_elementor_control_type('DATE_TIME'),
   'beaver-builder'  => 'date',
   'gutenberg'       => 'string',

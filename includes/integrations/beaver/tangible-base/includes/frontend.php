@@ -21,7 +21,7 @@ foreach( $fields as $field ) {
 
   $control = $plugin->get_control( $field['type'] );
 
-  if( $control === false ) continue;
+  if ( $control === false ) continue;
 
   $name  = $field['name'];
   $value = $settings->{ $name } ?? '';

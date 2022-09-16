@@ -9,9 +9,10 @@ $plugin->render = function($post, $data) use($plugin, $html) {
   $fields = $data['fields'] ?? [];
   
   /**
-   * Register sass and js variable in template system
+   * Register sass, js and control variable in template system
    * 
    * @see ./vendor/tangible/template-system/template/tags/get-set/sass
+   * @see ./vendor/tangible/template-system/template/tags/get-set/js
    * @see ./vendor/tangible/template-system/template/tags/get-set/js
    */
   
@@ -117,7 +118,7 @@ $plugin->format_control_variable = function($control, $field) {
  */
 add_filter( 'tangible_template_post_style', function($style, $post) use($plugin) {
 
-  if ( $post->post_type !== 'tangible_block' || empty($plugin->current_block_wrapper) ) {
+  if( $post->post_type !== 'tangible_block' || empty($plugin->current_block_wrapper) ) {
     return $style;
   } 
   

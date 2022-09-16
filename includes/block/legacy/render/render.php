@@ -5,7 +5,7 @@ defined('ABSPATH') or die();
 $plugin->legacy_render = function($content, $context) use($plugin) {
 
   $data = $plugin->legacy_render_data;
-
+  
   if ( empty($data['fields']) ) return $content;
 
   foreach( $data['fields'] as $name => $field ) {
@@ -15,8 +15,8 @@ $plugin->legacy_render = function($content, $context) use($plugin) {
 
     // @see control.php
 
-    $control = $plugin->get_control( $attributes['type'] );
-
+    $control = $plugin->get_legacy_control( $attributes['type'] );
+    
     if( $control === false ) continue;
     
     $value = $control->apply_render( $value, $field, $context );

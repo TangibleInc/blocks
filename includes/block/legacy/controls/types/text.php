@@ -7,7 +7,7 @@ defined('ABSPATH') or die();
  * BeaverBuilder: @see https://docs.wpbeaverbuilder.com/beaver-builder/developer/custom-modules/cmdg-10-setting-fields-reference/#text-field
  */
 
-$plugin->register_control('text', [
+$plugin->register_legacy_control('text', [
   'elementor'       => $plugin->get_elementor_control_type('TEXT'),
   'beaver-builder'  => 'text',
   'gutenberg'       => 'string',

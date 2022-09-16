@@ -1,6 +1,6 @@
 <?php
 
-$plugin->register_custom_control([
+$plugin->register_legacy_custom_control([
   'type'    => 'taxonomy',
 ])
   ->context(['template'])

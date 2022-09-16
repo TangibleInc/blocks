@@ -4,45 +4,33 @@ defined('ABSPATH') or die();
 
 use Tangible\Blocks\Integrations\Elementor\Dynamic\Base;
 
-$plugin->register_control('gallery', [
+$plugin->register_legacy_control('gallery', [
   'elementor'       => $plugin->get_elementor_control_type('GALLERY'),
   'beaver-builder'  => 'multiple-photos',
   'gutenberg'       => 'array',
 ])
   ->context(['template'])
   ->elementor(function($field, $type) {
-    $default = isset( $field['default'] )
-      ? explode(',', str_replace(' ', '', $field['default']))
-      : []
-    ;
     return [
       'label'   => $field['label'],
       'type'    => $type,
-      'default' => $default,
-      'size' => isset( $field['size'] ) ? $field['size'] : 'full'
+      'default' => explode(',', str_replace(' ', '', $field['default'] ?? '')),
+      'size'    => $field['size'] ?? 'full'
     ];
   })
   ->beaver_builder(function($field, $type){
-    $default = isset( $field['default'] )
-      ? explode(',', str_replace(' ', '', $field['default']))
-      : []
-    ;
     return [
       'label'   => $field['label'],
       'type'    => $type,
-      'default' => $default,
-      'size' => isset( $field['size'] ) ? $field['size'] : 'full'
+      'default' => explode(',', str_replace(' ', '', $field['default'] ?? '')),
+      'size'    => $field['size'] ?? 'full'
     ];
   })
   ->gutenberg(function($field, $type){
-    $default = isset( $field['default'] )
-      ? explode(',', str_replace(' ', '', $field['default']))
-      : []
-    ;
     return [
       'type'    => $type,
-      'default' => $default,
-      'size' => isset( $field['size'] ) ? $field['size'] : 'full'
+      'default' => explode(',', str_replace(' ', '', $field['default'] ?? '')),
+      'size'    => $field['size'] ?? 'full'
     ];
   })
   ->default(function($values, $builder) {
@@ -123,6 +111,7 @@ $plugin->register_control('gallery', [
       case 'gutenberg':
         $values = $settings[ $field['name'] ];
         foreach ($values as $image) {
+          if( empty($image) ) continue;
           $ids []= is_array($image) ? $image['id'] : $image;
         }
         break;

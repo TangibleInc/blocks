@@ -9,8 +9,8 @@ defined('ABSPATH') or die();
  * When using a global color in Elementor, the value of the global will not be passed in $value,
  * we have to get it from the __globals__ array
  */
-$plugin->get_elementor_control_value = function( $value, $name, $settings ) use( $plugin ) {
-
+$plugin->get_elementor_control_value = function($value, $name, $settings) use( $plugin ) {
+  
   $setting_name = Base::$control_prefix . $name;
 
   $global_key = isset($settings['__globals__'][ $setting_name ]) 
@@ -24,7 +24,7 @@ $plugin->get_elementor_control_value = function( $value, $name, $settings ) use(
 
   $data = Elementor::$instance->data_manager->run( $global_key );
   
-  return !empty($data['value']) ? $data['value'] : $value;
+  return ! empty($data['value']) ? $data['value'] : $value;
 };
 
 

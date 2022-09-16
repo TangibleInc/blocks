@@ -30,26 +30,19 @@ $plugin->get_block_controls = function( $settings ) use ($plugin, $template_syst
 /**
  * Convert saved control to data expected by given builder
  */
-$plugin->get_builder_args = function($field_data, $builder) use($plugin) {
+$plugin->get_builder_args = function($attribute, $builder) use($plugin) {
 
-  if( !in_array($builder, ['elementor', 'beaver-builder', 'gutenberg']) ) return false;
-
-  $type = !empty($field_data['type']) ? $field_data['type'] : false;
-
-  if( empty($type) || empty($plugin->controls[ $type ])) return false;
-
-  $control = $plugin->get_control( $type );
+  if( ! in_array($builder, ['elementor', 'beaver-builder', 'gutenberg']) ) {
+    return false;
+  } 
+  
+  $control = $plugin->get_control( 
+    $attribute['type'] ?? '' 
+  );
 
   return $control !== false
-    ? $control->get_field_data( $field_data, $builder )
+    ? $control->get_field_data( $attribute, $builder )
     : []
-  ;
-};
-
-$plugin->get_control = function($name) use($plugin) {
-  return is_string($name) && isset($plugin->controls[ $name ])
-    ? $plugin->controls[ $name ]
-    : false
   ;
 };
 

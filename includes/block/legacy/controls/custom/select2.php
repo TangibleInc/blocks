@@ -1,6 +1,6 @@
 <?php
 
-$plugin->register_custom_control([
+$plugin->register_legacy_custom_control([
   'type' => 'select2',
 ])
   ->enqueue(function($script_name) use($plugin, $interface) {

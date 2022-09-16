@@ -9,7 +9,7 @@ use Tangible\Blocks\Integrations\Elementor\Dynamic\Base;
  * BeaverBuilder: @see https://docs.wpbeaverbuilder.com/beaver-builder/developer/custom-modules/cmdg-10-setting-fields-reference/#gradient-field
  */
 
-$plugin->register_control('gradient', [
+$plugin->register_legacy_control('gradient', [
   'elementor'       => $plugin->get_elementor_group_control_type('Background'),
   'beaver-builder'  => 'gradient',
   'gutenberg'       => 'string',

@@ -44,8 +44,8 @@ $plugin->define_subvalue_variables = function($data) use($plugin, $html) {
     $type = $field['attributes']['type'];
     $name = $field['attributes']['name'];
 
-    $control = $plugin->get_control( $type ); 
-
+    $control = $plugin->get_legacy_control( $type ); 
+    
     if( $control === false || ! $control->has_context('style') ) {
       continue;
     }

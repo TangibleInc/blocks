@@ -7,7 +7,7 @@ defined('ABSPATH') or die();
  * BeaverBuilder: @see https://docs.wpbeaverbuilder.com/beaver-builder/developer/custom-modules/cmdg-10-setting-fields-reference/#color-field
  */
 
-$plugin->register_control('color', [
+$plugin->register_legacy_control('color', [
   'elementor'       => $plugin->get_elementor_control_type('COLOR'),
   'beaver-builder'  => 'color',
   'gutenberg'       => 'string',

@@ -2,7 +2,7 @@
 
 defined('ABSPATH') or die();
 
-$plugin->register_control('editor', [
+$plugin->register_legacy_control('editor', [
   'elementor'       => $plugin->get_elementor_control_type('WYSIWYG'),
   'beaver-builder'  => 'editor',
   'gutenberg'       => 'string',

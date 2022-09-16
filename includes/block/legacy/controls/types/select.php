@@ -7,7 +7,7 @@ defined('ABSPATH') or die();
  * BeaverBuilder: @see https://docs.wpbeaverbuilder.com/beaver-builder/developer/custom-modules/cmdg-10-setting-fields-reference/#select-field
  */
 
-$plugin->register_control('select', [
+$plugin->register_legacy_control('select', [
   'elementor'       => $plugin->get_elementor_control_type('SELECT2'),
   'beaver-builder'  => 'select',
   'gutenberg'       => 'string',

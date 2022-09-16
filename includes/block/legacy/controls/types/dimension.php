@@ -10,7 +10,7 @@ use Tangible\Blocks\Integrations\Elementor\Dynamic\Base;
  * Gutenberg : @see https://developer.wordpress.org/block-editor/reference-guides/components/box-control/
  */
 
-$plugin->register_control('dimension', [
+$plugin->register_legacy_control('dimension', [
   'elementor'       => $plugin->get_elementor_control_type('DIMENSIONS'),
   'beaver-builder'  => 'dimension',
   'gutenberg'       => 'object',

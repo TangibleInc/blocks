@@ -10,7 +10,7 @@ add_action('elementor/controls/controls_registered', function($controls_manager)
 
   require_once __DIR__ . '/base.php';
 
-  foreach($plugin->custom_controls as $type => $config) {
+  foreach($plugin->get_custom_controls() as $type => $config) {
 
     $control = $plugin->register_elementor_control($config);
     

@@ -2,7 +2,7 @@
 
 defined('ABSPATH') or die();
 
-$plugin->register_control('align', [
+$plugin->register_legacy_control('align', [
   'elementor'       => $plugin->get_elementor_control_type('CHOOSE'),
   'beaver-builder'  => 'align',
   'gutenberg'       => 'string',

@@ -10,6 +10,6 @@ foreach ( $post_type_objects as $post_type ) {
   $post_types[ $post_type->name ] = $post_type->labels->singular_name;
 }
 
-$plugin->register_control_alias('post_types', 'select2', [
+$plugin->register_legacy_control_alias('post_types', 'select2', [
   'options' => $post_types,
 ]);

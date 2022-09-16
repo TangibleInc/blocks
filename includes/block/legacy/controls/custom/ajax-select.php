@@ -6,7 +6,7 @@
  * @see example alias/post-select
  */
 
-$plugin->register_custom_control([
+$plugin->register_legacy_custom_control([
     'type' => 'ajax_select',
   ])
   ->context(['template'])

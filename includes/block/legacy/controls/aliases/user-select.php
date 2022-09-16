@@ -2,7 +2,7 @@
 
 defined('ABSPATH') or die();
 
-$plugin->register_control_alias('user_select', 'ajax_select', [
+$plugin->register_legacy_control_alias('user_select', 'ajax_select', [
   'ajax_action_name' => 'tangible_blocks_select_user'
 ]);
 

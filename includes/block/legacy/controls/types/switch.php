@@ -8,7 +8,7 @@ defined('ABSPATH') or die();
  * Gutenberg: @see https://developer.wordpress.org/block-editor/reference-guides/components/toggle-control/
  */
 
-$plugin->register_control('switch', [
+$plugin->register_legacy_control('switch', [
   'elementor'       => $plugin->get_elementor_control_type('SWITCHER'),
   'beaver-builder'  => 'select',
   'gutenberg'       => 'string',

@@ -2,7 +2,7 @@
 
 defined('ABSPATH') or die();
 
-$plugin->register_control('number', [
+$plugin->register_legacy_control('number', [
   'elementor'       => $plugin->get_elementor_control_type('NUMBER'),
   'beaver-builder'  => 'unit',
   'gutenberg'       => 'integer',
