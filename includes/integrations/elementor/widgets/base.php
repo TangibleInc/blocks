@@ -181,11 +181,9 @@ class Base extends \Elementor\Widget_Base {
       $name  = $field['name'];
       $value = $settings[ static::$control_prefix . $name ] ?? '';
 
-      $control = self::$plugin->get_control( $field['type'] );
-      
-      if( $control === false ) continue;
-
-      $render_data['fields'][ $name ] = $control->get_builder_data( $value, 'elementor', $field, $settings );
+      $render_data['fields'][ $name ] = self::$plugin->format_control_value( 
+        $value, 'elementor', $field, $settings 
+      );
     }
 
     $post = self::$plugin->get_block_post_from_settings( $render_data );

@@ -46,7 +46,7 @@ class Control {
     $this->is_custom = true;
   }
 
-  function filter_field_data($field) {
+  function sanitize_args($args) {
 
     /**
      * Ensure required properties
@@ -56,11 +56,11 @@ class Control {
      * definition is passed.
      */
 
-    $field['type']  = $field['type'] ?? '';
-    $field['name']  = $field['name'] ?? '';
-    $field['label'] = $field['label'] ?? '';
+    $args['type']  = $args['type'] ?? '';
+    $args['name']  = $args['name'] ?? '';
+    $args['label'] = $args['label'] ?? '';
 
-    return $this->is_alias ? array_merge($field, $this->alias_values) : $field;
+    return $this->is_alias ? array_merge($args, $this->alias_values) : $args;
   }
 
   function context($context) {
@@ -123,9 +123,9 @@ class Control {
   /**
    * @see block/get_field_args
    */
-  function get_field_data($field, $builder) {
+  function register_control($builder, $field) {
 
-    $field = $this->filter_field_data($field);
+    $field = $this->sanitize_args($field);
 
     switch($builder) {
       case 'elementor':
@@ -173,9 +173,25 @@ class Control {
     return $this;
   }
 
-  function get_builder_data($value, $builder, $data, $settings) {
+  function format_data($value, $builder, $data, $settings) {
+    
+    $value = $this->get_builder_value( $value, $builder, $data, $settings );
+    $sub_value = $this->get_builder_sub_values( $builder, $data, $settings );
+    
+    $formated_value = array_merge(
+      [ 'value' => $value ],
+      $sub_value ?: []
+    );
+
     return [
-      'attributes'  => $this->filter_field_data( $data ),
+      'attributes' => $this->sanitize_args( $data ),
+      'value'      => $formated_value
+    ];
+  }
+
+  function format_legacy_data($value, $builder, $data, $settings) {
+    return [
+      'attributes'  => $this->sanitize_args( $data ),
       'main_value'  => $this->get_builder_value( $value, $builder, $data, $settings ),
       'sub_values'  => $this->get_builder_sub_values( $builder, $data, $settings )
     ];
@@ -184,7 +200,7 @@ class Control {
   function get_builder_value($value, $builder, $data, $settings) {
 
     $callback = $this->filter_value ?? false;
-    $field = $this->filter_field_data($data);
+    $field = $this->sanitize_args($data);
 
     return is_callable($callback)
       ? $callback($value, $builder, $field, $settings)
@@ -202,16 +218,16 @@ class Control {
     return $this;
   }
 
-  function apply_render($value, $data, $context) {
+  function get_value($value, $args, $context) {
 
     if( ! in_array($context, $this->context) ) return '';
    
-    $field = $this->filter_field_data( $data['attributes'] );
+    $field = $this->sanitize_args( $args );
     $callback = $this->render ?? false;
 
     return is_callable($callback)
-      ? $callback($value, $field, $context)
-      : $value
+      ? $callback($value['value'], $field, $context)
+      : $value['value']
     ;
   }
 
@@ -235,7 +251,7 @@ class Control {
     if( ! is_array($this->sub_values) ) return false;
 
     $sub_values = [];
-    $field = $this->filter_field_data($field);
+    $field = $this->sanitize_args($field);
 
     foreach( $this->sub_values as $name ) {
 

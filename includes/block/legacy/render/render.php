@@ -9,7 +9,9 @@ $plugin->legacy_render = function($content, $context) use($plugin) {
   if ( empty($data['fields']) ) return $content;
 
   foreach( $data['fields'] as $name => $field ) {
-    
+
+    if( empty($field) ) continue;
+
     $attributes = $field['attributes'];
     $value = $field['main_value'];
 
@@ -19,7 +21,7 @@ $plugin->legacy_render = function($content, $context) use($plugin) {
     
     if( $control === false ) continue;
     
-    $value = $control->apply_render( $value, $field, $context );
+    $value = $control->get_value(['value' => $value ], $field, $context );
       
     // Custom field may return object
 

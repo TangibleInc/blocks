@@ -55,7 +55,7 @@ $plugin->register_legacy_control('gallery', [
   })
   ->filter_value(function($values, $builder, $field, $settings) {
     if( empty($values) ) return '';
-
+    
     $output = [];
     foreach ($values as $key => $value) {
       $output[$key] = [
@@ -66,7 +66,6 @@ $plugin->register_legacy_control('gallery', [
     return $output;
   })
   ->render(function($values, $block) use ($plugin) {
-
     if( empty($values) ) return '';
 
     // Filter to remove style attribute on img tag - See below for its definition

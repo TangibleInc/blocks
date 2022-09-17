@@ -12,7 +12,10 @@ $plugin->controls = [];
 $plugin->custom_controls = [];
 
 require_once __DIR__ . '/data.php';
+require_once __DIR__ . '/format.php';
+require_once __DIR__ . '/register.php';
 
+require_once __DIR__ . '/types/index.php';
 require_once __DIR__ . '/template/index.php';
 require_once __DIR__ . '/utils/index.php';
 

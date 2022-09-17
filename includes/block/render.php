@@ -18,35 +18,38 @@ $plugin->render = function($post, $data) use($plugin, $html) {
   
   foreach( $fields as $field ) {
     
-    $type = $field['attributes']['type'];
-    $name = $field['attributes']['name'];
+    $args  = $field['attributes'];
+    $value = $field['value'];
+
+    $type = $args['type'];
+    $name = $args['name'];
     
     $control = $plugin->get_control( $type ); 
 
     if( $control === false ) continue;
 
     if( $control->has_context('template') ) {
-      $control_value = $plugin->format_control_variable($control, $field);
+      $control_value = $control->get_value( $value, $args, 'template' );
       $html->set_control_variable( $name, $control_value );
     }
 
     if( $control->has_context('style') ) {
 
-      $value = $control->apply_render( $field['main_value'], $field, 'style' );
+      $control_value = $control->get_value( $value, $args, 'style' );
         
       $sass_name = str_replace(' ', '-', $name);
-      $sass_type = $plugin->get_sass_variable_type( $value, $type );
+      $sass_type = $plugin->get_sass_variable_type( $control_value, $type );
 
-      if( $sass_type === 'number' && is_int($value) ) {
-        $value = (string) $value;
+      if( $sass_type === 'number' && is_int($control_value) ) {
+        $control_value = (string) $control_value;
       }
 
-      $html->set_sass_variable( $sass_name, $value, [ 'type' => $sass_type ]  );
+      $html->set_sass_variable( $sass_name, $control_value, [ 'type' => $sass_type ]  );
     }
 
     if( $control->has_context('script') ) {
-      $value = $control->apply_render( $field['main_value'], $field, 'script' );
-      $html->set_js_variable( $name, $value );
+      $control_value = $control->get_value( $value, $args, 'script' );
+      $html->set_js_variable( $name, $control_value );
     }
 
   }
@@ -94,21 +97,6 @@ $plugin->get_sass_variable_type = function($value, $control_type) use($plugin) {
   if( is_numeric($value) ) return 'number';
 
   return 'string';
-};
-
-$plugin->format_control_variable = function($control, $field) {
-
-  $data = [ 
-    'value' => $control->apply_render( $field['main_value'], $field, 'template' ) 
-  ];
-  
-  if( empty($field['sub_values']) ) return $data;
-  
-  foreach( $field['sub_values'] as $key => $value ) {
-    $data[$key] = $value;
-  }
-  
-  return $data;
 };
 
 /**

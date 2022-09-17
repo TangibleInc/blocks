@@ -24,6 +24,7 @@ $legacy = [
 require_once __DIR__ . '/register.php';
 require_once __DIR__ . '/control.php';
 
+require_once __DIR__ . '/utils/index.php';
 require_once __DIR__ . '/types/index.php';
 require_once __DIR__ . '/custom/index.php';
 require_once __DIR__ . '/aliases/index.php';
