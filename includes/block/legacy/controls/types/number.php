@@ -84,6 +84,6 @@ $plugin->register_legacy_control('number', [
     
     return (int) $value;
   })
-  ->render(function($value, $block) {
+  ->legacy_render(function($value, $block) {
     return (int) $value;
   });

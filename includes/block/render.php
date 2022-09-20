@@ -29,13 +29,13 @@ $plugin->render = function($post, $data) use($plugin, $html) {
     if( $control === false ) continue;
 
     if( $control->has_context('template') ) {
-      $control_value = $control->get_value( $value, $args, 'template' );
+      $control_value = $control->render( $value, $args, 'template' );
       $html->set_control_variable( $name, $control_value );
     }
 
     if( $control->has_context('style') ) {
 
-      $control_value = $control->get_value( $value, $args, 'style' );
+      $control_value = $control->render( $value, $args, 'style' );
         
       $sass_name = str_replace(' ', '-', $name);
       $sass_type = $plugin->get_sass_variable_type( $control_value, $type );
@@ -48,7 +48,7 @@ $plugin->render = function($post, $data) use($plugin, $html) {
     }
 
     if( $control->has_context('script') ) {
-      $control_value = $control->get_value( $value, $args, 'script' );
+      $control_value = $control->render( $value, $args, 'script' );
       $html->set_js_variable( $name, $control_value );
     }
 

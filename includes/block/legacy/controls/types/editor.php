@@ -29,6 +29,6 @@ $plugin->register_legacy_control('editor', [
       'default' => isset($field['default']) ? $field['default'] : ''
     ];
   })
-  ->render(function($value, $block) {
+  ->legacy_render(function($value, $block) {
     return wp_kses_post($value);
   });

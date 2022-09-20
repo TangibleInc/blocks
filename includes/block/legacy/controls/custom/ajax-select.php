@@ -19,7 +19,7 @@ $plugin->register_legacy_custom_control([
 
     return $value;
   })
-  ->render(function($value, $field) {
+  ->legacy_render(function($value, $field) {
 
     if( empty($value) || !is_string($value) ) return '';
 

@@ -81,7 +81,7 @@ $plugin->register_legacy_control('color', [
 
     return $value;
   })
-  ->render(function($value, $block) use($plugin) {
+  ->legacy_render(function($value, $block) use($plugin) {
 
     $value = empty($value) && isset($block['default']) 
       ? $block['default']

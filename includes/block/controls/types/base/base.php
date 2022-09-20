@@ -47,6 +47,24 @@ class Base {
     return in_array($context, $this->context);
   }
 
+  function render( $value, array $args, string $context ) {
+
+    if( ! $this->has_context($context) ) return '';
+
+    $value = $this->get_value( $value, $args, $context );
+    
+    if( ! is_array($value) ) return $value;
+
+    /**
+     * Loopable values will only worked in template. 
+     * 
+     * Return default value (if any) for script and style 
+     */
+    if( $context !== 'template' ) return $value['value'] ?? '';
+
+    return $value;
+  }
+
 }
 
 Base::$plugin = $plugin;

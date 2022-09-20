@@ -41,7 +41,7 @@ $plugin->register_legacy_control('align', [
       'default' => isset($field['default']) ? $field['default'] : 'center'
     ];
   })
-  ->render(function($value, $field) {
+  ->legacy_render(function($value, $field) {
 
     $accepted_values = ['left', 'center', 'right'];
 

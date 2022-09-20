@@ -213,9 +213,16 @@ class Control {
    *
    * @see /builders/render.php
    */
-  function render($callback) {
+  function legacy_render($callback) {
     $this->render = $callback;
     return $this;
+  }
+
+  /**
+   * Compatibility when legacy control used in new system
+   */
+  function render($value, $args, $context) {
+    return $this->get_value($value, $args, $context);
   }
 
   function get_value($value, $args, $context) {

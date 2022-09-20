@@ -65,7 +65,7 @@ $plugin->register_legacy_control('gallery', [
     }
     return $output;
   })
-  ->render(function($values, $block) use ($plugin) {
+  ->legacy_render(function($values, $block) use ($plugin) {
     if( empty($values) ) return '';
 
     // Filter to remove style attribute on img tag - See below for its definition

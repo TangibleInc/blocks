@@ -57,7 +57,7 @@ $plugin->register_legacy_control('image', [
     
     return $value;
   })
-  ->render(function($value, $block) {
+  ->legacy_render(function($value, $block) {
     if( empty($value) ) return '';
 
     // Elementor returns an array of info instead of a specific piece of data ID like the others do

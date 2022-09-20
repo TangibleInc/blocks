@@ -6,7 +6,7 @@ $plugin->register_legacy_custom_control([
   ->enqueue(function($script_name) use($plugin, $interface) {
     $interface->enqueue('select');
   })
-  ->render(function($value, $field) {
+  ->legacy_render(function($value, $field) {
     
     $is_multiple = isset($field['multiple']) && $field['multiple'] === 'true';
 

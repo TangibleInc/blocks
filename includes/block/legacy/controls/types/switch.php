@@ -63,7 +63,7 @@ $plugin->register_legacy_control('switch', [
     }
     return $value;
   })
-  ->render(function($value, $field) {
+  ->legacy_render(function($value, $field) {
     
     $alowed_values = ['on', 'off'];
     

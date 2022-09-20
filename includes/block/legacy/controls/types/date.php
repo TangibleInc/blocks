@@ -33,7 +33,7 @@ $plugin->register_legacy_control('date', [
       'default' => isset($fields['default']) ? $field['default'] : ''
     ];
   })
-  ->render(function($value, $block) {
+  ->legacy_render(function($value, $block) {
 
     $tdate = \tangible_date();
     $date = $tdate( $value );

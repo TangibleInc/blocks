@@ -64,7 +64,7 @@ $plugin->register_legacy_control('select', [
       'default' => $default
     ];
   })
-  ->render(function($value, $block) {
+  ->legacy_render(function($value, $block) {
 
     $allowed_values = isset($block['options']) ? array_keys($block['options']) : [];
 

@@ -46,7 +46,7 @@ $plugin->register_legacy_custom_control([
     
     return json_decode( json_encode( $value ), true );
   })
-  ->render(function($values, $field) {
+  ->legacy_render(function($values, $field) {
 
     if( empty($values) ) return '';
 

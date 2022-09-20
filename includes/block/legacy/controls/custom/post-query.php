@@ -58,7 +58,7 @@ $plugin->register_legacy_custom_control([
 
     return $values;
   })
-  ->render(function($values, $field) {
+  ->legacy_render(function($values, $field) {
 
     if ( empty( $values ) ) return '';
 

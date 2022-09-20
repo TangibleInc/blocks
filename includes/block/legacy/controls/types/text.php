@@ -32,7 +32,7 @@ $plugin->register_legacy_control('text', [
       'default' => isset($field['default']) ? $field['default'] : ''
     ];
   })
-  ->render(function($value, $block, $context) {
+  ->legacy_render(function($value, $block, $context) {
 
     // To avoid code injections, value will always be used with commas when in script context
 

@@ -82,7 +82,7 @@ $plugin->register_legacy_control('gradient', [
 
     return FLBuilderColor::gradient( $value );
   })
-  ->render(function($value) use($plugin) {
+  ->legacy_render(function($value) use($plugin) {
 
     return $plugin->is_valid_gradient($value) 
       ? esc_html($value) 

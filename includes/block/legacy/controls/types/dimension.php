@@ -253,8 +253,8 @@ $plugin->register_legacy_control('dimension', [
 
     }
   })
-  ->render(function($value, $field) {
-    ;
+  ->legacy_render(function($value, $field) {
+    
     $units = isset($field['units']) 
       ? explode( ',', $field['units'] )
       : ['px']
