@@ -12,8 +12,8 @@ class Text extends Base {
    */
   function register_control(string $builder, array $args): array {
     
-    $label   = $args['default'] ?? '';
-    $default = $args['label'] ?? '';
+    $label   = $args['label'] ?? '';
+    $default = $args['default'] ?? '';
     
     switch($builder) {
       case 'elementor':
