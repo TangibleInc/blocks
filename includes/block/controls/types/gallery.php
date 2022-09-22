@@ -14,7 +14,7 @@ class Gallery extends Base {
     
     $label   = $args['label'] ?? '';
     $size    = $field['size'] ?? 'full';
-    $default = $this->format_default_value( $field['default'] ?? '', $builder );
+    $default = $this->format_default_value( $args['default'] ?? '', $builder );
     
     switch($builder) {
       case 'elementor':
