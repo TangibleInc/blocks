@@ -123,6 +123,7 @@ $plugin->register_control('gallery', [
       case 'gutenberg':
         $values = $settings[ $field['name'] ];
         foreach ($values as $image) {
+          if( empty($image) ) continue;
           $ids []= is_array($image) ? $image['id'] : $image;
         }
         break;

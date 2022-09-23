@@ -14,6 +14,14 @@ add_action('tangible_enqueue_gutenberg_template_editor', function() use ($plugin
     ['tangible-gutenberg-template-editor'],
     $plugin->version
   );
+  
+  wp_enqueue_style(
+    $plugin->gutenberg_dynamic_config['handle'],
+    $plugin->url . 'assets/build/gutenberg-integration.min.css',
+    ['wp-edit-blocks'],
+    $plugin->version
+  );
+
 
   // Add inline dynamic block data
 

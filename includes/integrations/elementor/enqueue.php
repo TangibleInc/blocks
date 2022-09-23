@@ -34,6 +34,13 @@ add_action('tangible_enqueue_elementor_template_editor', function() use($plugin)
     $plugin->version
   );
 
+  wp_enqueue_style(
+    $plugin->elementor_dynamic_config['handle'],
+    $plugin->url . 'assets/build/elementor-integration.min.css',
+    [],
+    $plugin->version
+  );
+
 });
 
 add_action('elementor/editor/after_enqueue_scripts', function() use($plugin) {
