@@ -14,10 +14,10 @@ module.exports = {
       dest: 'assets/build/gutenberg-integration.min.js',
       react: 'wp.element',
     },
-    // {
-    //   src: 'assets/src/gutenberg-integration/index.scss',
-    //   dest: 'assets/build/gutenberg-integration.min.css',
-    // },
+    {
+      src: 'assets/src/gutenberg-integration/index.scss',
+      dest: 'assets/build/gutenberg-integration.min.css',
+    },
 
     // Beaver Builder
     {
@@ -25,10 +25,10 @@ module.exports = {
       dest: 'assets/build/beaver-integration.min.js',
       react: 'wp.element',
     },
-    // {
-    //   src: 'assets/src/beaver-integration/index.scss',
-    //   dest: 'assets/build/beaver-integration.min.css',
-    // },
+    {
+      src: 'assets/src/beaver-integration/index.scss',
+      dest: 'assets/build/beaver-integration.min.css',
+    },
 
     // Elementor
     {

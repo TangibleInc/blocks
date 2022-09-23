@@ -20,11 +20,11 @@ export default class ControlVisibility {
 
     let visibility = true
 
-    if( !conditions || !Array.isArray(conditions) ) return visibility
+    if( ! conditions || ! Array.isArray(conditions) ) return visibility
 
     for (const key of conditions) {
       const condition = this.getCondition(key)
-      if ( !this.evaluateCondition(condition, getFieldValue) ) return false
+      if ( ! this.evaluateCondition(condition, getFieldValue) ) return false
     }
 
     return visibility
