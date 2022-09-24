@@ -8,7 +8,7 @@ const $ = jQuery
 
 export const maybeInitTabsWorkaround = tabs => {
   
-  if( !tabs.content || !tabs.content.conditions ) return
+  if( ! tabs.content || ! tabs.content.conditions ) return
   if( tabs.content.conditions !== 'default-tab-workaround' ) return
 
   const firstTab = document.querySelector('.elementor-component-tab:not([data-tab="content"])')

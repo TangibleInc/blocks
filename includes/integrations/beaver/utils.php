@@ -13,16 +13,9 @@ function create_module($block) {
   eval( 'class ' . $generated_name . ' extends \Tangible\Blocks\Integrations\Beaver\Dynamic\Base { static $tangible_block; }' );
   $generated_name::$tangible_block = $block;
 
-  /**
-   * Universal ID - Unique and immutable across sites
-   * @see /includes/template/universal-id/index.php
-   */
-  $block_slug = !empty($block['universal_id'])
-    ? $block['universal_id']
-    : $block['content_id'] // Backward compatibility
-  ;
+  $plugin = tangible_blocks();
 
-  $class_name = 'TangibleBlock_' . $block_slug;
+  $class_name = 'TangibleBlock_' . $plugin->get_block_id( $block );
   $class_name = 'Tangible\Blocks\Integrations\Beaver\Dynamic\\' . $class_name;
 
   if( class_exists($class_name) ) return;
@@ -43,7 +36,7 @@ function to_settings($block) {
 
   if( empty($block['tabs']) ) return $settings;
 
-  $plugin = \tangible_blocks();
+  $plugin = tangible_blocks();
 
   foreach( $block['tabs'] as $tab ) {
 
@@ -94,7 +87,7 @@ function to_settings($block) {
 
   // Register tabs/sections/fields visibility for this block
 
-  $id = $block['content_id'];
+  $id = $plugin->get_block_id( $block );
   $visibility = &$plugin->beaver_dynamic_config['visibility'];
 
   foreach (['tabs', 'sections', 'fields'] as $key) {

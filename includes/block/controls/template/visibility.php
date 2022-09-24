@@ -34,7 +34,7 @@ return new class($conditions) {
   }
 
   function has_conditions() {
-    return !empty($this->current_condition);
+    return ! empty($this->current_condition);
   }
 
   function start_condition( $attributes ) {

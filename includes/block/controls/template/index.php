@@ -111,7 +111,9 @@ $plugin->block_controls_template_tags['Else'] = [
 
 $plugin->get_block_controls_template_json = function($template, $block_id) use ($plugin, $html, $visibility) {
 
-  $visibility->init( $block_id );
+  $visibility->init( 
+    $plugin->get_block_id( $block_id ) 
+  );
 
   $html->render('<Map _current>' . $template . '</Map>', [
     'local_tags' => &$plugin->block_controls_template_tags

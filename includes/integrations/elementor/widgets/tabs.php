@@ -16,7 +16,7 @@ $plugin->get_blocks_with_custom_tabs = function() use($plugin) {
     return true;
   });
 
-  return array_map(function($block) {
-    return $block['content_id'];
+  return array_map(function($block) use($plugin) {
+    return $plugin->get_block_id( $block );
   }, $blocks);
 };

@@ -13,7 +13,7 @@ class Base extends \FLBuilderModule {
 
   public function __construct() {
 
-    $plugin = \tangible_blocks();
+    $plugin = tangible_blocks();
     $config = $plugin->beaver_dynamic_config;
 
     parent::__construct([
@@ -26,14 +26,6 @@ class Base extends \FLBuilderModule {
       'enabled'         => true,
     ]);
 
-    /**
-     * Universal ID - Unique and immutable across sites
-     * @see /includes/template/universal-id/index.php
-     */
-    $this->slug = $config['slug'] . (
-      !empty(static::$tangible_block['universal_id'])
-        ? static::$tangible_block['universal_id']
-        : static::$tangible_block['content_id']
-    );
+    $this->slug = $config['slug'] . $plugin->get_block_id( static::$tangible_block );
   }
 }
