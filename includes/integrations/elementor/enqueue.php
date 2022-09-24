@@ -74,11 +74,7 @@ add_action('elementor/editor/after_enqueue_scripts', function() use($plugin) {
 
     if( empty($block['tabs']) ) continue;
 
-    /**
-     * We can use "content ID" instead of universal ID here, since this part
-     * only needs to be unique for current site.
-     */
-    $block_id = $block['content_id'];
+    $block_id = $plugin->get_block_id( $block );
 
     $config['visibility']['tabs'][ $block_id ] = [];
 
@@ -89,7 +85,7 @@ add_action('elementor/editor/after_enqueue_scripts', function() use($plugin) {
 
     foreach( $block['tabs'] as $tab ) {
 
-      if ( !empty($tab['conditions']) ) {
+      if ( ! empty($tab['conditions']) ) {
         $config['visibility']['tabs'][ $block_id ][ $tab['name'] ] = [
           'conditions' => $tab['conditions'],
         ];

@@ -21,17 +21,8 @@ class Base extends \Elementor\Widget_Base {
     return tangible_blocks();
   }
 
-  public function get_name() {
-    /**
-     * Universal ID - Unique and immutable across sites
-     * @see /includes/template/universal-id/index.php
-     */
-    return static::$slug_prefix
-      . (!empty(static::$tangible_block['universal_id'])
-        ? static::$tangible_block['universal_id']
-        : static::$tangible_block['content_id']
-      )
-    ;
+  public function get_name() {  
+    return static::$slug_prefix . static::$plugin->get_block_id( static::$tangible_block );
   }
 
   public function get_title() {
@@ -168,8 +159,8 @@ class Base extends \Elementor\Widget_Base {
     $render_data = [
       'content_id'   => $block_id,
       'universal_id' => $universal_id,
-      'fields'      => [],
-      'wrapper'     => 'elementor-element-' . $this->get_id()
+      'fields'       => [],
+      'wrapper'      => 'elementor-element-' . $this->get_id()
     ];
 
     $fields = self::$plugin->get_block_controls( $render_data );

@@ -47,7 +47,9 @@ export const createBlock = data => {
       const [activeTab, setActiveTab] = useState(data.tabs[0])
 
       const visibility = new ControlVisibility(
-        blockConfig.conditions[ data.content_id ]
+        blockConfig.conditions[ 
+          data.universal_id ? data.universal_id : data.content_id 
+        ]
       )
 
       const getFieldValue = name =>
@@ -56,7 +58,7 @@ export const createBlock = data => {
           : props.attributes[ name ]
 
       // We will need this unique ID in the server-side render function to create a wrapper
-      if ( !block_id ) props.setAttributes({ block_id: props.clientId })
+      if ( ! block_id ) props.setAttributes({ block_id: props.clientId })
 
       /**
        * Current post ID

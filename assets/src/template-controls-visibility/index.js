@@ -47,7 +47,7 @@ export default class ControlVisibility {
 
     const number = parseInt(indexes[0])
     const level  = parseInt(indexes[1])
-
+    
     const data = {
       number: number,
       level: level,

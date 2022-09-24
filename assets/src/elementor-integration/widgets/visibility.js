@@ -23,7 +23,7 @@ export const widgetVisibility = currentWidget => {
 
   const widgdetName = currentWidget.attributes.widgetType
 
-  if( !widgdetName.startsWith(prefix.slug) ) return
+  if( ! widgdetName.startsWith(prefix.slug) ) return
 
   const blockId = widgdetName.slice(prefix.slug.length)
   const controls = getBlockControls(blockId)

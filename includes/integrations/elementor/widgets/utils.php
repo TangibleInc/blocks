@@ -12,16 +12,9 @@ function create_widget($block) {
   $generated_name = uniqid( 'TangibleBlock_' );
   eval('class ' . $generated_name . ' extends \Tangible\Blocks\Integrations\Elementor\Dynamic\Base { static $tangible_block; }');
 
-  /**
-   * Universal ID - Unique and immutable across sites
-   * @see /includes/template/universal-id/index.php
-   */
-  $block_slug = !empty($block['universal_id'])
-    ? $block['universal_id']
-    : $block['content_id'] // Backward compatibility
-  ;
+  $plugin = tangible_blocks();
 
-  $class_name = 'TangibleBlock_' . $block_slug;
+  $class_name = 'TangibleBlock_' . $plugin->get_block_id( $block );
   $class_name = 'Tangible\Blocks\Integrations\Elementor\Dynamic\\' . $class_name;
 
   if( class_exists($class_name) ) return;
@@ -36,7 +29,7 @@ function register_tabs( $block ) {
 
   if( empty($block['tabs']) ) return;
 
-  $plugin = \tangible_blocks();
+  $plugin = tangible_blocks();
 
   foreach( $block['tabs'] as $tab ) {
 
