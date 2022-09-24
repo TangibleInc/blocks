@@ -73,7 +73,7 @@ export const widgetVisibility = currentWidget => {
 const getBlockControls = blockId => {
 
   const widgetName = prefix.slug + blockId
-  const controls = ElementorConfig.widgets[ widgetName ].controls
+  const controls = elementor.widgetsCache[ widgetName ].controls
   const tangibleControls = {}
 
   for( const controlName in controls ) {
