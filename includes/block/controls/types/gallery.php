@@ -83,7 +83,7 @@ class Gallery extends Base {
       if( ! $image ) return;
       
       return [
-        'value'       => $this->get_image_html( $id, $args['size'] ),
+        'value'       => $this->get_image_html( $id, $args['size'] ?? false ),
         'id'          => $id,
         'url'         => wp_get_attachment_url( $id ),
         'title'       => $image->post_title,
@@ -101,7 +101,7 @@ class Gallery extends Base {
     // Filter to remove style attribute on img tag - See below for its definition
     add_filter( 'wp_get_attachment_image_attributes', [$this, 'remove_image_attributes'], 99, 1 );
     
-    return wp_get_attachment_image( $id, $size );
+    return wp_get_attachment_image( $id, $size ?: 'thumbnail' );
 
     remove_filter( 'wp_get_attachment_image_attributes', [$this, 'remove_image_attributes'], 99 );
   }

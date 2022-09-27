@@ -13,7 +13,7 @@ $plugin->render = function($post, $data) use($plugin, $html) {
    * 
    * @see ./vendor/tangible/template-system/template/tags/get-set/sass
    * @see ./vendor/tangible/template-system/template/tags/get-set/js
-   * @see ./vendor/tangible/template-system/template/tags/get-set/js
+   * @see ./vendor/tangible/template-system/template/tags/get-set/control
    */
   
   foreach( $fields as $field ) {

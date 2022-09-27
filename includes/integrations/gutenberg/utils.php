@@ -56,7 +56,10 @@ function to_attributes( array $data ) {
 
   foreach( $fields as $field ) {
 
+    if( ! is_array($field) ) continue;
+    
     $field_args = $plugin->get_builder_args($field, 'gutenberg');
+
     if( $field_args === false ) continue;
 
     $attributes[ $field['name'] ] = $field_args;

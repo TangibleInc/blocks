@@ -70,6 +70,8 @@ function to_settings($block) {
 
       foreach( $section['fields'] as $field ) {
 
+        if( ! is_array($field) ) continue;
+
         $args = $plugin->get_builder_args($field, 'beaver-builder');
 
         if( $args === false ) continue;

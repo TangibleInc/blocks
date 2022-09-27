@@ -9,7 +9,7 @@ $plugin->format_control_value = function($value, $builder, $args, $settings) use
 
   $control = $plugin->get_control( $args['type'] );
   $legacy_control = $plugin->get_legacy_control( $args['type'] );
-
+  
   if( ! $control ) return false;
 
   $formated_value = $control->format_data( $value, $builder, $args, $settings );
