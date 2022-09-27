@@ -50,7 +50,8 @@ function to_attributes( array $data ) {
     ],
   ];
 
-  $fields = $plugin->get_block_controls( $data );
+  $block_id = $plugin->get_block_id( $data );
+  $fields   = $plugin->get_block_controls( $data );
 
   if( empty($fields) ) return $attributes;
 
@@ -58,7 +59,7 @@ function to_attributes( array $data ) {
 
     if( ! is_array($field) ) continue;
     
-    $field_args = $plugin->get_builder_args($field, 'gutenberg');
+    $field_args = $plugin->get_builder_args( $field, 'gutenberg', $block_id );
 
     if( $field_args === false ) continue;
 

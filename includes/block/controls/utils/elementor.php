@@ -1,9 +1,9 @@
 <?php
 
+defined('ABSPATH') or die();
+
 use Elementor\Plugin as Elementor;
 use Tangible\Blocks\Integrations\Elementor\Dynamic\Base;
-
-defined('ABSPATH') or die();
 
 /**
  * When using a global color in Elementor, the value of the global will not be passed in $value,

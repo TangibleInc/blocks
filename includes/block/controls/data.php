@@ -30,7 +30,7 @@ $plugin->get_block_controls = function( $settings ) use ($plugin, $template_syst
 /**
  * Convert saved control to data expected by given builder
  */
-$plugin->get_builder_args = function(array $args, string $builder) use($plugin) {
+$plugin->get_builder_args = function(array $args, string $builder, $block_id) use($plugin) {
 
   if( ! in_array($builder, ['elementor', 'beaver-builder', 'gutenberg']) ) {
     return false;
@@ -39,10 +39,11 @@ $plugin->get_builder_args = function(array $args, string $builder) use($plugin) 
   $control = $plugin->get_control( 
     $args['type'] ?? '' 
   );
+  
+  if( $control === false ) return [];
 
-  return $control !== false
-    ? $control->register_control( $builder, $args )
-    : []
-  ;
+  $args['block_id'] = $block_id;
+
+  return $control->register_control( $builder, $args );
 };
 

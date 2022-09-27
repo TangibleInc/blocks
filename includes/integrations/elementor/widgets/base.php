@@ -25,8 +25,12 @@ class Base extends Widget_Base {
     return tangible_blocks();
   }
 
+  public function get_block_id() {
+    return static::$plugin->get_block_id( static::$tangible_block );
+  }
+
   public function get_name() {  
-    return static::$slug_prefix . static::$plugin->get_block_id( static::$tangible_block );
+    return static::$slug_prefix . $this->get_block_id();
   }
 
   public function get_title() {
@@ -129,7 +133,7 @@ class Base extends Widget_Base {
     
     if( ! is_array($field) ) return false;
 
-    $args = self::$plugin->get_builder_args($field, 'elementor'); 
+    $args = self::$plugin->get_builder_args( $field, 'elementor', $this->get_block_id() ); 
     
     if( $args === false ) return false;
 
