@@ -12,7 +12,6 @@ class Base {
 
   public array $context = ['template', 'style', 'script'];
 
-  
   function register_control(string $builder, array $args): array {
     return $attribute;
   }

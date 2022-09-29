@@ -5,7 +5,7 @@ namespace Tangible\Blocks\Controls;
 defined('ABSPATH') or die();
 
 use Tangible\Blocks\Integrations\Elementor\Dynamic\Base as ElementorBase;
-use Tangible\Blocks\Integrations\Beaver\Dynamic as BeaverBuilder;
+use Tangible\Blocks\Integrations\Beaver\Dynamic as beaver;
 use FLBuilder;
 
 class Repeater extends Base {
@@ -16,7 +16,7 @@ class Repeater extends Base {
   function register_control(string $builder, array $args): array {
     
     $label    = $args['label'] ?? '';
-    $default  = $args['default'] ?? '';
+    $default  = $args['default'] ?? '';   
     $controls = $args['controls'] ?? '';
     
     switch($builder) {
@@ -35,8 +35,32 @@ class Repeater extends Base {
           'multiple' => true
         ];
       case 'gutenberg':
-        return [];
+        return [
+          'type'    => 'array',
+          'default' => $default
+        ];
     }
+  }
+
+  /**
+   * We need to format data for each sub control
+   */
+  function sanitize_args(array $args): array {
+
+    $args = parent::sanitize_args($args);
+
+    if( ! is_array($args['controls'] ?? '') ) return $args;
+
+    $args['controls'] = array_map(function($args) {
+      
+      $control = self::$plugin->get_control( $args['type'] ?? '' );
+      
+      if( empty($control) ) return $args;
+
+      return $control->sanitize_args( $args );
+    }, $args['controls']);
+
+    return $args;
   }
 
   /**
@@ -62,7 +86,7 @@ class Repeater extends Base {
           'sections' => [
             'controls' => [
               'title'  => $label,
-              'fields' => BeaverBuilder\format_setting_fields( $block_id, $controls )
+              'fields' => beaver\format_setting_fields( $block_id, $controls )
             ]
           ]
         ]
@@ -73,8 +97,6 @@ class Repeater extends Base {
   }
 
   function format_value($value, string $builder, array $args, $settings) {
-    
-    if( $builder === 'gutenberg' ) return $value;
 
     $controls = $args['controls'] ?? '';
     $controls = is_array($controls) ? $controls : [];
@@ -84,7 +106,7 @@ class Repeater extends Base {
     }
 
     $items = is_array($value) ? $value : [];
-
+    
     $response = array_map(function($item) use($controls, $builder, $settings) {
       
       $data = [];

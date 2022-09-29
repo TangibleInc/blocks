@@ -46,16 +46,20 @@ export const createBlock = data => {
       const { block_id } = props.attributes
       const [activeTab, setActiveTab] = useState(data.tabs[0])
 
+      const getFieldValue = name =>
+        Number.isInteger(props.attributes[ name ])
+          ? props.attributes[ name ].toString()
+          : props.attributes[ name ]
+
       const visibility = new ControlVisibility(
         blockConfig.conditions[ 
           data.universal_id ? data.universal_id : data.content_id 
         ]
       )
 
-      const getFieldValue = name =>
-        Number.isInteger(props.attributes[ name ])
-          ? props.attributes[ name ].toString()
-          : props.attributes[ name ]
+      const isVisible = conditions => (
+        visibility.evaluateConditions(conditions, getFieldValue)
+      )
 
       // We will need this unique ID in the server-side render function to create a wrapper
       if ( ! block_id ) props.setAttributes({ block_id: props.clientId })
@@ -64,7 +68,7 @@ export const createBlock = data => {
        * Current post ID
        * Used in integrations/gutenberg/render to set loop context
        */
-      if ( !props.attributes.current_post_id ) {
+      if ( ! props.attributes.current_post_id ) {
         props.setAttributes({ current_post_id: blockConfig.current_post_id })
       }
 
@@ -74,9 +78,9 @@ export const createBlock = data => {
 
             { data.tabs.length > 1 &&
               <div className='tangible-block-editor-tabs'>
-                { data.tabs.map((tab, index) =>
+                { data.tabs.map(tab =>
                   (tab.name === activeTab.name // Active tab is always visible
-                    || visibility.evaluateConditions(tab.conditions, getFieldValue)
+                    || isVisible(tab.conditions)
                   ) &&
                   <div key={`tab-${tab.name}`}
                     className={ "tangible-block-editor-tab components-button edit-post-sidebar__panel-tab"
@@ -91,12 +95,18 @@ export const createBlock = data => {
             }
 
             { activeTab.sections.map((section, index) =>
-              visibility.evaluateConditions(section.conditions, getFieldValue) &&
+              isVisible(section.conditions) &&
                 <Panel key={`${section.name}-panel-${index}`} className={ 'tangible-block-editor-section' }>
                   <PanelBody title={ section.label } initialOpen={ index === 0 }>
                     { section.fields.map( item =>
-                      visibility.evaluateConditions(item.conditions, getFieldValue) &&
-                        <PanelRow>{ getField(item, props) }</PanelRow>
+                      isVisible(item.conditions) &&
+                        <PanelRow>
+                          { getField(
+                            item, 
+                            props.attributes[item.name], 
+                            props.setAttributes
+                          ) }
+                        </PanelRow>
                     ) }
                   </PanelBody>
                 </Panel>

@@ -1,7 +1,8 @@
 import Color from './color/index'
 import Dimension from './dimension/index'
-import TextArea from './textarea/index'
 import Number from './number/index'
+import Repeater from './repeater/index'
+import TextArea from './textarea/index'
 
 // Controls from custom fields
 import Control from '../../../template-block-fields/Control'
@@ -41,11 +42,9 @@ const extractMediaFields = media => ({
 /**
  * @see https://developer.wordpress.org/block-editor/reference-guides/components/
  */
-export const getField = (item, props) => {
+export const getField = (item, value, save) => {
 
-  const value = props.attributes[item.name]
   const defaultValue = typeof item.default !== 'undefined' ? item.default : false
-
   const className = `tangible-block-editor-control-${ item.type }`
 
   switch(item.type) {
@@ -56,12 +55,12 @@ export const getField = (item, props) => {
         className={ className }
         label={ item.label }
         value={ value }
-        onChange={ value => props.setAttributes({ [item.name]: value }) }
+        onChange={ value => save({ [item.name]: value }) }
       />
     )
 
   case 'select':
-    const options = Object.keys(item.options).map((key) => (
+    const options = Object.keys(item.options ?? []).map((key) => (
       { value: key, label: item.options[key] }
     ))
     return(
@@ -71,7 +70,7 @@ export const getField = (item, props) => {
         value={ value !== '' || !defaultValue ? value : defaultValue }
         options={ options }
         multiple={ item.multiple }
-        onChange={ value => props.setAttributes({ [item.name]: value }) }
+        onChange={ value => save({ [item.name]: value }) }
       />
     )
 
@@ -80,7 +79,7 @@ export const getField = (item, props) => {
       <BaseControl label={ item.label } className={ className  }>
         <DatePicker
           currentDate={ value ? new Date(value) : new Date() }
-          onChange={ value  => props.setAttributes({ [item.name]: value }) }
+          onChange={ value  => save({ [item.name]: value }) }
           // Fix issue with month navigation, seems to be fixed but not released yet
           // @see https://github.com/WordPress/gutenberg/commit/749088ddf0072ca82ae297318dd29cd12d0a3c41
           onMonthPreviewed={ () => (true) }
@@ -88,11 +87,11 @@ export const getField = (item, props) => {
       </BaseControl>
     )
 
-    /**
-     * Maybe we could get a better control for this
-     *
-     * @see https://github.com/WordPress/gutenberg/tree/trunk/packages/components/src/
-     */
+  /**
+   * Maybe we could get a better control for this
+   *
+   * @see https://github.com/WordPress/gutenberg/tree/trunk/packages/components/src/
+   */
   case 'color':
     return(
       <Color
@@ -100,21 +99,27 @@ export const getField = (item, props) => {
         value={ value }
         defaultValue={ defaultValue }
         alpha={ item.alpha }
-        onChange={ (color) => props.setAttributes({ [item.name]: color }) }
+        onChange={ color => save({ [item.name]: color }) }
         className={ className  }
       />
     )
 
   case 'align':
 
-    if(value === '' && defaultValue) props.setAttributes({ [item.name]: defaultValue })
+    if(value === '' && defaultValue) save({ [item.name]: defaultValue })
 
     return(
       <BaseControl label={ item.label } className={ className  }>
         <ButtonGroup style={ { display: 'block', marginTop: '10px' } }>
-          <Button variant="secondary" onClick={ () => props.setAttributes({ [item.name]: "left" }) } ><Icon icon="editor-alignleft" /></Button>
-          <Button variant="secondary" onClick={ () => props.setAttributes({ [item.name]: "center" }) } ><Icon icon="editor-aligncenter" /></Button>
-          <Button variant="secondary" onClick={ () => props.setAttributes({ [item.name]: "right" }) } ><Icon icon="editor-alignright" /></Button>
+          <Button variant="secondary" onClick={ () => save({ [item.name]: "left" }) } >
+            <Icon icon="editor-alignleft" />
+          </Button>
+          <Button variant="secondary" onClick={ () => save({ [item.name]: "center" }) } >
+            <Icon icon="editor-aligncenter" />
+          </Button>
+          <Button variant="secondary" onClick={ () => save({ [item.name]: "right" }) } >
+            <Icon icon="editor-alignright" />
+          </Button>
         </ButtonGroup>
       </BaseControl>
     )
@@ -124,7 +129,7 @@ export const getField = (item, props) => {
       <BaseControl className={ className  }>
         <MediaUploadCheck>
           <MediaUpload
-            onSelect={ ( media ) => props.setAttributes({
+            onSelect={ media => save({
               [item.name]: extractMediaFields(media)
             }) }
             allowedTypes={ [ 'image' ] }
@@ -151,16 +156,16 @@ export const getField = (item, props) => {
           <p>{ item.label }</p>
           <TextArea
             value={ value }
-            updateVal={ value  => props.setAttributes({ [item.name]: value }) }
+            updateVal={ value  => save({ [item.name]: value }) }
           />
         </div>
       </BaseControl>
     )
 
   case 'switch':
-    const valueOn = item.hasOwnProperty('value_on') ? item.value_on : 'on'
+    const valueOn  = item.hasOwnProperty('value_on')  ? item.value_on : 'on'
     const valueOff = item.hasOwnProperty('value_off') ? item.value_off : 'off'
-    const labelOn = item.hasOwnProperty('label_on') ? item.label_on : 'On'
+    const labelOn  = item.hasOwnProperty('label_on')  ? item.label_on : 'On'
     const labelOff = item.hasOwnProperty('label_off') ? item.label_off : 'Off'
 
     return(
@@ -169,7 +174,7 @@ export const getField = (item, props) => {
           label={ item.label }
           help={ value === valueOn ? labelOn : labelOff }
           checked={ value === valueOn ? true : false }
-          onChange={ e => e ? props.setAttributes({ [item.name]: valueOn }) : props.setAttributes({ [item.name]: valueOff }) }
+          onChange={ e => save({ [item.name]: e ? valueOn : valueOff }) }
         />
       </BaseControl>
     )
@@ -182,7 +187,7 @@ export const getField = (item, props) => {
         label={ item.label }
         units={ item.units ? item.units.replace(/ /g, '').split(',') : '' }
         defaultUnit={ item.default_unit ? item.default_unit : 'px' }
-        onChange={ value => props.setAttributes({ [item.name]: value }) }
+        onChange={ value => save({ [item.name]: value }) }
         multipleValues={ item.multiple_values ? item.multiple_values : true }
       />
     )
@@ -198,7 +203,7 @@ export const getField = (item, props) => {
       <BaseControl className={ className  }>
         <MediaUploadCheck>
           <MediaUpload
-            onSelect={ ( medias ) => props.setAttributes({
+            onSelect={ medias => save({
               [item.name]: medias.map(extractMediaFields)
             }) }
             allowedTypes={ [ 'image' ] }
@@ -228,7 +233,7 @@ export const getField = (item, props) => {
             value={ value }
             min={ item.min ? item.min : false }
             max={ item.max ? item.max : false }
-            onChange={ value => { props.setAttributes({ [item.name]: value }) } }
+            onChange={ value => save({ [item.name]: value }) }
           />
         </div>
       </BaseControl>
@@ -237,11 +242,11 @@ export const getField = (item, props) => {
   case 'gradient':
     let C = __experimentalGradientPicker || GradientPicker
     return (
-      <BaseControl>
+      <BaseControl className={ className  }>
         <p>{ item.label }</p>
         <C
           value={ value }
-          onChange={ value => { props.setAttributes({ [item.name]: value }) } }
+          onChange={ value => save({ [item.name]: value }) }
           gradients={[
             {
               name: 'Vivid cyan blue to vivid purple',
@@ -265,6 +270,19 @@ export const getField = (item, props) => {
         />
       </BaseControl>
     )
+
+    case 'repeater':
+      return (
+        <BaseControl className={ className  }>
+          <p>{ item.label }</p>
+          <Repeater
+            value={ Array.isArray(value) ? value : [] }
+            onChange={ value => save({ [item.name]: value }) }
+            controls={ item.controls ?? [] }
+          />
+        </BaseControl>
+      )
+
   }
 
   /**
@@ -276,7 +294,7 @@ export const getField = (item, props) => {
   if( controls[ item.type ] ) {
 
     const control = controls[ item.type ]
-
+    
     return (
       <BaseControl label={ item.label } className={ className  }>
         <Control
@@ -284,7 +302,7 @@ export const getField = (item, props) => {
           initialValue={ value }
           builder={ 'gutenberg' }
           field={ item }
-          save={ value => props.setAttributes({ [item.name]: value }) }
+          save={ value => save({ [item.name]: value }) }
         />
       </BaseControl>
     )

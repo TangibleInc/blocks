@@ -8,8 +8,6 @@ namespace Tangible\Blocks\Integrations\Gutenberg\Dynamic;
  * @param array $attributes
  * @param string $content
  * @param array $block
- *
- * @return void
  */
 function render( $attributes, $content, $data ) {
 

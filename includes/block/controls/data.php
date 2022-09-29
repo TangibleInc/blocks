@@ -16,7 +16,7 @@ $plugin->get_block_controls = function( $settings ) use ($plugin, $template_syst
   $block_data = $plugin->get_block_data( $block );
   $fields = [];
 
-  if( !isset($block_data['tabs']) ) return [];
+  if( ! isset($block_data['tabs']) ) return [];
 
   foreach( $block_data['tabs'] as $tab ) {
     foreach( $tab['sections'] as $section ) {
@@ -39,7 +39,7 @@ $plugin->get_builder_args = function(array $args, string $builder, $block_id) us
   $control = $plugin->get_control( 
     $args['type'] ?? '' 
   );
-  
+
   if( $control === false ) return [];
 
   $args['block_id'] = $block_id;

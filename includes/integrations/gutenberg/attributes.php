@@ -9,7 +9,7 @@ defined('ABSPATH') or die();
  *
  * Information needed for generating the settings fields will be passed in window.Tangible.blocks
  */
-function to_attributes( array $data ) {
+function format_attributes( array $data ) {
 
   $plugin = tangible_blocks();
 
