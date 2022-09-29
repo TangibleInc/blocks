@@ -84,7 +84,7 @@ class Base extends Widget_Base {
     $this->end_controls_section();
   }
 
-  protected function add_tangible_group_control( $control_name, $args ) {
+  protected function add_tangible_group_control( $parent, $control_name, $args ) {
 
     $group_control_prefix = self::$plugin->elementor_group_control_prefix;
 
@@ -93,10 +93,10 @@ class Base extends Widget_Base {
     $args['name'] = $control_name;
     unset($args['type']);
 
-    $this->add_group_control( $type, $args );
+    $parent->add_group_control( $type, $args );
 
     foreach( $args['include'] as $name ) {
-      $this->update_control( $control_name . '_' . $name, [
+      $parent->update_control( $control_name . '_' . $name, [
         'condition'   => [],
         'render_type' => 'template',
       ]);
@@ -153,7 +153,7 @@ class Base extends Widget_Base {
     $type = $args['type'] ?? '';
 
     if( self::$plugin->is_elementor_group_control( $type ) ) {
-      $parent->add_tangible_group_control( $name, $args );
+      $this->add_tangible_group_control( $parent, $name, $args );
     }
     else if( $type === 'repeater' ) {
       $parent->add_repeater( $name, $args );
