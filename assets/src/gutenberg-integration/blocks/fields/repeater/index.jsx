@@ -22,9 +22,9 @@ const Repeater = props => {
 
   const [items, dispatch] = useReducer(reducer, props.value)
   const [activeItem, setActiveItem] = useState(false)
-
-  useEffect(() => props.onChange([ ...items]), [items])
-
+  
+  useEffect(() => props.onChange(items), [items])
+  
   return(
     <>
       { items.map((item, i) => (
@@ -49,21 +49,46 @@ const Repeater = props => {
           )) }
           <CardFooter>
             <ButtonGroup>
-              <Button variant={ 'secondary' } onClick={ () => setActiveItem( i !== activeItem ? i : false )}>
+              <Button
+                onClick={ () => setActiveItem( i !== activeItem ? i : false )}
+                variant={ 'secondary' } 
+              >
                { activeItem !== i ? 'Edit' : 'Close' }
               </Button>
-              <Button variant={ 'secondary' } onClick={ () => dispatch({ type: 'remove', item: i }) } isDestructive>
+              <Button 
+                onClick={ () => dispatch({ 
+                  type: 'remove', 
+                  item: i 
+                }) } 
+                variant={ 'secondary' } 
+                isDestructive
+              >
                 Delete
               </Button>
             </ButtonGroup>
           </CardFooter>
         </Card>    
       )) }
-      <ButtonGroup style={{ display: 'flex', marginTop: '10px', justifyContent: 'right' }}>
-        <Button variant={ 'secondary' } onClick={ () => dispatch({ type: 'add', controls: props.controls }) }>
+      <ButtonGroup style={{ 
+        display: 'flex', 
+        marginTop: '10px', 
+        justifyContent: 'right' 
+      }}>
+        <Button 
+          onClick={ () => dispatch({ 
+            type: 'add', 
+            controls: props.controls,
+            structure: props.structure 
+          }) }
+          variant={ 'secondary' } 
+        >
           Add
         </Button>
-        <Button variant={ 'secondary' } onClick={ () => dispatch({ type: 'clear' }) } isDestructive>
+        <Button 
+          onClick={ () => dispatch({ type: 'clear' }) }
+          variant={ 'secondary' } 
+          isDestructive
+        >
           Clear
         </Button>
       </ButtonGroup>

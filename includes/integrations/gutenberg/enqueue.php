@@ -22,7 +22,6 @@ add_action('tangible_enqueue_gutenberg_template_editor', function() use ($plugin
     $plugin->version
   );
 
-
   // Add inline dynamic block data
 
   $blocks = $plugin->get_all_blocks();

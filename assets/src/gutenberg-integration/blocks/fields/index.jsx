@@ -38,7 +38,6 @@ const extractMediaFields = media => ({
   url: media.url
 })
 
-
 /**
  * @see https://developer.wordpress.org/block-editor/reference-guides/components/
  */
@@ -193,7 +192,7 @@ export const getField = (item, value, save) => {
     )
 
   case 'gallery':
-    let ids = []
+    const ids = []
     if(value){
       value.forEach((val, key) => {
         ids[key] = val['id'] ? val['id'] : val
@@ -279,6 +278,7 @@ export const getField = (item, value, save) => {
             value={ Array.isArray(value) ? value : [] }
             onChange={ value => save({ [item.name]: value }) }
             controls={ item.controls ?? [] }
+            structure={ item.item_structure ?? [] }
           />
         </BaseControl>
       )

@@ -37,9 +37,40 @@ class Repeater extends Base {
       case 'gutenberg':
         return [
           'type'    => 'array',
-          'default' => $default
+          'default' => [],
         ];
     }
+  }
+
+  function get_initial_item_structure(array $args): array {
+    
+    $block_id = $args['block_id'] ?? false;
+    $controls = $args['controls'] ?? [];
+    $response = [];
+
+    if( ! is_array($controls) ) return $response;
+
+    $controls = array_map(function($control) use($block_id) {
+      return array_merge(
+        [ 'name' => $control['name'] ], 
+        self::$plugin->get_builder_args( $control, 'gutenberg', $block_id )
+      );
+    }, $controls);
+
+    foreach( $controls as $control ) {
+      
+      if( ! empty($control['default']) ) {
+        $initial_value = $control['default'];
+      } else switch($control['type']) {
+          case 'string' : $initial_value = ''; 
+          case 'array'  : $initial_value = [];
+          case 'integer': $initial_value = 0;
+        default: $initial_value = ''; 
+      }
+      $response[ $control['name'] ] = $initial_value;
+    }
+
+    return $response;
   }
 
   /**
@@ -59,6 +90,8 @@ class Repeater extends Base {
 
       return $control->sanitize_args( $args );
     }, $args['controls']);
+
+    $args['item_structure'] = $this->get_initial_item_structure( $args );
 
     return $args;
   }
