@@ -1,3 +1,6 @@
+import ControlVisibility from '../../../../template-controls-visibility'
+
+import { BlockContext } from '../../create'
 import { getField } from '../index'
 import { reducer } from './reducers'
 
@@ -14,7 +17,8 @@ const {
   element: { 
     useState, 
     useReducer,
-    useEffect 
+    useEffect,
+    useContext
   }
 } = wp
 
@@ -22,7 +26,26 @@ const Repeater = props => {
 
   const [items, dispatch] = useReducer(reducer, props.value)
   const [activeItem, setActiveItem] = useState(false)
-  
+
+  const { conditions } = useContext(BlockContext)
+
+  const visibility = new ControlVisibility(
+    conditions.repeater[ props.name ] ?? []
+  )
+
+  const isVisible = (conditions, i) => (
+    visibility.evaluateConditions( 
+      conditions, 
+      name => getFieldValue(name, i) 
+    )
+  )
+
+  const getFieldValue = (name, i) => (
+    Number.isInteger(items[i][ name ])
+      ? items[i][name].toString()
+      : items[i][name]
+  )
+
   useEffect(() => props.onChange(items), [items])
   
   return(
@@ -34,19 +57,23 @@ const Repeater = props => {
           </CardHeader>
           { activeItem === i && props.controls.map(
             control => (
-              <CardBody>
-                { getField(
-                  control, 
-                  item[control.name] ?? '', 
-                  data => dispatch({ 
-                    type: 'update', 
-                    item: i, 
-                    control: control.name, 
-                    value: data[control.name]
-                  }) 
-                ) }
-              </CardBody> 
-          )) }
+              isVisible(control.conditions ?? [], i) 
+                ? 
+                  <CardBody>
+                    { getField(
+                      control, 
+                      item[control.name] ?? '', 
+                      data => dispatch({ 
+                        type: 'update', 
+                        item: i, 
+                        control: control.name, 
+                        value: data[control.name]
+                      })
+                    ) } 
+                  </CardBody>
+                : '' 
+            )
+          ) }
           <CardFooter>
             <ButtonGroup>
               <Button

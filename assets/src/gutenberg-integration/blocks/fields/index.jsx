@@ -275,6 +275,7 @@ export const getField = (item, value, save) => {
         <BaseControl className={ className  }>
           <p>{ item.label }</p>
           <Repeater
+            name={ item.name }
             value={ Array.isArray(value) ? value : [] }
             onChange={ value => save({ [item.name]: value }) }
             controls={ item.controls ?? [] }

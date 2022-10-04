@@ -19,7 +19,15 @@ foreach ([
 
       // Create a map
 
+      if( $property_name === 'controls' && $atts['type'] === 'repeater' ) {
+        $visibility->start_repeater( $atts['name'] );
+      }
+      
       $html->map_tag([ 'keys' => ['_current'] ], $nodes);
+      
+      if( $property_name === 'controls' && $atts['type'] === 'repeater' ) {
+        $visibility->end_repeater( $atts['name'] );
+      }
 
       $item = isset($html->current_map['_current']) ? $html->current_map['_current'] : [];
 

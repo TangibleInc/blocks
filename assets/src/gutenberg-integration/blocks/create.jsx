@@ -6,7 +6,7 @@ const {
   blockEditor: { InspectorControls },
   blocks: { registerBlockType },
   components: { Panel, PanelBody, PanelRow },
-  element: { useState },
+  element: { useState, createContext },
   i18n: { __ },
   serverSideRender: _ServerSideRender
 } = wp
@@ -20,6 +20,8 @@ const {
    */
   ServerSideRender = _ServerSideRender
 } = Tangible
+
+export const BlockContext = createContext()
 
 export const createBlock = data => {
 
@@ -46,21 +48,20 @@ export const createBlock = data => {
       const { block_id } = props.attributes
       const [activeTab, setActiveTab] = useState(data.tabs[0])
 
+      const conditions = blockConfig.conditions[ 
+        data.universal_id ? data.universal_id : data.content_id 
+      ]
+      const visibility = new ControlVisibility(conditions.general)
+
       const getFieldValue = name =>
         Number.isInteger(props.attributes[ name ])
           ? props.attributes[ name ].toString()
           : props.attributes[ name ]
 
-      const visibility = new ControlVisibility(
-        blockConfig.conditions[ 
-          data.universal_id ? data.universal_id : data.content_id 
-        ]
-      )
-
       const isVisible = conditions => (
         visibility.evaluateConditions(conditions, getFieldValue)
       )
-
+      
       // We will need this unique ID in the server-side render function to create a wrapper
       if ( ! block_id ) props.setAttributes({ block_id: props.clientId })
 
@@ -94,28 +95,35 @@ export const createBlock = data => {
               </div>
             }
 
-            { activeTab.sections.map((section, index) =>
-              isVisible(section.conditions) &&
-                <Panel key={`${section.name}-panel-${index}`} className={ 'tangible-block-editor-section' }>
-                  <PanelBody title={ section.label } initialOpen={ index === 0 }>
-                    { section.fields.map( item =>
-                      isVisible(item.conditions) &&
-                        <PanelRow>
-                          { getField(
-                            item, 
-                            props.attributes[item.name], 
-                            props.setAttributes
-                          ) }
-                        </PanelRow>
-                    ) }
-                  </PanelBody>
-                </Panel>
-            ) }
+            <BlockContext.Provider value={{ 
+              id: block_id, 
+              conditions: conditions
+            }}>
+              { activeTab.sections.map((section, index) =>
+                isVisible(section.conditions) &&
+                  <Panel key={`${section.name}-panel-${index}`} className={ 'tangible-block-editor-section' }>
+                    <PanelBody title={ section.label } initialOpen={ index === 0 }>
+                      { section.fields.map( item =>
+                        isVisible(item.conditions) &&
+                          <PanelRow>
+                            { getField(
+                              item, 
+                              props.attributes[item.name], 
+                              props.setAttributes
+                            ) }
+                          </PanelRow>
+                      ) }
+                    </PanelBody>
+                  </Panel>
+              ) }
+            </BlockContext.Provider>
+
           </InspectorControls>
 
           <ServerSideRender
-            block={blockType}
-            attributes={props.attributes}
+            block={ blockType }
+            attributes={ props.attributes }
+            httpMethod={ 'POST' }
             EmptyResponsePlaceholder={ EmptyLoopBlock }
             LoadingResponsePlaceholder={ EmptyLoopBlock }
             onFetchResponseRendered={el => {
