@@ -1,4 +1,4 @@
-import { widgetVisibility } from './visibility'
+import { widgetVisibility } from './visibility/general'
 
 jQuery(() => {
 

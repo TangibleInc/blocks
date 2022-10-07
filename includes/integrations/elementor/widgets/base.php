@@ -151,7 +151,7 @@ class Base extends Widget_Base {
 
     $name = static::$control_prefix . $field['name'];
     $type = $args['type'] ?? '';
-
+    
     if( self::$plugin->is_elementor_group_control( $type ) ) {
       $this->add_tangible_group_control( $parent, $name, $args );
     }

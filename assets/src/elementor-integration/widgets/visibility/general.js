@@ -1,5 +1,7 @@
-import ControlVisibility from '../../template-controls-visibility'
-import { maybeInitTabsWorkaround } from './tabs'
+import ControlVisibility from '../../../template-controls-visibility'
+import repeater from './repeater'
+
+import { maybeInitTabsWorkaround } from '../tabs'
 
 const {
   Tangible
@@ -36,23 +38,26 @@ export const widgetVisibility = currentWidget => {
   if (Array.isArray(sections)) sections = {}
 
   const visibility = new ControlVisibility(
-    conditions[ blockId ]
+    conditions[ blockId ].general
   )
 
   const getElementorSettings = () => currentWidget.get('settings').attributes
   const refresh = () => {
-
+    
     $('.elementor-control-type-section').off('click', refresh)
     $('.elementor-control input').off('keyup change', refresh)
     $('.elementor-control select').off('select2:select', refresh)
     $('.elementor-component-tab').off('click', refresh)
+    
+    repeater.clear()
 
     setVisibility({
       controls,
       visibility,
       elementorSettings: getElementorSettings(),
       tabs,
-      sections
+      sections,
+      blockId
     })
 
     $('.elementor-control-type-section').on('click', refresh)
@@ -60,10 +65,13 @@ export const widgetVisibility = currentWidget => {
     $('.elementor-control select').on('select2:select', refresh)
     $('.elementor-component-tab').on('click', refresh)
 
+    repeater.init()
+
   }
 
   maybeInitTabsWorkaround(tabs)
-
+  repeater.callback = refresh 
+  
   refresh() // Initial visibility
 }
 
@@ -78,7 +86,7 @@ const getBlockControls = blockId => {
 
   for( const controlName in controls ) {
 
-    if( !controlName.startsWith(prefix.control) ) continue
+    if( ! controlName.startsWith(prefix.control) ) continue
 
     tangibleControls[ controlName ] = controls[ controlName ]
   }
@@ -96,7 +104,8 @@ const setVisibility = ({
   visibility,
   elementorSettings,
   tabs,
-  sections
+  sections,
+  blockId
 }) => {
 
   const controlSettings = getControlSettings(controls, elementorSettings)
@@ -159,8 +168,19 @@ const setVisibility = ({
     const $control = $(`.elementor-control-${control.dataName}`)
 
     $control[ isVisible ? 'show' : 'hide' ]()
-  }
 
+    const repeaterConditions = conditions[ blockId ].repeater[ controlName ] ?? false
+
+    if( ! repeaterConditions ) continue;
+  
+    setTimeout( // :(
+      () => repeater.setVisibility( 
+        $control, 
+        control,
+        repeaterConditions
+      )
+    ) 
+  }
 }
 
 const getControlSettings = (controls, elementorSettings) => {
