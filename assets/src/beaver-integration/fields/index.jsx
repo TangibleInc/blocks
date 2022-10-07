@@ -29,7 +29,7 @@ const initControl = control => {
       const $input = $(container).next()
       const field = JSON.parse(container.getAttribute('data-field'))
 
-      if( !control.popup ) {
+      if( ! control.popup ) {
         render( initComponent(control, $input, field), container )
         continue;
       }
@@ -64,7 +64,7 @@ const initControl = control => {
       unmountComponentAtNode(controlContainers[i])
     }
 
-    if( !control.popup ) return;
+    if( ! control.popup ) return;
 
     const popupContainers = d.getElementsByClassName(`${control.prefixed_type}-popup-container`)
 

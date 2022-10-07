@@ -8,9 +8,10 @@ function format_settings($block) {
 
   $settings = [];
   $visibility_by = [
-    'tabs'     => [],
-    'sections' => [],
-    'fields'   => [],
+    'tabs'      => [],
+    'sections'  => [],
+    'fields'    => [],
+    'repeaters' => [],
   ];
 
   if( empty($block['tabs']) ) return $settings;
@@ -48,6 +49,19 @@ function format_settings($block) {
 
       $fields = &$setting_section[ $section['name'] ]['fields'];
       $fields = format_setting_fields( $block_id, $section['fields'] );
+      
+      // Pass visibility conditions to JS
+      foreach( $section['fields'] as $field ) {
+
+        if( $field['type'] === 'repeater' ) {
+          $conditions = get_repeater_controls_conditions( $field );
+          $visibility_by['repeaters'][ $field['name'] ] = $conditions;
+        }
+        
+        if( ! isset($field['conditions']) ) continue;
+
+        $visibility_by['fields'][ $field['name'] ] = $field['conditions'];
+      }
 
     } // Each section
   } // Each tab
@@ -57,7 +71,8 @@ function format_settings($block) {
 
   $visibility = &$plugin->beaver_dynamic_config['visibility'];
 
-  foreach (['tabs', 'sections', 'fields'] as $key) {
+  foreach (['tabs', 'sections', 'fields', 'repeaters'] as $key) {
+    
     if (!isset($visibility[ $key ])) $visibility[ $key ] = [];
     $visibility[ $key ][ $block_id ] = $visibility_by[ $key ];
   }
@@ -79,12 +94,23 @@ function format_setting_fields( $block_id, $fields) {
     if( $args === false ) continue;
 
     $formated_fields[ $field['name'] ] = $args;
-
-    // Pass visibility conditions to JS
-    if( isset($field['conditions']) ) {
-      $visibility_by['fields'][ $field['name'] ] = $field['conditions'];
-    }
   }
   
   return $formated_fields;
+}
+
+function get_repeater_controls_conditions($repeater) {
+
+  $controls = is_array($repeater['controls']) ? $repeater['controls'] : [];
+  $conditions = [];
+
+  foreach( $controls as $control ) {
+
+    $has_conditions = ! empty($control['conditions']) && is_array($control['conditions']);
+    if( ! $has_conditions || empty($control['name'] ) ) continue;
+
+    $conditions[ $control['name'] ] = $control['conditions']; 
+  }
+
+  return $conditions;
 }
