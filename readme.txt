@@ -19,6 +19,21 @@ Tags:
 
 == Changelog ==
 
+= 3.0.1 =
+
+Release Date: 2022-10-05
+
+- Calendar loop types
+  - Improve handling in case invalid values are passed
+  - Week loop: Correctly handle January which can have a week row that starts in the previous year
+- HTML Hint: Add exception for Shortcode tag to allow self-closing raw tag
+- Loop and Field tags: Get current post context inside builder preview when post status is other than publish
+- Template editor: Improve compatibility with Beaver Builder's CSS
+- Elementor
+  - Fix control conditions for blocks with a uniqid
+  - Fix custom tabs when default tab is not used for blocks with a uniqid
+- Controls style: Fix style not being enqueued for custom controls
+
 = 3.0.0 =
 
 Release Date: 2022-09-13
