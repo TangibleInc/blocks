@@ -68,111 +68,289 @@ In Gutenberg, tabs will be showned only if there is more than one tab.
 
 Here is the different type of controls implemented:
 
-- [Text](#text)
-- [Select](#select)
-- [Date](#date)
+- [Ajax select](#ajax-select)
+- [Align](#align)
 - [Color](#color)
-- [Text Align](#text-align)
-- [WYSIWYG Editor](#wysiwyg-editor)
+- [Date](#date)
+- [Dimension](#dimension)
+- [Editor](#editor)
+- [Gallery](#gallery)
+- [Gradient](#gradient)
 - [Image](#image)
+- [Number](#number)
+- [Post query](#post-query)
+- [Post select](#post-select)
+- [Post types](#post-types)
+- [Select](#select)
+- [Select2](#select2)
+- [Switch](#switch)
+- [Text](#text)
+- [User select](#user-select)
+
+<a name=ajax-select></a>
+
+#### Ajax select
+
+```json
+{
+  "type": "ajax_select",
+  "name": "ajax_select_control_name",
+  "label": "Ajax select",
+  "ajax_action_name": "ajax_action_name" // See https://docs.tangible.one/modules/plugin-framework/ajax/ 
+}
+```
+
+<a name=align></a>
+
+#### Align
+
+```json
+{
+  "type": "align",
+  "name": "align_control_name",
+  "label": "Align control",
+  "default": "right" // Optional - Accepted value: right, center, left 
+}
+```
+
+<a name=color></a>
+
+#### Color
+
+```json
+{
+  "type": "color",
+  "name": "color_control_name",
+  "label": "Color control",
+  "default": "#FFFFFF", // Optional
+  "alpha": false // Optional - Default true
+}
+```
+
+<a name=date></a>
+
+#### Date
+
+```json
+{
+  "type": "date",
+  "name": "date_control_name",
+  "label": "Date",
+  "format": "d/m/Y g:i a" // Optional
+}
+```
+
+<a name=dimension></a>
+
+#### Dimension
+
+```json
+{
+  "type": "dimension",
+  "name": "dimension_control_name",
+  "label": "Dimensions",
+  "units": "px,vh,vw", // Optional - Default px
+  "default": "0,0,0,0", // Optional - Default 0,0,0,0
+  "default_unit": "vw", // Optional - Default px
+  "multiple_values": true // Optional - Default true
+}
+```
+
+<a name=editor></a>
+
+#### Editor
+
+```json
+{
+  "type": "editor",
+  "name": "editor_control_name",
+  "label": "Editor",
+  "default": "Some <strong>text</strong>" // Optional
+}
+```
+
+<a name=gallery></a>
+
+#### Gallery
+
+```json
+{
+  "type": "gallery",
+  "name": "gallery_control_name",
+  "label": "Gallery",
+  "default": "1,2", // Optional - Attachment IDs
+  "size": "full" // Optional - Default full
+}
+```
+
+<a name=gradient></a>
+
+#### Gradient
+
+```json
+{
+  "type": "gradient",
+  "name": "gradient_control_name",
+  "label": "Gradient"
+}
+```
+
+<a name=image></a>
+
+#### Image
+
+```json
+{
+  "type": "image",
+  "name": "image_control_name",
+  "label": "Image",
+  "default": "1" // Optional - Attachment ID or URL
+}
+```
+
+<a name=number></a>
+
+#### Number
+
+```json
+{
+  "type": "number",
+  "name": "number_control_name",
+  "label": "Number",
+  "default": "10", // Optional
+  "min": "0", // Optional
+  "max": "100" // Optional
+}
+```
+
+<a name=post-query></a>
+
+#### Post query
+
+```json
+{
+  "type": "post_query",
+  "name": "post_query_control_name",
+  "label": "Post query",
+  "include_fields": "taxonomy, type, order, orderby", // Optional - Default type, order, orderby 
+}
+```
+
+<a name=post-select></a>
+
+#### Post select
+
+```json
+{
+  "type": "post_select",
+  "name": "post_select_control_name",
+  "label": "Post select",
+  "default": "1", // Optional - Post ID 
+  "multiple": true, // Optional - Default false
+  "result_length": 10, // Optional - Default 10
+  "post_type": "post,page", // Optional - Default post
+  "result_order": "ASC" // Optional - default ASC
+}
+```
+
+<a name=post-types></a>
+
+#### Post types
+
+```json
+{
+  "type": "post_types",
+  "name": "post_types_control_name",
+  "label": "Post types",
+  "multiple": true, // Optional - Default false
+  "default": "post" // Optional
+}
+```
+
+<a name=select></a>
+
+#### Select
+
+```json
+{
+  "type": "select",
+  "name": "select_control_name",
+  "label": "Select",
+  "options": {
+    "one": "Option one",
+    "two": "Option two",
+    "three": "Option three"
+  },
+  "multiple": true, // Optional - Default false
+  "default": "one" // Optional
+}
+```
+
+<a name=select2></a>
+
+#### Select2
+
+```json
+{
+  "type": "select2",
+  "name": "select2_control_name",
+  "label": "Select2",
+  "options": {
+    "one": "Option one",
+    "two": "Option two",
+    "three": "Option three"
+  },
+  "multiple": true, // Optional - Default false
+  "default": "one" // Optional
+}
+```
+
+<a name=switch></a>
+
+#### Switch
+
+```json
+{
+  "type": "switch",
+  "name": "switch_control_name",
+  "label": "Switch",
+  "default": "on", // Optional - Default on
+  "label_on": "On", // Optional - Default On 
+  "label_off": "Off", // Optional - Default Off
+  "value_on": "on", // Optional - Default on 
+  "value_off": "off" // Optional - Default off
+}
+```
+
+<a name=text></a>
 
 #### Text
 
 ```json
 {
   "type": "text",
-  "name": "text-control-name",
-  "label": "Text control",
+  "name": "text_control_name",
+  "label": "Text",
   "default": "default text" // Optional
 }
 ```
 
-### Select
+<a name=user-select></a>
+
+#### User select
 
 ```json
 {
-  "type": "select",
-  "name": "select-control-name",
-  "label": "Select control",
-  "options": {
-    "one": "Option one",
-    "two": "Option two",
-    "three": "Option three"
-  },
-  "multiple": "true", // Optional: Allows selection of multiple items
-  "default": "one" // Optional
+  "type": "user_select",
+  "name": "user_select_control_name",
+  "label": "User select",
+  "default": "1", // Optional - User ID
+  "multiple": true, // Optional - Default false
+  "result_length": 10, // Optional - Default 1
+  "role": "editor" // Optional - Default all
 }
 ```
 
-### Date
-
-```json
-{
-  "type": "date",
-  "name": "date-control-name",
-  "label": "Date",
-  "format": "d/m/Y g:i a" // Optional
-}
-```
-
-### Color
-
-```json
-{
-  "type": "color",
-  "name": "color-control-name",
-  "label": "Color control",
-  "default": "#FFFFFF", // Optional
-  "alpha": false // Optional
-}
-```
-
-### Text Align
-
-```json
-{
-  "type": "align",
-  "name": "text-align-control-name",
-  "label": "Text align control",
-  "default": "right" // Optional
-}
-```
-
-### WYSIWYG Editor
-
-```json
-{
-  "type": "wysiwyg",
-  "name": "wysiwyg-control-name",
-  "label": "Wysiwyg editor control",
-  "default": "Some <strong>text</strong>",
-}
-```
-
-### Image
-
-```json
-{
-  "type": "image",
-  "name": "image-control-name",
-  "label": "Image",
-  "default": "https://ps.w.org/tangible-loops-and-logic/assets/banner-1544x500.jpg"
-}
-```
-
-### Switch
-
-```json
-{
-  "type": "switch",
-  "name": "switch-control-name",
-  "label": "Switch",
-  "label_on": "On Label", // Optional
-  "label_off": "Off Label", // Optional
-  "value_on": "on", // Optional
-  "value_off": "off" // Optional
-}
-```
 
 ## Control values
 
