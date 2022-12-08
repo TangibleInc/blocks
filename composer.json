@@ -16,7 +16,7 @@
   "require": {
     "tangible/plugin-framework": "dev-variant/without-updater",
     "tangible/plugin-updater": "dev-main",
-    "tangible/template-system": "dev-feature/control-variable-loop"
+    "tangible/template-system": "dev-main"
   },
   "require-dev": {},
   "minimum-stability": "dev"
