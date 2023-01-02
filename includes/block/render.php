@@ -37,10 +37,13 @@ $plugin->render = function($post, $data) use($plugin, $html) {
 
       $html->set_sass_variable( $sass_name, $value, [ 'type' => $sass_type ]  );
     }
-
+    
     if( $control->has_context('script') ) {
+
+      $js_type = $plugin->get_js_variable_type( $value, $type );
+      
       $value = $control->apply_render( $field['main_value'], $field, 'script' );
-      $html->set_js_variable( $name, $value );
+      $html->set_js_variable( $name, $value, [ 'type' => $js_type ] );
     }
 
   }
@@ -86,6 +89,10 @@ $plugin->get_sass_variable_type = function($value, $control_type) use($plugin) {
   if( $plugin->is_valid_gradient($value) ) return 'color';
   if( is_numeric($value) ) return 'number';
 
+  return 'string';
+};
+
+$plugin->get_js_variable_type = function($value, $control_type) {
   return 'string';
 };
 
