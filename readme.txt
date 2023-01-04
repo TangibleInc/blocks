@@ -19,16 +19,20 @@ Tags:
 
 == Changelog ==
 
-= 3.1.0 =
+= 3.1.1 =
 
-Release Date: 2022-12-08
+Release Date: 2022-12-30
 
 - Loop: Improve getting default loop context for search results archive
 - Sass module
   - Upgrade compiler library to ScssPhp 1.11.0
+    - Improve compatibility with newer CSS features such as variables, functions, selectors, media queries
+    - Improve compatibility with PHP 7 and 8
+    - Improve error handling
   - Remove Autoprefixer and its dependency CSS Parser; Internet Explorer no longer supported
-  - Improve passing variables - Handle all known value types to be compatible with new compiler
+  - Improve passing Sass variables - Handle all known value types to be compatible with new compiler
   - Convert any compiler error message to CSS comment
+- JavaScript and Sass variable types: Make default value type "raw" (unquoted) instead of "string" (quoted)
 - Template post types
   - Support any database table prefix including `wp_`
   - Remove default slug metabox in edit screen to support AJAX save; Related issue in WP core: [Can't change page permalink if slug metabox is removed](https://core.trac.wordpress.org/ticket/18523)
