@@ -19,14 +19,12 @@ foreach( $fields as $field ) {
 
   if ( ! is_array($field) ) continue;
 
-  $control = $plugin->get_control( $field['type'] );
-
-  if( $control === false ) continue;
-
   $name  = $field['name'];
   $value = $settings->{ $name } ?? '';
 
-  $render_data['fields'][ $name ] = $control->get_builder_data( $value, 'beaver-builder', $field, $settings );
+  $render_data['fields'][ $name ] = $plugin->format_control_value(
+    $value, 'beaver-builder', $field, $settings
+  );
 }
 
 $post = $plugin->get_block_post_from_settings( $render_data );

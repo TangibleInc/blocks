@@ -27,7 +27,8 @@ require_once __DIR__ . '/tangible-base/tangible-base.php';
 
 require_once __DIR__ . '/field-types/index.php';
 require_once __DIR__ . '/enqueue.php';
-require_once __DIR__ . '/utils.php';
+require_once __DIR__ . '/create.php';
+require_once __DIR__ . '/settings.php';
 
 add_action('init', function() use($plugin) {
 

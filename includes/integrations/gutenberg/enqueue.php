@@ -22,14 +22,13 @@ add_action('tangible_enqueue_gutenberg_template_editor', function() use ($plugin
     $plugin->version
   );
 
-
   // Add inline dynamic block data
 
   $blocks = $plugin->get_all_blocks();
   $config = $plugin->gutenberg_dynamic_config;
 
   $config['conditions'] = $plugin->block_visibility_conditions;
-  $config['controls'] = $plugin->custom_controls;
+  $config['controls']   = $plugin->get_custom_controls();
 
   $config['current_post_id'] = get_the_ID();
 
@@ -50,7 +49,7 @@ add_action('tangible_enqueue_gutenberg_template_editor', function() use ($plugin
    *
    * @see includes/templates/fields/custom/*
    */
-  foreach( $plugin->custom_controls as $type => $control ) {
+  foreach( $plugin->get_custom_controls() as $type => $control ) {
     $control = $plugin->get_control( $type );
     $control->enqueue_callback( $config['handle'], 'gutenberg' );
   }

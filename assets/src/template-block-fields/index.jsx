@@ -15,9 +15,9 @@ export const getControl = (control, handler, value, field) => {
       fields={ field.include_fields ? field.include_fields : 'type, order, orderby' }
     />
 
-    /**
-     * Not ready yet: Needs to determine what kind of render we want when used as a separate control
-     */
+  /**
+   * Not ready yet: Needs to determine what kind of render we want when used as a separate control
+   */
   case 'taxonomy':
     return <Taxonomy save={ value => handler( JSON.stringify( value ) ) } initialData={ value } { ...field } />
 
@@ -44,7 +44,7 @@ export const getControl = (control, handler, value, field) => {
   case 'ajax_select':
     return <AjaxSelect handler={ handler } initialValue={ value } fields={ field } />
 
-    // Fallback to a text field
+  // Fallback to a text field
   default:
     return <Text handler={ handler } initialValue={ value } { ...field } />
 

@@ -1,43 +1,45 @@
 <?php
 
+namespace Tangible\Blocks\Controls;
+
 defined('ABSPATH') or die();
 
-/**
- * Elementor: @see https://developers.elementor.com/elementor-controls/text-control/
- * BeaverBuilder: @see https://docs.wpbeaverbuilder.com/beaver-builder/developer/custom-modules/cmdg-10-setting-fields-reference/#text-field
- */
+class Text extends Base {
 
-$plugin->register_control('text', [
-  'elementor'       => $plugin->get_elementor_control_type('TEXT'),
-  'beaver-builder'  => 'text',
-  'gutenberg'       => 'string',
-])
-  ->elementor(function($field, $type) {
-    return [
-      'label'   => $field['label'],
-      'type'    => $type,
-      'default' => isset($field['default']) ? $field['default'] : ''
-    ];
-  })
-  ->beaver_builder(function($field, $type) {
-    return [
-      'label'   => $field['label'],
-      'type'    => $type,
-      'default' => isset($field['default']) ? $field['default'] : ''
-    ];
-  })
-  ->gutenberg(function($field, $type) {
-    return [
-      'type'    => $type,
-      'default' => isset($field['default']) ? $field['default'] : ''
-    ];
-  })
-  ->render(function($value, $block, $context) {
+  /**
+   * Elementor: @see https://developers.elementor.com/elementor-controls/text-control/
+   * BeaverBuilder: @see https://docs.wpbeaverbuilder.com/beaver-builder/developer/custom-modules/cmdg-10-setting-fields-reference/#text-field
+   */
+  function register_control(string $builder, array $args): array {
+    
+    $label   = $args['label'] ?? '';
+    $default = $args['default'] ?? '';
+    
+    switch($builder) {
+      case 'elementor':
+        return [
+          'type'    => $this->get_elementor_control_type('TEXT'),
+          'label'   => $label,
+          'default' => $default
+        ];
+      case 'beaver-builder':
+        return [
+          'type'    => 'text',
+          'label'   => $label,
+          'default' => $default
+        ];
+      case 'gutenberg':
+        return [
+          'type'    => 'string',
+          'default' => $default
+        ];
+    }
+  }
 
-    // To avoid code injections, value will always be used with commas when in script context
+  function get_value($formated_value, array $args, string $context) {
+    return esc_html($formated_value);
+  }
 
-    return $context === 'script'
-      ? "'" . esc_html($value) . "'"
-      : esc_html($value)
-    ;
-  });
+}
+
+$plugin->register_control('text', new Text);

@@ -9,45 +9,55 @@ $plugin->render = function($post, $data) use($plugin, $html) {
   $fields = $data['fields'] ?? [];
   
   /**
-   * Register sass and js variable in template system
+   * Register sass, js and control variable in template system
    * 
    * @see ./vendor/tangible/template-system/template/tags/get-set/sass
    * @see ./vendor/tangible/template-system/template/tags/get-set/js
+   * @see ./vendor/tangible/template-system/template/tags/get-set/control
    */
   
   foreach( $fields as $field ) {
     
-    $type = $field['attributes']['type'];
-    $name = $field['attributes']['name'];
+    $args  = $field['attributes'];
+    $value = $field['value'];
+
+    $type = $args['type'];
+    $name = $args['name'];
     
     $control = $plugin->get_control( $type ); 
 
     if( $control === false ) continue;
 
+    if( $control->has_context('template') ) {
+      $control_value = $control->render( $value, $args, 'template' );
+      $html->set_control_variable( $name, $control_value );
+    }
+
     if( $control->has_context('style') ) {
 
-      $value = $control->apply_render( $field['main_value'], $field, 'style' );
+      $control_value = $control->render( $value, $args, 'style' );
         
       $sass_name = str_replace(' ', '-', $name);
-      $sass_type = $plugin->get_sass_variable_type( $value, $type );
+      $sass_type = $plugin->get_sass_variable_type( $control_value, $type );
 
-      if( $sass_type === 'number' && is_int($value) ) {
-        $value = (string) $value;
+      if( $sass_type === 'number' && is_int($control_value) ) {
+        $control_value = (string) $control_value;
       }
 
-      $html->set_sass_variable( $sass_name, $value, [ 'type' => $sass_type ]  );
+      $html->set_sass_variable( $sass_name, $control_value, [ 'type' => $sass_type ]  );
     }
     
     if( $control->has_context('script') ) {
 
       $js_type = $plugin->get_js_variable_type( $value, $type );
-      
-      $value = $control->apply_render( $field['main_value'], $field, 'script' );
-      $html->set_js_variable( $name, $value, [ 'type' => $js_type ] );
+       
+      $control_value = $control->render( $value, $args, 'script' );
+
+      $html->set_js_variable( $name, $control_value, [ 'type' => $js_type ] );
     }
 
   }
-
+  
   $template_system = tangible_template_system();
       
   $template_output = $template_system->render_template_post( $post, $data );
@@ -75,6 +85,7 @@ $plugin->reset_render = function() use($html, $plugin) {
 
   $html->clear_sass_variables();
   $html->clear_js_variables();
+  $html->clear_control_variables();
   
   $plugin->current_block_wrapper = false;
 
@@ -103,7 +114,7 @@ $plugin->get_js_variable_type = function($value, $control_type) {
  */
 add_filter( 'tangible_template_post_style', function($style, $post) use($plugin) {
 
-  if ( $post->post_type !== 'tangible_block' || empty($plugin->current_block_wrapper) ) {
+  if( $post->post_type !== 'tangible_block' || empty($plugin->current_block_wrapper) ) {
     return $style;
   } 
   

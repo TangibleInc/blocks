@@ -51,7 +51,7 @@ export default class ControlVisibility {
     const data = {
       number: number,
       level: level,
-      current: this.conditionsMap[ number ][ level ],
+      current: this.conditionsMap[ number ]?.[ level ],
       previousLevels: this.getPreviousLevels( number, level )
     }
 

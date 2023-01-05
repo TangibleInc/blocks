@@ -1,115 +1,113 @@
 <?php
 
+namespace Tangible\Blocks\Controls;
+
 defined('ABSPATH') or die();
 
-use Tangible\Blocks\Integrations\Elementor\Dynamic\Base;
+class Image extends Base {
 
-$plugin->register_control('image', [
-  'elementor'       => $plugin->get_elementor_control_type('MEDIA'),
-  'beaver-builder'  => 'photo',
-  'gutenberg'       => 'object',
-])
-  ->elementor(function($field, $type) {
-    $default = isset( $field['default'] )
-      ? $field['default']
-      : ''
-    ;
-    return [
-      'label'   => $field['label'],
-      'type'    => $type,
-      'default' => wp_http_validate_url($default)
-      ? [ 'url'=> $default ]
-      : [ 
-        'id' => $default,
-        'url' => wp_get_attachment_url($default)
-      ]
-    ];
-  })
-  ->beaver_builder(function($field, $type){
-    return [
-      'label'   => $field['label'],
-      'type'    => $type,
-      'default' => isset($field['default']) ? $field['default'] : ''
-    ];
-  })
-  ->gutenberg(function($field, $type){ 
-    if(isset( $field['default'] )){
-      if( is_numeric($field['default']) ) $default = wp_prepare_attachment_for_js($field['default']);
-      if( wp_http_validate_url($field['default']) ) $default['url'] = wp_http_validate_url($field['default']);
-    }
-
-    return [
-      'type'    => $type,
-      'default' => isset($default) ? $default : ''
-    ];
-  })
-  ->filter_value(function($value, $builder, $field, $settings) {
-
-    if( $builder !== 'beaver-builder' ) return $value;
-
-    // $value will be an url only in cases of a default value, will be an attachement id otherwise
-    if( is_numeric($value) ) {
-      return !empty($settings->{ $field['name'] . '_src' })
-        ? $settings->{ $field['name'] . '_src' }
-        : wp_get_attachment_url($value)
-      ;
-    }
+  function register_control(string $builder, array $args): array {
     
-    return $value;
-  })
-  ->render(function($value, $block) {
-    if( empty($value) ) return '';
-
-    // Elementor returns an array of info instead of a specific piece of data ID like the others do
-    if ( gettype($value) == "array" ) {
-      $value = !empty($value['url']) 
-        ? $value['url']
-        : (!empty($value['id']) ? wp_get_attachment_url($value['id']) : '')
-      ;
-    }
-
-    return esc_url($value);
-  })
-  ->sub_values([
-    'id',
-    'alt',
-    'title',
-    'caption',
-    'description'
-  ])
-  ->render_sub_values(function($name, $builder, $field, $settings) {    
+    $label   = $args['label'] ?? '';
+    $default = $this->format_default_value( $args['default'] ?? '', $builder );
+    
     switch($builder) {
       case 'elementor':
-        $elementor_prefix = Base::$control_prefix;
-        $values = $settings[ $elementor_prefix . $field['name'] ];
-        $attachment = $values['id'] === '' ? $values['id'] : get_post($values['id']);
-        if( empty($attachment) ) return '';
-        break;
-        
-      case 'gutenberg':
-        $values = $settings[$field['name']];
-        if(! isset($values[$name])) return '';
-        return $values[$name];
-        break;
-
+        return [
+          'type'    => $this->get_elementor_control_type('MEDIA'),
+          'label'   => $label,
+          'default' => $default
+        ];
       case 'beaver-builder':
-        $value = $settings->{ $field['name'] } !== ''   
-          ? $settings->{ $field['name'] } 
-          : false 
-        ;
-
-        $values['id'] = is_numeric($value) ? $value : '';
-        if( empty($values['id']) ) return '';
-
-        $attachment = get_post( $values['id'] );
-        if( empty($attachment) ) return '';
-        break;
+        return [
+          'type'    => 'photo',
+          'label'   => $label,
+          'default' => $default
+        ];
+      case 'gutenberg':
+        return [
+          'type'    => 'object',
+          'default' => $default
+        ];
     }
-    $values['alt'] = get_post_meta( $attachment->ID, '_wp_attachment_image_alt', true );
-    $values['title'] = $attachment->post_title;
-    $values['caption'] = $attachment->post_excerpt;
-    $values['description'] = $attachment->post_content;
 
-    return $values[$name];
-  });
+  }
 
+  /**
+   * Default value can either be an attachment ID or an url
+   */
+  function format_default_value($value, $builder) {
+
+    if( $builder === 'beaver-builder' ) return $value;
+    if( empty($value) ) return [];
+
+    $is_url = wp_http_validate_url($value);
+    $is_id  = is_numeric($value);
+
+    if( ! $is_id && ! $is_url ) return $value;
+    if( $is_url ) return [ 'url' => $value ];
+    
+    if( $builder === 'gutenberg' ) {
+      return wp_prepare_attachment_for_js($value);
+    }
+
+    return [
+      'id'  => $value,
+      'url' => wp_get_attachment_url($value)
+    ]; 
+  }
+
+  function format_value($value, string $builder, array $args, $settings) {
+    
+    if( $builder === 'beaver-builder' ) return $value;
+    
+    if( is_numeric($value['id'] ?? '') ) {
+      return $value['id'];
+    }
+
+    return $value['url'] ?? '';
+  }
+
+  /**
+   * $value is either an url or an id at this point
+   */
+  function get_value($value, $args, $context) {
+
+    $is_url = wp_http_validate_url($value);
+    $is_id  = is_numeric($value);
+
+    $default_fields = [
+      'value'       => '',
+      'id'          => '',
+      'alt'         => '',
+      'title'       => '',
+      'caption'     => '',
+      'description' => ''
+    ];
+
+    if( $is_url ) {
+      return wp_parse_args([
+        'value' => esc_url($value)
+      ], $default_fields); 
+    }
+
+    if( $is_id && $attachment = get_post($value) ) {
+      return [
+        'value'       => wp_get_attachment_url($value),
+        'id'          => $value,
+        'title'       => $attachment->post_title,
+        'alt'         => get_post_meta( $value, '_wp_attachment_image_alt', true ),
+        'caption'     => wp_get_attachment_caption($value),
+        'description' => $attachment->post_content,
+      ];
+    }
+
+    return wp_parse_args(
+      is_array($value) ? $value : [], 
+      $default_fields
+    );
+  }
+
+}
+
+$plugin->register_control('image', new Image);

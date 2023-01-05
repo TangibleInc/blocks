@@ -25,14 +25,16 @@ add_action('tangible_enqueue_beaver_template_editor', function() use ($plugin) {
    *
    * @see includes/templates/fields/custom/*
    */
-  foreach($plugin->custom_controls as $type => $control) {
+  $controls = $plugin->get_custom_controls();
+
+  foreach($controls as $type => $control) {
     $control = $plugin->get_control( $type );
     $control->enqueue_callback( $handle, 'beaver-builder' );
   }
 
   $config = $plugin->beaver_dynamic_config;
   $config['visibility']['conditions'] = $plugin->block_visibility_conditions;
-  $config['controls'] = $plugin->custom_controls;
+  $config['controls'] = $controls;
 
   wp_add_inline_script(
     $handle,

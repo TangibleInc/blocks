@@ -12,15 +12,30 @@ require_once __DIR__ . '/render.php';
 
 $plugin->init_legacy_render = function($post, $data) use($plugin) {
 
-  $plugin->legacy_render_data = $data;
+  $plugin->legacy_render_data = $plugin->get_legacy_render_data( $data );
 
   add_filter( 'tangible_template_post_style',  $plugin->legacy_style_render, 5, 2 );
   add_filter( 'tangible_template_post_script', $plugin->legacy_script_render, 5, 2 );
 
-  $plugin->define_subvalue_variables($data);
+  $plugin->define_subvalue_variables(
+    $plugin->legacy_render_data
+  );
 
   return $plugin->legacy_render( $post->post_content, 'template' );
 };  
+
+$plugin->get_legacy_render_data = function($data) {
+
+  $fields = array_filter($data['fields'], function($field) {
+    return ! empty($field['legacy']);
+  }); 
+
+  $data['fields'] = array_map(function($field) {
+    return $field['legacy'];
+  }, $fields);
+
+  return $data;
+};
 
 $plugin->reset_legacy_render = function() use($plugin) {
 
@@ -44,8 +59,8 @@ $plugin->define_subvalue_variables = function($data) use($plugin, $html) {
     $type = $field['attributes']['type'];
     $name = $field['attributes']['name'];
 
-    $control = $plugin->get_control( $type ); 
-
+    $control = $plugin->get_legacy_control( $type ); 
+    
     if( $control === false || ! $control->has_context('style') ) {
       continue;
     }

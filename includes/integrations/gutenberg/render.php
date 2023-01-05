@@ -8,8 +8,6 @@ namespace Tangible\Blocks\Integrations\Gutenberg\Dynamic;
  * @param array $attributes
  * @param string $content
  * @param array $block
- *
- * @return void
  */
 function render( $attributes, $content, $data ) {
 
@@ -42,11 +40,9 @@ function render( $attributes, $content, $data ) {
       $name  = $field['name'];
       $value = $attributes[ $name ] ?? '';
 
-      $control = $plugin->get_control( $field['type'] );
-      
-      if( $control === false ) continue;
-
-      $render_data['fields'][ $name ] = $control->get_builder_data( $value, 'gutenberg', $field, $attributes );
+      $render_data['fields'][ $name ] = $plugin->format_control_value(
+        $value, 'gutenberg', $field, $attributes 
+      );
     }
 
   }

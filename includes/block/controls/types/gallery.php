@@ -1,156 +1,121 @@
 <?php
 
+namespace Tangible\Blocks\Controls;
+
 defined('ABSPATH') or die();
 
-use Tangible\Blocks\Integrations\Elementor\Dynamic\Base;
+class Gallery extends Base {
 
-$plugin->register_control('gallery', [
-  'elementor'       => $plugin->get_elementor_control_type('GALLERY'),
-  'beaver-builder'  => 'multiple-photos',
-  'gutenberg'       => 'array',
-])
-  ->context(['template'])
-  ->elementor(function($field, $type) {
-    $default = isset( $field['default'] )
-      ? explode(',', str_replace(' ', '', $field['default']))
-      : []
-    ;
-    return [
-      'label'   => $field['label'],
-      'type'    => $type,
-      'default' => $default,
-      'size' => isset( $field['size'] ) ? $field['size'] : 'full'
-    ];
-  })
-  ->beaver_builder(function($field, $type){
-    $default = isset( $field['default'] )
-      ? explode(',', str_replace(' ', '', $field['default']))
-      : []
-    ;
-    return [
-      'label'   => $field['label'],
-      'type'    => $type,
-      'default' => $default,
-      'size' => isset( $field['size'] ) ? $field['size'] : 'full'
-    ];
-  })
-  ->gutenberg(function($field, $type){
-    $default = isset( $field['default'] )
-      ? explode(',', str_replace(' ', '', $field['default']))
-      : []
-    ;
-    return [
-      'type'    => $type,
-      'default' => $default,
-      'size' => isset( $field['size'] ) ? $field['size'] : 'full'
-    ];
-  })
-  ->default(function($values, $builder) {
+  public array $context = [
+    'template'
+  ];
 
-    if( $builder !== 'elementor' ) return $values;
+  function register_control(string $builder, array $args): array {
+    
+    $label   = $args['label'] ?? '';
+    $size    = $field['size'] ?? 'full';
+    $default = $this->format_default_value( $args['default'] ?? '', $builder );
+    
+    switch($builder) {
+      case 'elementor':
+        return [
+          'type'    => $this->get_elementor_control_type('GALLERY'),
+          'label'   => $label,
+          'default' => $default,
+          'size'    => $size
+        ];
+      case 'beaver-builder':
+        return [
+          'type'    => 'multiple-photos',
+          'label'   => $label,
+          'default' => $default,
+          'size'    => $size
+        ];
+      case 'gutenberg':
+        return [
+          'type'    => 'array',
+          'default' => $default
+        ];
+    }
+  }
+
+  function format_default_value($default, $builder) {
+
+    $default = str_replace(' ', '', $field['default'] ?? '');
+    $values  = explode(',', $default);
+
+    if( $builder !== 'elementor' || empty($values) ) {
+      return $values;
+    } 
 
     $default = [];
-    if( empty($values) ) return $default;
-
-    foreach ($values as $value) {
+    foreach( $values as $value ) {
 
       $attachment = get_post($value);
-      if( !$attachment ) continue;
+      if( ! $attachment ) continue;
 
       $default []= [
-        "id"  => $value,
-        "url" => wp_get_attachment_url($attachment->ID)
+        'id'  => $value,
+        'url' => wp_get_attachment_url($attachment->ID)
       ];
     }
 
     return $default;
-  })
-  ->filter_value(function($values, $builder, $field, $settings) {
-    if( empty($values) ) return '';
+  }
 
-    $output = [];
-    foreach ($values as $key => $value) {
-      $output[$key] = [
-        'info' => $value,
-        'size' => isset($field['size']) ? $field['size'] : 'thumbnail'
+  function format_value($value, string $builder, array $args, $settings) {
+    
+    if( ! is_array($value) ) return [];    
+    if( $builder === 'beaver-builder' ) return $value;
+
+    $value = array_map(function($image) {
+      if( ! empty($image['id']) ) return $image['id'];
+    }, $value);
+
+    return array_filter($value);
+  }
+
+  function get_value($images, array $args, string $context) {
+    
+    $images = array_map(function($id) use($args) {
+
+      $image = get_post( $id );
+      if( ! $image ) return;
+      
+      return [
+        'value'       => $this->get_image_html( $id, $args['size'] ?? false ),
+        'id'          => $id,
+        'url'         => wp_get_attachment_url( $id ),
+        'title'       => $image->post_title,
+        'alt'         => get_post_meta( $id, '_wp_attachment_image_alt', true ),
+        'caption'     => wp_get_attachment_caption( $id ),
+        'description' => $image->post_content,
       ];
-    }
-    return $output;
-  })
-  ->render(function($values, $block) use ($plugin) {
+    }, $images);
 
-    if( empty($values) ) return '';
+    return array_filter($images);
+  }
+
+  function get_image_html( $id, $size ) {
 
     // Filter to remove style attribute on img tag - See below for its definition
-    add_filter('wp_get_attachment_image_attributes',
-      $plugin->gallery_control_attachment_image_filter,
-      99, // After all other plugins that may change attributes
-      1
-    );
+    add_filter( 'wp_get_attachment_image_attributes', [$this, 'remove_image_attributes'], 99, 1 );
+    
+    return wp_get_attachment_image( $id, $size ?: 'thumbnail' );
 
-    $output = '';
-    foreach ($values as $value) {
-      $attachement_id = isset($value['info']['id']) ? $value['info']['id'] : (int) $value['info'];
-      if( !empty($attachement_id) ) $output .= wp_get_attachment_image( $attachement_id, $value['size'] );
-    }
+    remove_filter( 'wp_get_attachment_image_attributes', [$this, 'remove_image_attributes'], 99 );
+  }
 
-    remove_filter('wp_get_attachment_image_attributes',
-      $plugin->gallery_control_attachment_image_filter,
-      99 // Must be the same as priority used for add_filter
-    );
+  /**
+   * Filter to remove style attribute on img tag added by Gutenberg and Beaver
+   * 
+   * @see https://developer.wordpress.org/reference/hooks/wp_get_attachment_image_attributes/
+   */
+  function remove_image_attributes( $attributes ) {
+    unset($attributes['style']);
+    return $attributes;
+  }
+  
+}
 
-    return $output;
-  })
-  ->sub_values([
-    'ids',
-  ])
-  ->render_sub_values(function($name, $builder, $field, $settings) {
-    if ( empty( $name ) ) return '';
-
-    $ids = [];
-
-    switch($builder){
-
-      case 'elementor':
-        $elementor_prefix = Base::$control_prefix;
-        $values = $settings[ $elementor_prefix . $field['name'] ];
-        if( !isset($values[0]['id']) ) return '';
-        foreach ($values as $image) {
-          $ids []= $image['id'];
-        }
-        break;
-
-      case 'gutenberg':
-        $values = $settings[ $field['name'] ];
-        foreach ($values as $image) {
-          if( empty($image) ) continue;
-          $ids []= is_array($image) ? $image['id'] : $image;
-        }
-        break;
-
-      case 'beaver-builder':
-        $value = $settings->{ $field['name'] } !== ''
-          ? $settings->{ $field['name'] }
-          : false
-        ;
-
-        if( empty($value) ) break;
-        
-        foreach ($value as $image) {
-          $ids []= $image;
-        }
-        break;
-    }
-
-    return implode(',', $ids);
-  });
-
-
-/**
- * Filter to remove style attribute on img tag added by Gutenberg and Beaver
- * @see https://developer.wordpress.org/reference/hooks/wp_get_attachment_image_attributes/
- */
-$plugin->gallery_control_attachment_image_filter = function($attr) {
-  unset($attr['style']);
-  return $attr;
-};
+$plugin->register_control('gallery', new Gallery);

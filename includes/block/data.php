@@ -135,12 +135,10 @@ $plugin->get_block_data = function($template) use ($plugin) {
           $control = $plugin->get_control( $data['type'] );
           if( empty($control) ) return false;
 
-          return $control->filter_field_data( $data );
+          return $control->sanitize_args( $data );
 
         }, $section['controls']),
-        'conditions' => isset($section['conditions'])
-          ? $section['conditions']
-          : []
+        'conditions' => $section['conditions'] ?? []
       ];
     }
 
@@ -151,9 +149,7 @@ $plugin->get_block_data = function($template) use ($plugin) {
       ,
       'label'   => $tab['title'],
       'sections'=> $sections,
-      'conditions' => isset($tab['conditions'])
-        ? $tab['conditions']
-        : []
+      'conditions' => $tab['conditions'] ?? []
     ];
   }
 

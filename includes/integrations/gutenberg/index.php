@@ -18,7 +18,7 @@ $plugin->gutenberg_dynamic_config = [
 
 require_once __DIR__ . '/enqueue.php';
 require_once __DIR__ . '/render.php';
-require_once __DIR__ . '/utils.php';
+require_once __DIR__ . '/attributes.php';
 
 /**
  * Register dynamic block server-side render
@@ -50,7 +50,7 @@ $plugin->register_dynamic_blocks = function() use($plugin) {
     register_block_type(
       $block_type,
       [
-        'attributes'      => to_attributes( $block ),
+        'attributes'      => format_attributes( $block ),
         'render_callback' => function($attributes, $content) use($block) {
           return render( $attributes, $content, $block );
         },

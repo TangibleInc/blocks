@@ -48,7 +48,7 @@ add_action('elementor/editor/after_enqueue_scripts', function() use($plugin) {
   $blocks = $plugin->get_all_blocks();
   $config = $plugin->elementor_dynamic_config;
 
-  $config['controls'] = $plugin->custom_controls;
+  $config['controls'] = $plugin->get_custom_controls();
 
   /**
    * Visibility conditions
