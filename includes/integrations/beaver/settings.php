@@ -52,13 +52,10 @@ function format_settings($block) {
       
       // Pass visibility conditions to JS
       foreach( $section['fields'] as $field ) {
-
-        if( $field['type'] === 'repeater' ) {
-          $conditions = get_repeater_controls_conditions( $field );
-          $visibility_by['repeaters'][ $field['name'] ] = $conditions;
-        }
         
-        if( ! isset($field['conditions']) ) continue;
+        if( empty($field['type']) || ! isset($field['conditions']) ) {
+          continue;
+        } 
 
         $visibility_by['fields'][ $field['name'] ] = $field['conditions'];
       }
@@ -97,20 +94,4 @@ function format_setting_fields( $block_id, $fields) {
   }
   
   return $formated_fields;
-}
-
-function get_repeater_controls_conditions($repeater) {
-
-  $controls = is_array($repeater['controls']) ? $repeater['controls'] : [];
-  $conditions = [];
-
-  foreach( $controls as $control ) {
-
-    $has_conditions = ! empty($control['conditions']) && is_array($control['conditions']);
-    if( ! $has_conditions || empty($control['name'] ) ) continue;
-
-    $conditions[ $control['name'] ] = $control['conditions']; 
-  }
-
-  return $conditions;
 }

@@ -67,7 +67,7 @@ $plugin->render = function($post, $data) use($plugin, $html) {
   return $template_output;
 };
 
-$plugin->init_render = function( $post, $data ) use($plugin) {
+$plugin->init_render = function($post, $data) use($plugin) {
 
   $plugin->current_block_wrapper = $data['wrapper'];
   
@@ -76,7 +76,7 @@ $plugin->init_render = function( $post, $data ) use($plugin) {
    * 
    * @see /legacy/render.php
    */
-  $post->post_content = $plugin->init_legacy_render( $post, $data );
+  // $post->post_content = $plugin->init_legacy_render( $post, $data );
   
   return $post;
 };
@@ -89,7 +89,7 @@ $plugin->reset_render = function() use($html, $plugin) {
   
   $plugin->current_block_wrapper = false;
 
-  $plugin->reset_legacy_render();
+  // $plugin->reset_legacy_render();
 
 };
 

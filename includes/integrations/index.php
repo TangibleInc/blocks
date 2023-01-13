@@ -1,5 +1,7 @@
 <?php
 
+defined('ABSPATH') or die();
+
 if ( function_exists( 'has_blocks' ) ) {
   require_once __DIR__.'/gutenberg/index.php';
 }

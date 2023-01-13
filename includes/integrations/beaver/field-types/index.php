@@ -1,10 +1,17 @@
 <?php
 
-add_filter('fl_builder_custom_fields', function( $fields ) use ( $plugin ) {
+defined('ABSPATH') or die();
 
-  foreach($plugin->get_custom_controls() as $type => $config) {
-    $fields[ $config['prefixed_type'] ] = __DIR__.'/tangible-blocks-control.php';
+add_filter('fl_builder_custom_fields', function( $beaver_builder_fields ) use ( $plugin ) {
+
+  foreach( $plugin->get_controls() as $type => $control ) {
+    
+    $prefixed_type = $control->get_prefixed_type();
+
+    $html = __DIR__ . '/tangible-blocks-control.php';
+
+    $beaver_builder_fields[ $prefixed_type ] = $html;
   }
 
-  return $fields;
+  return $beaver_builder_fields;
 });

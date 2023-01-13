@@ -7,7 +7,7 @@ defined('ABSPATH') or die();
 use FLBuilder;
 
 /**
- * @see https://beaverplugins.com/docs/toolbox/the-alias-settings-form/
+ * @see https://docs.wpbeaverbuilder.com/beaver-builder/developer/custom-modules/cmdg-03-define-module-settings
  */
 function create_module($block) {
 

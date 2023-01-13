@@ -14,6 +14,7 @@ define( 'TANGIBLE_BLOCKS_VERSION', '3.1.1' );
 require_once __DIR__ . '/vendor/tangible/plugin-framework/index.php';
 require_once __DIR__ . '/vendor/tangible/plugin-updater/index.php';
 require_once __DIR__ . '/vendor/tangible/template-system/index.php';
+require_once __DIR__ . '/vendor/tangible/fields/index.php';
 
 /**
  * Get plugin instance
@@ -57,6 +58,8 @@ add_action('plugins_loaded', function() {
   $interface = $template_system->interface;
   $ajax      = $template_system->ajax;
 
+  $fields = tangible_fields();
+  
   require_once __DIR__.'/includes/index.php';
 
 }, 10);

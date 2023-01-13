@@ -8,12 +8,47 @@ class Base {
 
   use Elementor;
 
-  static $plugin;
+  static $plugin, $fields;
 
   public array $context = ['template', 'style', 'script'];
+   
+  /**
+   * We use a prefix we registering a control in builders, to avoid collision with existing ones
+   */
+  function get_prefixed_type() {
+    return 'tangible_block_control_' . $this->type;
+  }
 
-  function register_control(string $builder, array $args): array {
-    return $attribute;
+  function get_control_args(string $builder, array $args) : array {
+
+    $args['data'] = self::$fields->format_args(
+      $args['name'] ?? '', 
+      $args, 
+      false
+    );
+
+    /**
+     * When possible, we use the native way to display informations (label, description ...etc) 
+     */
+    if( $builder === 'beaver-builder' ) {
+      unset($args['data']['label']);
+    }
+
+    $args = $this->register_control($builder, $args);
+    
+    $args['type'] = $this->get_prefixed_type();
+
+    /**
+     * When we let multiple set it can trigger a default native behavior we don't want in 
+     * some builder (like beaver-builder for example)
+     */
+    if( isset($args['multiple']) ) unset($args['multiple']);
+
+    return $args;
+  }
+
+  function register_control(string $builder, array $args) : array {
+    return $args;
   }
 
   function format_value($value, string $builder, array $args, $settings) {
@@ -23,6 +58,11 @@ class Base {
   function get_value($formated_value, array $args, string $context) {
     return $formated_value;
   }
+
+  /**
+   * Can be used to enqueue script dependencies for the control
+   */
+  function enqueue(string $handle, string $builder) {}
 
   /**
    * Make sure required value are defined, event if empty
@@ -67,3 +107,4 @@ class Base {
 }
 
 Base::$plugin = $plugin;
+Base::$fields = $fields;

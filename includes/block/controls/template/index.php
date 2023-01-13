@@ -34,15 +34,11 @@ foreach ([
       // Assign tag attributes like "title" to map
 
       foreach ($atts as $key => $value) {
+        
         if ($key==='keys') continue;
 
         if ($key==='type') {
-          /**
-           * Backward compatibility with old control type names
-           * Control type names are now "snake_case", instead of "kebab-case".
-           */
-          if ($value==='wysiwyg') $value = 'editor';
-          else $value = str_replace('-', '_', $value);
+          $value = str_replace('-', '_', $value);
         }
 
         $item[ $key ] = $value;

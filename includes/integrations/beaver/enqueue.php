@@ -1,8 +1,9 @@
 <?php
+
 /**
  * @see /vendor/tangible/template-system/system/integrations/beaver/enqueue.php
  */
-add_action('tangible_enqueue_beaver_template_editor', function() use ($plugin) {
+add_action('tangible_enqueue_beaver_template_editor', function() use ($plugin, $fields) {
 
   $handle = $plugin->beaver_dynamic_config['handle'];
 
@@ -20,22 +21,12 @@ add_action('tangible_enqueue_beaver_template_editor', function() use ($plugin) {
     $plugin->version
   );
 
-  /**
-   * Enqueue data from custom controls
-   *
-   * @see includes/templates/fields/custom/*
-   */
-  $controls = $plugin->get_custom_controls();
-
-  foreach($controls as $type => $control) {
-    $control = $plugin->get_control( $type );
-    $control->enqueue_callback( $handle, 'beaver-builder' );
-  }
+  $fields->enqueue();
 
   $config = $plugin->beaver_dynamic_config;
   $config['visibility']['conditions'] = $plugin->block_visibility_conditions;
-  $config['controls'] = $controls;
-
+  $config['controls'] = $plugin->enqueue_controls_data( $handle, 'beaver-builder' );
+  
   wp_add_inline_script(
     $handle,
     'window.Tangible = window.Tangible || {}; window.Tangible.blockConfig = ' . json_encode($config),

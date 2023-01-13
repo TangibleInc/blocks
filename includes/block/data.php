@@ -143,12 +143,12 @@ $plugin->get_block_data = function($template) use ($plugin) {
     }
 
     $tabs []= [
-      'name'    => $tab['title'] !== 'default'
+      'name' => $tab['title'] !== 'default'
         ? 'tab-' . $template['id'] . '-' . $key
         : $tab['title']
       ,
-      'label'   => $tab['title'],
-      'sections'=> $sections,
+      'label'      => $tab['title'],
+      'sections'   => $sections,
       'conditions' => $tab['conditions'] ?? []
     ];
   }
@@ -157,6 +157,7 @@ $plugin->get_block_data = function($template) use ($plugin) {
   $name = get_post_field('post_name', $post_id);
 
   $content_id = $post_id;
+  
   /**
    * Universal ID - Unique and immutable across sites
    * @see /includes/template/universal-id/index.php

@@ -44,6 +44,6 @@ $plugin->get_builder_args = function(array $args, string $builder, $block_id) us
 
   $args['block_id'] = $block_id;
 
-  return $control->register_control( $builder, $args );
+  return $control->get_control_args( $builder, $args );
 };
 

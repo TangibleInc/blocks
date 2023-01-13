@@ -4,11 +4,11 @@ namespace Tangible\Blocks\Controls;
 
 defined('ABSPATH') or die();
 
-$plugin->register_control = function(string $type, Base $control) use($plugin) {
+$plugin->register_control = function(Base $control) use($plugin) {
   
-  if( isset($plugin->controls[ $type ]) ) return false;
+  if( isset($plugin->controls[ $control->type ]) ) return false;
   
-  $plugin->controls[ $type ] = $control;
+  $plugin->controls[ $control->type ] = $control;
 
   return $control;
 };

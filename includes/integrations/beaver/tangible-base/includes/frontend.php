@@ -3,13 +3,10 @@
 defined('ABSPATH') or die();
 
 $render_data = [
-  'content_id' => $module::$tangible_block['content_id'],
-  'universal_id' => isset($module::$tangible_block['universal_id'])
-    ? $module::$tangible_block['universal_id']
-    : ''
-  ,
-  'fields'     => [],
-  'wrapper'    => 'fl-node-' . $module->node
+  'content_id'    => $module::$tangible_block['content_id'],
+  'universal_id'  => $module::$tangible_block['universal_id'] ?? '',
+  'fields'        => [],
+  'wrapper'       => 'fl-node-' . $module->node
 ];
 
 $plugin = tangible_blocks();
