@@ -1,12 +1,14 @@
 <?php
 
+defined('ABSPATH') or die();
+
 /**
  * Register our custom fields in Elementor
  * 
  * @see /includes/templates/controls/fields/custom/
  */
 
-add_action('elementor/controls/controls_registered', function($controls_manager) use($plugin) {
+add_action('elementor/controls/register', function($controls_manager) use($plugin) {
 
   require_once __DIR__ . '/base.php';
 
@@ -14,7 +16,7 @@ add_action('elementor/controls/controls_registered', function($controls_manager)
 
     $control = $plugin->register_elementor_control($config);
     
-    $controls_manager->register_control( $config['prefixed_type'], $control );
+    $controls_manager->register( $control );
   }
 
 }, 10, 1);
