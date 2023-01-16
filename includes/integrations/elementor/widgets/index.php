@@ -22,7 +22,7 @@ $plugin->register_dynamic_category = function($elements_manager) use($plugin) {
 /**
  * @see https://code.elementor.com/hooks/elementor-widgets-widgets_registered/
  */
-$plugin->register_dynamic_widgets = function() use($plugin, $template_system) {
+$plugin->register_dynamic_widgets = function($widgets_manager) use($plugin, $template_system) {
 
   require_once __DIR__ . '/base.php';
 
@@ -32,13 +32,12 @@ $plugin->register_dynamic_widgets = function() use($plugin, $template_system) {
     'control'  => Base::$control_prefix
    ];
 
-  $widgets_manager = &\Elementor\Plugin::instance()->widgets_manager;
   $blocks = $plugin->get_all_blocks();
 
   foreach( $blocks as $block ) {
 
     $class_name = create_widget($block);
-    $widgets_manager->register_widget_type( new $class_name() );
+    $widgets_manager->register( new $class_name() );
 
     // We need to register the settings tab now
     register_tabs( $block );
