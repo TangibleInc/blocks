@@ -47,7 +47,9 @@ $plugin->rgba_to_hex = function($rgba_value) {
 };
 
 $plugin->is_valid_color = function($value) use($plugin) {
-
+  
+  if( ! is_string($value) ) return $value;
+  
   // Spaces can make regex check fail (Elementor adds some)
   $value = str_replace(' ', '', $value);
 
