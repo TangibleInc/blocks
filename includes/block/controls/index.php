@@ -24,11 +24,6 @@ $plugin->get_control = function(string $type) use($plugin) {
   return $plugin->controls[ $type ] ?? false;
 };
 
-// Is going to be replaced by get_controls
-$plugin->get_custom_controls = function() use($plugin) {
-  return $plugin->custom_controls;
-};
-
 $plugin->get_controls = function() use($plugin) {
   return $plugin->controls;
 };

@@ -6,8 +6,10 @@ defined('ABSPATH') or die();
  * Called at the end of $template_system->enqueue_gutenberg_template_editor()
  * @see /vendor/tangible/template-system/system/integrations/gutenberg/enqueue.php
  */
-add_action('tangible_enqueue_gutenberg_template_editor', function() use ($plugin) {
+add_action('tangible_enqueue_gutenberg_template_editor', function() use ($plugin, $fields) {
 
+  $fields->enqueue();
+  
   wp_enqueue_script(
     $plugin->gutenberg_dynamic_config['handle'], // See ./index.php
     $plugin->url . 'assets/build/gutenberg-integration.min.js',
@@ -28,7 +30,7 @@ add_action('tangible_enqueue_gutenberg_template_editor', function() use ($plugin
   $config = $plugin->gutenberg_dynamic_config;
 
   $config['conditions'] = $plugin->block_visibility_conditions;
-  $config['controls']   = $plugin->get_custom_controls();
+  $config['controls']   = $plugin->enqueue_controls_data( $config['handle'], 'gutenberg' );
 
   $config['current_post_id'] = get_the_ID();
 
@@ -43,15 +45,5 @@ add_action('tangible_enqueue_gutenberg_template_editor', function() use ($plugin
     'window.Tangible = window.Tangible || {}; window.Tangible.blockConfig = ' . json_encode($config),
     'before'
   );
-
-  /**
-   * Enqueue data from custom controls
-   *
-   * @see includes/templates/fields/custom/*
-   */
-  foreach( $plugin->get_custom_controls() as $type => $control ) {
-    $control = $plugin->get_control( $type );
-    $control->enqueue_callback( $config['handle'], 'gutenberg' );
-  }
 
 });

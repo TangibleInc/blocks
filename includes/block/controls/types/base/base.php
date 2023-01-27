@@ -36,8 +36,17 @@ class Base {
 
     $args = $this->register_control($builder, $args);
     
-    $args['type'] = $this->get_prefixed_type();
 
+    /**
+     * For gutenberg we must specify the type of data saved (not the type of field)
+     * 
+     * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-attributes/#type-validation
+     */
+    $args['type'] = $builder === 'gutenberg'
+      ? 'string' 
+      : $this->get_prefixed_type()
+    ;
+    
     /**
      * When we let multiple set it can trigger a default native behavior we don't want in 
      * some builder (like beaver-builder for example)
