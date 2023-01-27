@@ -7,7 +7,7 @@ const getControl = (
     onChange: value => handler(
       Array.isArray(value) || typeof value === 'object'
         ? JSON.stringify(value) 
-        : value
+        : String(value)
     ),
     value: value,
     ...props 
