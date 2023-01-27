@@ -1,10 +1,9 @@
 const getControl = (
-  control, 
   handler, 
   value, 
   props
 ) => (
-  tangibleFields({
+  tangibleFields.render({
     onChange: value => handler(
       Array.isArray(value) || typeof value === 'object'
         ? JSON.stringify(value) 

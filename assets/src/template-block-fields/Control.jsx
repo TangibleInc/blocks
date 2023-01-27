@@ -28,7 +28,7 @@ const Control = props => {
 
   const control =
     <div className={ `tangible-block-control tangible-block-control-${config.type}` }>
-      { getControl(config, save, saved, field) }
+      { getControl(save, saved, field) }
     </div>
   
   if( ! isPopup ) return control;

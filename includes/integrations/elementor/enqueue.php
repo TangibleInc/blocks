@@ -25,7 +25,9 @@ add_action('elementor/editor/before_enqueue_scripts', $interface->register_modul
  * Called at the end of $template_system->enqueue_elementor_template_editor()
  * @see /vendor/tangible/template-system/system/integrations/elementor/enqueue.php
  */
-add_action('tangible_enqueue_elementor_template_editor', function() use($plugin) {
+add_action('tangible_enqueue_elementor_template_editor', function() use($plugin, $fields) {
+
+  $fields->enqueue();
 
   wp_enqueue_script(
     $plugin->elementor_dynamic_config['handle'], // See ./index.php
@@ -47,8 +49,9 @@ add_action('elementor/editor/after_enqueue_scripts', function() use($plugin) {
 
   $blocks = $plugin->get_all_blocks();
   $config = $plugin->elementor_dynamic_config;
-
-  $config['controls'] = $plugin->get_custom_controls();
+  $handle = $plugin->elementor_dynamic_config['handle'];
+  
+  $config['controls'] = $plugin->enqueue_controls_data( $handle, 'elementor' );
 
   /**
    * Visibility conditions
@@ -105,10 +108,9 @@ add_action('elementor/editor/after_enqueue_scripts', function() use($plugin) {
   }
 
   wp_add_inline_script(
-
-    $plugin->elementor_dynamic_config['handle'],
-
+    $handle,
     'window.Tangible = window.Tangible || {}; window.Tangible.blockConfig = ' . json_encode($config),
     'before'
   );
+
 });

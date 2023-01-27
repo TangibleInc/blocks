@@ -12,9 +12,9 @@ add_action('elementor/controls/register', function($controls_manager) use($plugi
 
   require_once __DIR__ . '/base.php';
 
-  foreach($plugin->get_custom_controls() as $type => $config) {
+  foreach( $plugin->get_controls() as $type => $config ) {
 
-    $control = $plugin->register_elementor_control($config);
+    $control = $plugin->register_elementor_control( $config );
     
     $controls_manager->register( $control );
   }

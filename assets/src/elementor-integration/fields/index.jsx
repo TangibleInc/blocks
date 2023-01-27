@@ -1,14 +1,17 @@
+import {
+  render, 
+  unmountComponentAtNode
+} from 'react'
+
 import Control from '../../template-block-fields/Control'
 
-const { wp, Tangible } = window
-const { render, unmountComponentAtNode } = wp.element
-
 const { blockConfig: { controls } } = Tangible
-
 const $ = jQuery
 
 $(window).on('elementor:init', () => {
-  for(const controlName in controls) initControl(controls[controlName])
+  for( const controlName in controls ) {
+    initControl(controls[controlName])
+  } 
 })
 
 /**
@@ -24,7 +27,8 @@ const initControl = control => {
     onReady: function() {
 
       const wrapper = this.ui.contentEditable.prevObject[0]
-      const reactDiv = wrapper.getElementsByClassName(`tangible-${control.prefixed_type}`)[0]
+      const reactDiv = wrapper.getElementsByClassName(control.prefixed_type)[0]
+
       const field = JSON.parse(reactDiv.getAttribute('data-field'))
 
       const saveValue = this.saveValue.bind(this)

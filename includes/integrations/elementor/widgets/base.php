@@ -84,48 +84,6 @@ class Base extends Widget_Base {
     $this->end_controls_section();
   }
 
-  protected function add_tangible_group_control( $parent, $control_name, $args ) {
-
-    $group_control_prefix = self::$plugin->elementor_group_control_prefix;
-
-    $type = str_replace($group_control_prefix, '', $args['type']);
-
-    $args['name'] = $control_name;
-    unset($args['type']);
-
-    $parent->add_group_control( $type, $args );
-
-    foreach( $args['include'] as $name ) {
-      $parent->update_control( $control_name . '_' . $name, [
-        'condition'   => [],
-        'render_type' => 'template',
-      ]);
-    }
-  }
-
-  /**
-   * @see https://developers.elementor.com/docs/controls/classes/control-repeater/
-   */
-  protected function add_repeater( $name, $args ) {
-
-    $controls = $args['controls'] ?? false;
-
-    if( ! is_array($controls) ) return;
-
-    $repeater = new Repeater();
-
-    foreach( $controls as $control ) {
-      $this->register_control( $control, $repeater );
-    }
-
-    $this->add_control($name, [
-      'label'  => $args['label'] ?? '',
-      'type'   => Controls_Manager::REPEATER,
-      'fields' => $repeater->get_controls(),
-		]);
-
-  }
-
   /**
    * $parent is either $this or a Repeater instance
    */
@@ -152,15 +110,7 @@ class Base extends Widget_Base {
     $name = static::$control_prefix . $field['name'];
     $type = $args['type'] ?? '';
     
-    if( self::$plugin->is_elementor_group_control( $type ) ) {
-      $this->add_tangible_group_control( $parent, $name, $args );
-    }
-    else if( $type === 'repeater' ) {
-      $parent->add_repeater( $name, $args );
-    }
-    else {
-      $parent->add_control( $name, $args ); 
-    }
+    $parent->add_control( $name, $args );
   }
 
   /**
@@ -183,9 +133,7 @@ class Base extends Widget_Base {
         );
 
         foreach( $section['fields'] as $field ) {
-
           $this->register_control( $field, $this );
-
         }
 
         $this->end_controls_section();
@@ -200,10 +148,7 @@ class Base extends Widget_Base {
 
     $settings = $this->get_settings_for_display();
     $block_id = static::$tangible_block['content_id'];
-    $universal_id = isset(static::$tangible_block['universal_id'])
-      ? static::$tangible_block['universal_id']
-      : ''
-    ;
+    $universal_id = static::$tangible_block['universal_id'] ?? '';
 
     $render_data = [
       'content_id'   => $block_id,
