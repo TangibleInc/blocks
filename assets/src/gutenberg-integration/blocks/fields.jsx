@@ -1,4 +1,4 @@
-import Control from '../../../template-block-fields/Control'
+import Control from '../../template-block-fields/Control'
 
 const { components: { BaseControl } } = wp
 const { blockConfig: { controls } } = Tangible
@@ -6,7 +6,7 @@ const { blockConfig: { controls } } = Tangible
 /**
  * @see https://developer.wordpress.org/block-editor/reference-guides/components/
  */
-export const getField = (item, value, save) => {
+const getField = (item, value, save) => {
 
   const className = `tangible-block-editor-control-${ item.type }`
 
@@ -34,3 +34,5 @@ export const getField = (item, value, save) => {
   }
 
 }
+
+export { getField }

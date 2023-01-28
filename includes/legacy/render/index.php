@@ -5,6 +5,7 @@ defined('ABSPATH') or die();
 /**
  * Legacy render:
  * - Render control variable using deprecated synatax: {{ control-name }}
+ * - Use builder native controls instead of tangible-fields
  * - Define subvalues as sass variables
  */
 
@@ -13,14 +14,14 @@ require_once __DIR__ . '/render.php';
 $plugin->init_legacy_render = function($post, $data) use($plugin) {
 
   $plugin->legacy_render_data = $plugin->get_legacy_render_data( $data );
-
+  
   add_filter( 'tangible_template_post_style',  $plugin->legacy_style_render, 5, 2 );
   add_filter( 'tangible_template_post_script', $plugin->legacy_script_render, 5, 2 );
 
   $plugin->define_subvalue_variables(
     $plugin->legacy_render_data
   );
-
+  
   return $plugin->legacy_render( $post->post_content, 'template' );
 };  
 
@@ -39,7 +40,7 @@ $plugin->get_legacy_render_data = function($data) {
 
 $plugin->reset_legacy_render = function() use($plugin) {
 
-  $plugin->legacy_render_data    = false;
+  $plugin->legacy_render_data = false;
   
   remove_filter( 'tangible_template_post_style', $plugin->legacy_style_render, 5 ); 
   remove_filter( 'tangible_template_post_style', $plugin->legacy_script_render, 5 ); 

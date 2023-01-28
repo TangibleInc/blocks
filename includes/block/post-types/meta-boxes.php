@@ -1,0 +1,59 @@
+<?php
+
+defined('ABSPATH') or die();
+
+/**
+ * Metabox to enable new block render/controls  
+ */
+
+$legacy_meta_name = 'tangible_blocks_use_new_controls';
+$nonce_prefix = 'tangible_blocks_legacy_metabox_';
+
+$plugin->block_use_new_controls = function($block_id) use($legacy_meta_name) {
+  return get_post_meta( $block_id, $legacy_meta_name, true ) === 'on';
+};
+
+add_action('add_meta_boxes', function() use($plugin, $fields, $legacy_meta_name, $nonce_prefix) {
+
+  add_meta_box(
+    'tangible-block-legacy',
+    __( 'Legacy mode', 'tangible-blocks' ),
+    function($block) use($plugin, $fields, $legacy_meta_name, $nonce_prefix) {
+
+      wp_nonce_field(
+        $nonce_prefix . $block->ID, 
+        $nonce_prefix . $block->ID,
+        false
+      );
+
+      echo $fields->render_field($legacy_meta_name, [
+        'label' => __( 'Enable new controls for this block', 'tangible-blocks' ),
+        'type'  => 'switch',
+        'value' => $plugin->block_use_new_controls( $block->ID ) ? 'on' : 'off',
+      ]);
+    },
+    'tangible_block'
+  );
+
+});
+
+add_action('save_post', function($block_id, $block) use($legacy_meta_name, $nonce_prefix) {
+  
+  if( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE ) return;
+  if( $block->post_type !== 'tangible_block' ) return;
+
+  $nonce_name  = $nonce_prefix . $block->ID;
+  $nonce_value = $_POST[ $nonce_name ] ?? false;
+
+  $is_nonce_valid = wp_verify_nonce( $nonce_value, $nonce_name );
+
+  if( ! $is_nonce_valid ) return;
+
+  $is_legacy = $_POST[ $legacy_meta_name ] ?? false;
+
+  if( ! in_array($is_legacy, ['on', 'off']) ) return;
+
+  update_post_meta( $block_id, $legacy_meta_name, $is_legacy );
+
+}, 10, 2);
+

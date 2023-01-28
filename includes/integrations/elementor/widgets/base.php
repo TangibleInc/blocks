@@ -84,10 +84,7 @@ class Base extends Widget_Base {
     $this->end_controls_section();
   }
 
-  /**
-   * $parent is either $this or a Repeater instance
-   */
-  protected function register_control( $field, $parent ) {
+  protected function register_control( $field ) {
     
     if( ! is_array($field) ) return false;
 
@@ -110,7 +107,7 @@ class Base extends Widget_Base {
     $name = static::$control_prefix . $field['name'];
     $type = $args['type'] ?? '';
     
-    $parent->add_control( $name, $args );
+    $this->add_control( $name, $args );
   }
 
   /**
@@ -158,6 +155,7 @@ class Base extends Widget_Base {
     ];
 
     $fields = self::$plugin->get_block_controls( $render_data );
+    $post   = self::$plugin->get_block_post_from_settings( $render_data );
 
     foreach( $fields as $field ) {
       
@@ -167,21 +165,18 @@ class Base extends Widget_Base {
       $value = $settings[ static::$control_prefix . $name ] ?? '';
       
       $render_data['fields'][ $name ] = self::$plugin->format_control_value( 
-        $value, 'elementor', $field, $settings 
+        $value, 'elementor', $field, $settings, $post->ID ?? false
       );
     }
 
-    $post = self::$plugin->get_block_post_from_settings( $render_data );
-    
-    if ( ! empty($post) ) {
+    if( empty($post) ) return;
 
-      $system = self::$template_system;
+    $system = self::$template_system;
 
-      // Ensure current post is set for builder preview
-      $system->loop->push_current_post_context();
-      echo $this->plugin()->render( $post, $render_data );
-      $system->loop->pop_current_post_context();
-    }
+    // Ensure current post is set for builder preview
+    $system->loop->push_current_post_context();
+    echo $this->plugin()->render( $post, $render_data );
+    $system->loop->pop_current_post_context();
   }
 
 }

@@ -2,12 +2,28 @@
 
 defined('ABSPATH') or die();
 
-$plugin->render = function($post, $data) use($plugin, $html) {
+/**
+ * Note about legacy render/new controls:
+ * 
+ * If new controls are not actvated for the current block:
+ * - The old {{ control-name }} syntax works
+ * - Old controls are used to render values
+ * - New syntax can also be used:
+ *    - <Field value /> for render
+ *    - <Field sub_value_name /> for subvalues
+ * 
+ * If new controls are actvated for the current block:
+ * - Only the new syntax works
+ * - New controls are used in builder and to render values
+ */
 
+$plugin->render = function($post, $data) use($plugin, $html, $template_system) {
+  
   $post = $plugin->init_render( $post, $data );
 
   $fields = $data['fields'] ?? [];
-  
+  $is_legacy = $plugin->block_use_new_controls( $post->ID ) !== true;
+
   /**
    * Register sass, js and control variable in template system
    * 
@@ -15,8 +31,9 @@ $plugin->render = function($post, $data) use($plugin, $html) {
    * @see ./vendor/tangible/template-system/template/tags/get-set/js
    * @see ./vendor/tangible/template-system/template/tags/get-set/control
    */
-  
   foreach( $fields as $field ) {
+    
+    if( empty($field) ) continue;
     
     $args  = $field['attributes'];
     $value = $field['value'];
@@ -24,7 +41,9 @@ $plugin->render = function($post, $data) use($plugin, $html) {
     $type = $args['type'];
     $name = $args['name'];
     
-    $control = $plugin->get_control( $type ); 
+    $control = $is_legacy
+      ? $plugin->get_legacy_control( $type ) 
+      : $plugin->get_control( $type ); 
 
     if( $control === false ) continue;
 
@@ -58,11 +77,9 @@ $plugin->render = function($post, $data) use($plugin, $html) {
 
   }
   
-  $template_system = tangible_template_system();
-      
   $template_output = $template_system->render_template_post( $post, $data );
 
-  $plugin->reset_render();
+  $plugin->reset_render( $post );
 
   return $template_output;
 };
@@ -74,14 +91,18 @@ $plugin->init_render = function($post, $data) use($plugin) {
   /**
    * Legacy render using {{ control-name }} syntax
    * 
-   * @see /legacy/render.php
+   * Value rendered with this syntax will use old controls 
+   * 
+   * @see ./includes/legacy/render/
    */
-  // $post->post_content = $plugin->init_legacy_render( $post, $data );
+  if( ! $plugin->block_use_new_controls( $post->ID ) ) {
+    $post->post_content = $plugin->init_legacy_render( $post, $data );
+  }
   
   return $post;
 };
 
-$plugin->reset_render = function() use($html, $plugin) {
+$plugin->reset_render = function($post) use($html, $plugin) {
 
   $html->clear_sass_variables();
   $html->clear_js_variables();
@@ -89,8 +110,9 @@ $plugin->reset_render = function() use($html, $plugin) {
   
   $plugin->current_block_wrapper = false;
 
-  // $plugin->reset_legacy_render();
-
+  if( ! $plugin->block_use_new_controls( $post->ID ) ) {
+    $plugin->reset_legacy_render();
+  }
 };
 
 $plugin->get_sass_variable_type = function($value, $control_type) use($plugin) {
@@ -112,12 +134,11 @@ $plugin->get_js_variable_type = function($value, $control_type) {
  * 
  * @see /vendor/tangible/template-system/system/render/style.php
  */
-add_filter( 'tangible_template_post_style', function($style, $post) use($plugin) {
+add_filter('tangible_template_post_style', function($style, $post) use($plugin) {
 
   if( $post->post_type !== 'tangible_block' || empty($plugin->current_block_wrapper) ) {
     return $style;
   } 
   
   return '.' . $plugin->current_block_wrapper . " {\n" . $style . "\n}";
-
-}, 10, 2 );
+}, 10, 2);

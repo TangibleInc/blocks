@@ -13,7 +13,7 @@ class Dimensions extends Base {
   }
 
   function get_value($formated_value, array $args, string $context) {
-    
+
     if( is_string($formated_value) ) {
       $formated_value = json_decode($formated_value);
     }

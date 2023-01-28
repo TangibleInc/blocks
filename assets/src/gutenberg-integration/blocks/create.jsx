@@ -1,7 +1,8 @@
 import ControlVisibility from '../../template-controls-visibility'
-import { getField } from './fields/index'
 
-const { wp, Tangible } = window
+import { getField } from './fields'
+import { getLegacyField } from './legacy-fields/index'
+
 const {
   blockEditor: { InspectorControls },
   blocks: { registerBlockType },
@@ -104,13 +105,18 @@ export const createBlock = data => {
                   <Panel key={`${section.name}-panel-${index}`} className={ 'tangible-block-editor-section' }>
                     <PanelBody title={ section.label } initialOpen={ index === 0 }>
                       { section.fields.map( item =>
-                        isVisible(item.conditions) &&
+                        isVisible(item.conditions) && 
                           <PanelRow>
-                            { getField(
-                              item, 
-                              props.attributes[item.name], 
-                              props.setAttributes
-                            ) }
+                            { data.use_legacy_controls
+                              ? getLegacyField(
+                                  item, 
+                                  props
+                                )
+                              : getField(
+                                  item, 
+                                  props.attributes[item.name], 
+                                  props.setAttributes
+                                ) }
                           </PanelRow>
                       ) }
                     </PanelBody>

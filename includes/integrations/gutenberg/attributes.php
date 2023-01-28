@@ -61,7 +61,7 @@ function format_attributes( array $data ) {
     
     $field_args = $plugin->get_builder_args( $field, 'gutenberg', $block_id );
 
-    if( $field_args === false ) continue;
+    if( empty($field_args) ) continue;
 
     $attributes[ $field['name'] ] = $field_args;
   }

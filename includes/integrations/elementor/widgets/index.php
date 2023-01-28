@@ -27,9 +27,9 @@ $plugin->register_dynamic_widgets = function($widgets_manager) use($plugin, $tem
   require_once __DIR__ . '/base.php';
 
   $plugin->elementor_dynamic_config['prefix'] = [
-    'slug'     => Base::$slug_prefix,
-    'section'  => Base::$section_prefix,
-    'control'  => Base::$control_prefix
+    'slug'    => Base::$slug_prefix,
+    'section' => Base::$section_prefix,
+    'control' => Base::$control_prefix
    ];
 
   $blocks = $plugin->get_all_blocks();

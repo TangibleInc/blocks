@@ -1,4 +1,7 @@
-<?php defined('ABSPATH') or die();
+<?php 
+
+defined('ABSPATH') or die();
+
 /**
  * Elementor integration
  * @see /vendor/tangible/template-system/system/integrations/elementor
@@ -11,12 +14,12 @@ $plugin->elementor_dynamic_config = [
     'title' => 'Tangible',
     'icon'  => 'fa fa-plug',
   ],
-  'icon'  => 'eicon-code-highlight',
 
   /**
    * Script handle used in enqueue.php, controls/base.php
    */
-  'handle'  => 'tangible-blocks-elementor-integration',
+  'handle' => 'tangible-blocks-elementor-integration',
+  'icon'   => 'eicon-code-highlight',
 ];
 
 require_once __DIR__ . '/enqueue.php';

@@ -73,7 +73,7 @@ add_action('elementor/editor/after_enqueue_scripts', function() use($plugin) {
 
   $block_custom_tabs = $plugin->get_blocks_with_custom_tabs();
 
-  foreach ($blocks as $block) {
+  foreach( $blocks as $block ) {
 
     if( empty($block['tabs']) ) continue;
 
@@ -96,7 +96,7 @@ add_action('elementor/editor/after_enqueue_scripts', function() use($plugin) {
 
       if( empty($tab['sections']) ) continue;
 
-      foreach ($tab['sections'] as $section) {
+      foreach( $tab['sections'] as $section ) {
 
         if ( empty($section['conditions']) ) continue;
 

@@ -159,6 +159,13 @@ class Control {
   }
 
   /**
+   * Alias used by the new control system
+   */
+  function get_control_args($builder, $field) {
+    return $this->register_control($builder, $field);
+  }
+
+  /**
    * Return the right field slug according to the builder
    */
   function get_type($builder) {

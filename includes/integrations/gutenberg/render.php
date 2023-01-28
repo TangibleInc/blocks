@@ -41,7 +41,7 @@ function render( $attributes, $content, $data ) {
       $value = $attributes[ $name ] ?? '';
 
       $render_data['fields'][ $name ] = $plugin->format_control_value(
-        $value, 'gutenberg', $field, $attributes 
+        $value, 'gutenberg', $field, $attributes, $template_post->ID ?? false
       );
     }
 
