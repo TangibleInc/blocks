@@ -77,7 +77,7 @@ $plugin->register_legacy_control('image', [
     'caption',
     'description'
   ])
-  ->render_sub_values(function($name, $builder, $field, $settings) {    
+  ->render_sub_values(function($name, $builder, $field, $settings) {   
     switch($builder) {
       case 'elementor':
         $elementor_prefix = Base::$control_prefix;
@@ -87,9 +87,9 @@ $plugin->register_legacy_control('image', [
         break;
         
       case 'gutenberg':
-        $values = $settings[$field['name']];
-        if(! isset($values[$name])) return '';
-        return $values[$name];
+        $values = $settings[$field['name']];        
+        $attachment = get_post( $values['id'] ?? '');
+        if( empty($attachment) ) return '';
         break;
 
       case 'beaver-builder':
@@ -109,7 +109,7 @@ $plugin->register_legacy_control('image', [
     $values['title'] = $attachment->post_title;
     $values['caption'] = $attachment->post_excerpt;
     $values['description'] = $attachment->post_content;
-
+    
     return $values[$name];
   });
 
