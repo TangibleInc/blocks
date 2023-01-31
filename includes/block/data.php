@@ -35,7 +35,11 @@ $plugin->get_block_data = function($template) use ($plugin) {
 
   static $blocks = [];
 
-  if( isset($blocks[ $template['id'] ])) return $blocks[ $template['id'] ];
+  $post_id = $template['id'];
+
+  if( isset($blocks[ $post_id ])) return $blocks[ $post_id ];
+
+  $is_legacy = $plugin->block_use_new_controls($post_id) !== true;
 
   $controls_template = !empty($template['controls_template'])
     ? $template['controls_template']
@@ -47,7 +51,7 @@ $plugin->get_block_data = function($template) use ($plugin) {
    */
   $data = ($controls_template[0]==='{' || $controls_template[0]==='[')
     ? tangible_hjson()->parse($controls_template)
-    : $plugin->get_block_controls_template_json($controls_template, $template['id'])
+    : $plugin->get_block_controls_template_json($controls_template, $post_id)
   ;
 
   // Backward compatibility: Sections can be given as array directly
@@ -127,12 +131,15 @@ $plugin->get_block_data = function($template) use ($plugin) {
       $sections []= [
         'name'  => 'section-' . $key . '-' . $section_key,
         'label' => $section['title'],
-        'fields'=> array_map(function($control) use($plugin) {
+        'fields'=> array_map(function($control) use($plugin, $is_legacy) {
 
           $data = (array) $control;
           if( empty($data['type']) ) return false;
 
-          $control = $plugin->get_control( $data['type'] );
+          $control = $is_legacy
+            ? $plugin->get_legacy_control( $data['type'] ) 
+            : $plugin->get_control( $data['type'] ); 
+    
           if( empty($control) ) return false;
 
           return $control->sanitize_args( $data );
@@ -144,7 +151,7 @@ $plugin->get_block_data = function($template) use ($plugin) {
 
     $tabs []= [
       'name' => $tab['title'] !== 'default'
-        ? 'tab-' . $template['id'] . '-' . $key
+        ? 'tab-' . $post_id . '-' . $key
         : $tab['title']
       ,
       'label'      => $tab['title'],
@@ -153,11 +160,8 @@ $plugin->get_block_data = function($template) use ($plugin) {
     ];
   }
 
-  $post_id = $template['id'];
   $name = get_post_field('post_name', $post_id);
 
-  $content_id = $post_id;
-  
   /**
    * Universal ID - Unique and immutable across sites
    * @see /includes/template/universal-id/index.php
@@ -165,12 +169,11 @@ $plugin->get_block_data = function($template) use ($plugin) {
   $universal_id = get_post_field('universal_id', $post_id);
 
   return $blocks[ $post_id ] = [
-    'name'        => $name,
-    'label'       => $template['title'],
-
-    'content_id'   => $post_id,
-    'universal_id' => $universal_id,
-
-    'tabs'        => $tabs
+    'content_id'      => $post_id,
+    'universal_id'    => $universal_id,
+    'name'            => $name,
+    'label'           => $template['title'],
+    'legacy_controls' => $is_legacy,
+    'tabs'            => $tabs
   ];
 };

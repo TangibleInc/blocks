@@ -107,7 +107,7 @@ export const createBlock = data => {
                       { section.fields.map( item =>
                         isVisible(item.conditions) && 
                           <PanelRow>
-                            { data.use_legacy_controls
+                            { data.legacy_controls
                               ? getLegacyField(
                                   item, 
                                   props

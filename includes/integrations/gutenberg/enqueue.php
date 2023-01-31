@@ -24,13 +24,7 @@ add_action('tangible_enqueue_gutenberg_template_editor', function() use ($plugin
     $plugin->version
   );
 
-  $blocks = array_map(
-    function($block) use($plugin) {
-      $block['use_legacy_controls'] = $plugin->block_use_new_controls( $block['content_id'] ) !== true;
-      return $block; 
-    },
-    $plugin->get_all_blocks() ?? []
-  );
+  $blocks = $plugin->get_all_blocks();
 
   $config = $plugin->gutenberg_dynamic_config;
 

@@ -21,7 +21,7 @@ const getField = (item, value, save) => {
     const control = controls[ item.type ]
     
     return (
-      <BaseControl label={ item.label } className={ className  }>
+      <BaseControl className={ className  }>
         <Control
           config={ control }
           initialValue={ value }

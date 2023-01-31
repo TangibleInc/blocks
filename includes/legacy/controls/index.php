@@ -23,6 +23,7 @@ $legacy = [
 
 require_once __DIR__ . '/register.php';
 require_once __DIR__ . '/control.php';
+require_once __DIR__ . '/enqueue.php';
 
 require_once __DIR__ . '/utils/index.php';
 require_once __DIR__ . '/types/index.php';
@@ -37,4 +38,6 @@ $plugin->get_legacy_custom_control = function() use($legacy) {
   return $legacy['custom_controls'];
 };
 
-// $plugin->legacy = &$legacy;
+$plugin->get_legacy_controls = function() use($legacy) {
+  return $legacy['controls'];
+};
