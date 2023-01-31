@@ -21,7 +21,7 @@ $plugin->legacy_render = function($content, $context) use($plugin) {
     
     if( $control === false ) continue;
     
-    $value = $control->get_value(['value' => $value ], $field, $context );
+    $value = $control->get_value( $value, $field, $context );
       
     // Custom field may return object
 

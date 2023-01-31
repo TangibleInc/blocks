@@ -227,9 +227,17 @@ class Control {
 
   /**
    * Compatibility when legacy control used in new system
+   * 
+   * The function is only be called for the new syntax
    */
   function render($value, $args, $context) {
-    return $this->get_value($value, $args, $context);
+
+    if( ! in_array($context, $this->context) ) return '';
+
+    $value['value'] = $this->get_value($value['value'], $args, $context);
+
+    // Only template support array as a render, for other contexes we use default output
+    return $context === 'template' ? $value : $value['value']; 
   }
 
   function get_value($value, $args, $context) {
@@ -240,8 +248,8 @@ class Control {
     $callback = $this->render ?? false;
 
     return is_callable($callback)
-      ? $callback($value['value'], $field, $context)
-      : $value['value']
+      ? $callback($value, $field, $context)
+      : $value
     ;
   }
 

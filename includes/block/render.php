@@ -46,7 +46,7 @@ $plugin->render = function($post, $data) use($plugin, $html, $template_system) {
       : $plugin->get_control( $type ); 
 
     if( $control === false ) continue;
-
+    
     if( $control->has_context('template') ) {
       $control_value = $control->render( $value, $args, 'template' );
       $html->set_control_variable( $name, $control_value );
