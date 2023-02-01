@@ -13,7 +13,7 @@ class Repeater extends Base {
     $args = parent::get_control_args($builder, $args);
 
     /**
-     * TODO: Look how to get directly the right structure from the L&L template?s
+     * TODO: Look how to get directly the right structure from the L&L template?
      */
     $args['data']['fields'] = $args['data']['controls'] ?? [];
     unset($args['data']['controls']);
@@ -63,6 +63,7 @@ class Repeater extends Base {
 
   function get_value($items, array $args, string $context) {
 
+    if( is_string($items) ) $items = json_decode($items);
     if( ! is_array($items) ) return [];
 
     $item_values = [];

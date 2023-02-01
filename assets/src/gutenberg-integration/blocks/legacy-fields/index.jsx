@@ -21,7 +21,7 @@ const {
   },
   blockEditor: { MediaUpload, MediaUploadCheck },
 } = wp
-const { blockConfig: { controls } } = Tangible
+const { blockConfig: { legacy_controls } } = Tangible
 
 /**
  * Extract only needed attachment fields
@@ -87,11 +87,11 @@ export const getLegacyField = (item, props) => {
         </BaseControl>
       )
 
-      /**
-       * Maybe we could get a better control for this
-       *
-       * @see https://github.com/WordPress/gutenberg/tree/trunk/packages/components/src/
-       */
+    /**
+     * Maybe we could get a better control for this
+     *
+     * @see https://github.com/WordPress/gutenberg/tree/trunk/packages/components/src/
+     */
     case 'color':
       return(
         <Color
@@ -273,15 +273,14 @@ export const getLegacyField = (item, props) => {
    *
    * @see tangible-block-fields/Control.js
    */
+  if( legacy_controls[ item.type ] ) {
 
-  if( controls[ item.type ] ) {
-
-    const control = controls[ item.type ]
+    const legacy_control = legacy_controls[ item.type ]
 
     return (
       <BaseControl label={ item.label } className={ className  }>
         <LegacyControl
-          config={ control }
+          config={ legacy_control }
           initialValue={ value }
           builder={ 'gutenberg' }
           field={ item }

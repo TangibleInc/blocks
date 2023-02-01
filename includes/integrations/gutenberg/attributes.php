@@ -9,18 +9,18 @@ defined('ABSPATH') or die();
  *
  * Information needed for generating the settings fields will be passed in window.Tangible.blocks
  */
-function format_attributes( array $data ) {
+function format_attributes( array $block ) {
 
   $plugin = tangible_blocks();
 
   $attributes = [
     'config' => array_values([
       'type'    => 'array',
-      'default' => $data
+      'default' => $block
     ]),
     'name' => [
       'type'    => 'string',
-      'default' => $data['name'],
+      'default' => $block['name'],
     ],
     'block_id' => [
       'type' => 'string'
@@ -28,7 +28,7 @@ function format_attributes( array $data ) {
     // Post ID as "content ID" for backward compatibility
     'content_id' => [
       'type'    => 'integer',
-      'default' => (int) $data['content_id'],
+      'default' => (int) $block['content_id'],
     ],
     /**
      * Universal ID - Unique and immutable across sites
@@ -36,10 +36,7 @@ function format_attributes( array $data ) {
      */
     'universal_id' => [
       'type'    => 'string',
-      'default' => isset($data['universal_id'])
-        ? $data['universal_id']
-        : ''
-      ,
+      'default' => $block['universal_id'] ?? '',
     ],
     /**
      * Current post ID inside Gutenberg
@@ -50,8 +47,8 @@ function format_attributes( array $data ) {
     ],
   ];
 
-  $block_id = $plugin->get_block_id( $data );
-  $fields   = $plugin->get_block_controls( $data );
+  $block_id = $plugin->get_block_id( $block );
+  $fields   = $plugin->get_block_controls( $block );
 
   if( empty($fields) ) return $attributes;
 
@@ -59,7 +56,24 @@ function format_attributes( array $data ) {
 
     if( ! is_array($field) ) continue;
     
-    $field_args = $plugin->get_builder_args( $field, 'gutenberg', $block_id );
+    /**
+     * For gutenberg we must specify the type of data saved (string, array, int... etc)
+     * 
+     * This type used to be different according to the controls, but that's not longer the case. It will 
+     * now always be passed as a string (if the control expect an array or an object it will be passed as a
+     * JSON string)
+     * 
+     * In new controls, the get_builder_args() is now used to format the field data we enqueue
+     * 
+     * @see ./enqueue.php
+     * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-attributes/#type-validation
+     */
+    $field_args = $block['legacy_controls'] === true 
+      ? $plugin->get_builder_args( $field, 'gutenberg', $block_id )
+      : array_merge( 
+          $field, 
+          [ 'type' => 'string' ] 
+        );
 
     if( empty($field_args) ) continue;
 

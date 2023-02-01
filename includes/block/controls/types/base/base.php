@@ -13,7 +13,7 @@ class Base {
   public array $context = ['template', 'style', 'script'];
    
   /**
-   * We use a prefix we registering a control in builders, to avoid collision with existing ones
+   * We use a prefix when registering a control in builders, to avoid collision with existing ones
    */
   function get_prefixed_type() {
     return 'tangible_block_control_' . $this->type;
@@ -36,16 +36,13 @@ class Base {
 
     $args = $this->register_control($builder, $args);
     
-
     /**
-     * For gutenberg we must specify the type of data saved (not the type of field)
-     * 
-     * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-attributes/#type-validation
+     * For beaver-builder and elementor we need to prefix our controls
+     * in order to avoid conflict with native ones
      */
-    $args['type'] = $builder === 'gutenberg'
-      ? 'string' 
-      : $this->get_prefixed_type()
-    ;
+    $args['type'] = $builder !== 'gutenberg'
+      ? $this->get_prefixed_type()
+      : $this->type;
     
     /**
      * When we let multiple set it can trigger a default native behavior we don't want in 

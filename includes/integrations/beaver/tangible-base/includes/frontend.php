@@ -18,7 +18,7 @@ foreach( $fields as $field ) {
 
   $name  = $field['name'];
   $value = $settings->{ $name } ?? '';
-
+  
   $render_data['fields'][ $name ] = $plugin->format_control_value(
     $value, 'beaver-builder', $field, $settings, $post->ID ?? false 
   );

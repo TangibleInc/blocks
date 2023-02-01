@@ -25,13 +25,46 @@ add_action('tangible_enqueue_gutenberg_template_editor', function() use ($plugin
   );
 
   $blocks = $plugin->get_all_blocks();
-
   $config = $plugin->gutenberg_dynamic_config;
 
-  $config['conditions'] = $plugin->block_visibility_conditions;
-  $config['controls']   = $plugin->enqueue_controls_data( $config['handle'], 'gutenberg' );
+  /**
+   * We need to apply formating on new controls before passing info to js
+   * 
+   * @see /vendor/tangible/fields/format.php
+   */
+  $blocks = array_map(
+    function($block) use($plugin) {
+
+      // @see attributes.php
+      if( $block['legacy_controls'] ) return $block;
+      
+      foreach( $block['tabs'] as &$tab ) {
+        foreach( $tab['sections'] as &$section ) {
+          foreach( $section['fields'] as &$field ) {
+        
+            if( ! is_array($field) ) continue;
+            
+            /**
+             * @see ./includes/blocks/controls/format.php
+             */
+            $field = $plugin->get_builder_args( 
+              $field, 
+              'gutenberg', 
+              $block['content_id'] 
+            );
+
+          }
+        }
+      }
+      return $block;
+    }, 
+    $plugin->get_all_blocks()
+  );
 
   $config['current_post_id'] = get_the_ID();
+  $config['conditions']      = $plugin->block_visibility_conditions;
+  $config['controls']        = $plugin->enqueue_controls_data( $config['handle'], 'gutenberg' );
+  $config['legacy_controls'] = $plugin->get_legacy_custom_control();
 
   wp_add_inline_script(
     $config['handle'],

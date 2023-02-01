@@ -15,18 +15,17 @@ const getField = (item, value, save) => {
    *
    * @see tangible-block-fields/Control.js
    */
-
   if( controls[ item.type ] ) {
 
     const control = controls[ item.type ]
-    
+
     return (
       <BaseControl className={ className  }>
         <Control
           config={ control }
           initialValue={ value }
           builder={ 'gutenberg' }
-          field={ item }
+          field={ item.data }
           save={ value => save({ [item.name]: value }) }
         />
       </BaseControl>

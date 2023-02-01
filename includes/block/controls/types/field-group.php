@@ -48,6 +48,8 @@ class FieldGroup extends Base {
 
   function get_value($fields, array $args, string $context) {
 
+    if( is_string($fields) ) $fields = json_decode($fields);
+
     $formated_fields = [];
 
     foreach( $fields as $name => $value ) {

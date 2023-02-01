@@ -21,12 +21,13 @@ class File extends Base {
         'title'       => $attachement->post_title,
         'caption'     => $attachement->post_excerpt,
         'description' => $attachement->post_content
-      ] 
+      ]
     : [];
   }
 
   function get_value($values, array $args, string $context) {
 
+    if( is_string($values) ) $values = json_decode($values);
     if( ! is_array($values) ) return [];
 
     return array_map(

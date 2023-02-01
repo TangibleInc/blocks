@@ -25,7 +25,7 @@ const initControl = control => {
   FLBuilder.addHook('didShowLightbox', () => {
 
     const controlContainers = document.getElementsByClassName(`${control.prefixed_type}-container`)
-    
+
     if( controlContainers.length === 0 ) return;
     
     for (let i = 0; i < controlContainers.length; i++) {

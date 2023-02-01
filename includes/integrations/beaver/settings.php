@@ -48,7 +48,7 @@ function format_settings($block) {
       }
 
       $fields = &$setting_section[ $section['name'] ]['fields'];
-      $fields = format_setting_fields( $block_id, $section['fields'] );
+      $fields = format_setting_fields( $block, $section['fields'] );
       
       // Pass visibility conditions to JS
       foreach( $section['fields'] as $field ) {
@@ -77,7 +77,7 @@ function format_settings($block) {
   return $settings;
 }
 
-function format_setting_fields( $block_id, $fields) {
+function format_setting_fields( $block, $fields) {
 
   $plugin = tangible_blocks();
   $formated_fields = [];
@@ -86,7 +86,7 @@ function format_setting_fields( $block_id, $fields) {
 
     if( ! is_array($field) ) continue;
 
-    $args = $plugin->get_builder_args( $field, 'beaver-builder', $block_id );
+    $args = $plugin->get_builder_args( $field, 'beaver-builder', $block['content_id'] );
 
     if( $args === false ) continue;
 

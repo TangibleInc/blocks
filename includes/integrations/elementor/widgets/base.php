@@ -4,6 +4,7 @@ namespace Tangible\Blocks\Integrations\Elementor\Dynamic;
 
 defined('ABSPATH') or die();
 
+use Tangible\Blocks\Legacy\Integrations\Elementor\LegacyTrait;
 use Elementor\Repeater;
 use Elementor\Widget_Base;
 use Elementor\Controls_Manager;
@@ -13,6 +14,8 @@ use Elementor\Controls_Manager;
  * @see https://stackoverflow.com/a/3303658
  */
 class Base extends Widget_Base {
+
+  use LegacyTrait;
 
   static $slug_prefix    = 'tangible_widget_';
   static $section_prefix = 'tangible_section_';
@@ -29,12 +32,20 @@ class Base extends Widget_Base {
     return static::$plugin->get_block_id( static::$tangible_block );
   }
 
+  public function get_post_id() {
+    return static::$tangible_block['content_id'];
+  }
+
   public function get_name() {  
     return static::$slug_prefix . $this->get_block_id();
   }
 
   public function get_title() {
     return static::$tangible_block['label'];
+  }
+
+  public function use_legacy_controls() {
+    return static::$plugin->block_use_new_controls( $this->get_post_id() ) === false;
   }
 
   /**
@@ -87,8 +98,8 @@ class Base extends Widget_Base {
   protected function register_control( $field ) {
     
     if( ! is_array($field) ) return false;
-
-    $args = self::$plugin->get_builder_args( $field, 'elementor', $this->get_block_id() ); 
+    
+    $args = self::$plugin->get_builder_args( $field, 'elementor', $this->get_post_id() ); 
     
     if( $args === false ) return false;
 
@@ -106,7 +117,7 @@ class Base extends Widget_Base {
 
     $name = static::$control_prefix . $field['name'];
     $type = $args['type'] ?? '';
-    
+
     $this->add_control( $name, $args );
   }
 
@@ -129,8 +140,18 @@ class Base extends Widget_Base {
           ]
         );
 
-        foreach( $section['fields'] as $field ) {
-          $this->register_control( $field, $this );
+        /**
+         * Old system (using elementor native controls)
+         * 
+         * @see ./includes/legacy/integrations/elementor/legacy-trait.php
+         */
+        if( $this->use_legacy_controls() ) {
+          $this->register_legacy_controls( $section['fields'] );
+        }
+        else {
+          foreach( $section['fields'] as $field ) {
+            $this->register_control( $field, $this );
+          }
         }
 
         $this->end_controls_section();
