@@ -2,5 +2,10 @@
 
 defined('ABSPATH') or die();
 
-require_once __DIR__ . '/beaver/index.php'; 
-require_once __DIR__ . '/elementor/index.php'; 
+if ( class_exists( 'Elementor\\Plugin' ) ) {
+  require_once __DIR__ . '/elementor/index.php'; 
+}
+
+if ( class_exists( 'FLBuilder' ) ) {
+  require_once __DIR__ . '/beaver/index.php'; 
+}
