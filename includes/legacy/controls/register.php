@@ -40,6 +40,8 @@ $plugin->register_legacy_control_alias = function(string $alias, string $type, a
   return $alias_control;
 };
 
+$plugin->custom_legacy_control_prefix = 'tangible_block_legacy_control_';
+
 $plugin->register_legacy_custom_control = function(array $config) use(&$legacy, $plugin) {
 
   $type = isset($config['type']) ? $config['type'] : false;
@@ -50,7 +52,7 @@ $plugin->register_legacy_custom_control = function(array $config) use(&$legacy, 
   /**
    * Prefix our generated controls to avoid collision with existing ones in builders
    */
-  $prefixed_type = 'tangible_block_control_' . $type;
+  $prefixed_type = $plugin->custom_legacy_control_prefix . $type;
   $config['prefixed_type'] = $prefixed_type;
    
   $legacy['custom_controls'][ $type ] = $config;

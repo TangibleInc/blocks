@@ -11,6 +11,9 @@ $render_data = [
 
 $plugin = tangible_blocks();
 $fields = $plugin->get_block_controls( $render_data );
+$post   = $plugin->get_block_post_from_settings( $render_data );
+
+if( empty($post) ) return;
 
 foreach( $fields as $field ) {
 
@@ -18,14 +21,10 @@ foreach( $fields as $field ) {
 
   $name  = $field['name'];
   $value = $settings->{ $name } ?? '';
-  
+
   $render_data['fields'][ $name ] = $plugin->format_control_value(
     $value, 'beaver-builder', $field, $settings, $post->ID ?? false 
   );
 }
 
-$post = $plugin->get_block_post_from_settings( $render_data );
-
-if ( ! empty($post) ) {
-  echo $plugin->render( $post, $render_data );
-}
+echo $plugin->render( $post, $render_data );

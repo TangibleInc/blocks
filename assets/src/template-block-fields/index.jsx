@@ -9,8 +9,8 @@ const getControl = (
         ? JSON.stringify(value) 
         : String(value)
     ),
-    value: value,
-    ...props 
+    ...props,
+    value: value // Important: Value must not be overwrited by props 
   })
 )
 

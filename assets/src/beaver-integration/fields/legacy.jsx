@@ -3,42 +3,21 @@ import {
   unmountComponentAtNode 
 } from 'react'
 
-import Control from '../../template-block-fields/Control'
-import { initLegacyControl } from './legacy'
+import LegacyControl from '../../template-block-fields/legacy-fields/LegacyControl'
 
-const { 
-  blockConfig: { 
-    controls,
-    legacy_controls 
-  } 
-} = Tangible
-
-  const $ = jQuery
-
-$(() => {
-
-  for( const controlName in controls ) {
-    initControl(controls[controlName])
-  }
-
-  for( const controlName in legacy_controls ) {
-    initLegacyControl(legacy_controls[controlName])
-  }
-
-})
+const $ = jQuery
 
 /**
  * Init custom controls
  *
  * @see tangible-block-fields/Control.js
  */
-
-const initControl = control => {
+const initLegacyControl = control => {
   
   FLBuilder.addHook('didShowLightbox', () => {
 
     const controlContainers = document.getElementsByClassName(`${control.prefixed_type}-container`)
-    
+
     if( controlContainers.length === 0 ) return;
     
     for (let i = 0; i < controlContainers.length; i++) {
@@ -69,7 +48,7 @@ const initControl = control => {
         unmountComponentAtNode(popupContainer)
         
         render( 
-          initComponent(control, $input, field), 
+          initComponent(control, $input, data), 
           popupContainer 
         )
       }
@@ -108,7 +87,7 @@ const initControl = control => {
 }
 
 const initComponent = (control, $input, field) => (
-  <Control
+  <LegacyControl
     config={ control }
     initialValue={ $input.val() }
     builder={ 'beaver-builder' }
@@ -119,3 +98,7 @@ const initComponent = (control, $input, field) => (
     }}
   />
 )
+
+export { 
+  initLegacyControl 
+}

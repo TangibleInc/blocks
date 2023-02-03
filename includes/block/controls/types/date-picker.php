@@ -8,10 +8,10 @@ class DatePicker extends Base {
 
   public string $type = 'date_picker';
 
-  function get_value($formated_value, array $args, string $context) {
+  function get_value($value, array $args, string $context) {
     return isset($args['format'])
-      ? tangible_date($formated_value)->format($args['format'])
-      : esc_html($formated_value);
+      ? tangible_date($value)->format($args['format'])
+      : esc_html($value);
   }
 
 }

@@ -35,7 +35,7 @@ $plugin->get_builder_args = function(array $args, string $builder, $block_id) us
   if( ! in_array($builder, ['elementor', 'beaver-builder', 'gutenberg']) ) {
     return false;
   } 
-  
+
   $control = $plugin->block_use_new_controls( $block_id ) === true 
     ? $plugin->get_control( $args['type'] ?? '' )
     : $plugin->get_legacy_control( $args['type'] ?? '' );
