@@ -52,6 +52,7 @@ add_action('elementor/editor/after_enqueue_scripts', function() use($plugin) {
   $handle = $plugin->elementor_dynamic_config['handle'];
   
   $config['controls'] = $plugin->enqueue_controls_data( $handle, 'elementor' );
+  $config['legacy_controls'] = $plugin->get_legacy_custom_control();
 
   /**
    * Visibility conditions

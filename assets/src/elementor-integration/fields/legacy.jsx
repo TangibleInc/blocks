@@ -3,36 +3,15 @@ import {
   unmountComponentAtNode
 } from 'react'
 
-import Control from '../../template-block-fields/Control'
-import { initLegacyControl } from './legacy'
-
-const $ = jQuery
-const { 
-  blockConfig: { 
-    controls,
-    legacy_controls 
-  } 
-} = Tangible
-
-$(window).on('elementor:init', () => {
-  
-  for( const controlName in controls ) {
-    initControl(controls[controlName])
-  }
-  
-  for( const controlName in legacy_controls ) {
-    initLegacyControl(legacy_controls[controlName])
-  }
-
-})
+import LegacyControl from '../../template-block-fields/legacy-fields/LegacyControl'
 
 /**
- * Init custom controls
+ * Init custom legacy controls
  * 
  * @see tangible-block-fields/Control.js  
  */
 
-const initControl = control => {
+const initLegacyControl = control => {
 
   const elementorControl = elementor.modules.controls.BaseData.extend({
 
@@ -45,7 +24,7 @@ const initControl = control => {
 
       const saveValue = this.saveValue.bind(this)
 
-      render(<Control 
+      render(<LegacyControl 
         config={ control }
         field={ field }
         initialValue={ this.ui.input.val() }
@@ -72,4 +51,8 @@ const initControl = control => {
   })
 
   elementor.addControlView(control.prefixed_type, elementorControl)
+}
+
+export {
+  initLegacyControl
 }
