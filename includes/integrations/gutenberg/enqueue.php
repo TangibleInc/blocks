@@ -31,7 +31,12 @@ add_action('tangible_enqueue_gutenberg_template_editor', function() use ($plugin
   $config['conditions'] = $plugin->block_visibility_conditions;
   $config['controls'] = $plugin->custom_controls;
 
-  $config['current_post_id'] = get_the_ID();
+  /**
+   * Ensure this field is a number, as defined in the schema for
+   * register_block_type() in ./index.php. get_the_ID() can return false, which
+   * makes Gutenberg throw an error, "Invalid parameter(s): attributes".
+   */
+  $config['current_post_id'] = get_the_ID() || 0;
 
   wp_add_inline_script(
     $config['handle'],
