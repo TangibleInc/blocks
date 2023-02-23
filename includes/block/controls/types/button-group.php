@@ -8,8 +8,12 @@ class ButtonGroup extends Base {
 
   public string $type = 'button_group';
   
-  function get_value($formated_value, array $args, string $context) {
-    return esc_html($formated_value);
+  function get_value($value, array $args, string $context) {
+
+    $choices = array_keys($args['choices'] ?? []);
+    $value = esc_html($value);
+    
+    return in_array($value, $choices) ? $value : '';
   }
 
 }

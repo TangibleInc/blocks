@@ -17,7 +17,7 @@ class Gradient extends Base {
       'type'  => esc_html($value->type ?? ''),
       'angle' => (int) ($value->angle ?? 0),
       'shape' => esc_html($value->shape ?? ''),
-      'colors'=> esc_html( implode(',', (array) $value->colors ?? []) ),
+      'colors'=> esc_html( implode(',', (array) ($value->colors ?? [])) ),
     ];
   }
 

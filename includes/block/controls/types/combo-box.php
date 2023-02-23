@@ -4,18 +4,57 @@ namespace Tangible\Blocks\Controls;
 
 defined('ABSPATH') or die();
 
-class ComboBox extends Base {
+class ComboBox extends BaseList {
 
   public string $type = 'combo_box';
 
-  function get_value($formated_value, array $args, string $context) {
+  function has_async_choices(array $args) : bool {
+    return isset($args['is_async']) && $args['is_async'] === 'true';
+  }
+  
+  /**
+   * Field value is a json object when async mode is true
+   */
+  function get_async_values($value, array $args) : array {
 
-    if( is_string($formated_value) ) return esc_html($formated_value);
+    $is_multiple = $this->has_multiple_values($args);
 
-    return is_object($formated_value) && ! empty($formated_value->value)
-      ? esc_html($formated_value->value)
-      : ''
-    ;
+    if( is_string($value) ) $value = json_decode($value);
+    
+    return ! $is_multiple
+      ? [ esc_html($value->value ?? '') ]
+      : array_map(
+          function($item) {
+            return esc_html($item->value ?? '');
+          },
+          (array) $value
+        );
+  }
+
+  function get_value($value, array $args, string $context) {
+
+    $is_async = $this->has_async_choices($args);
+    
+    $values = $is_async 
+      ? $this->get_async_values($value, $args)
+      : explode(',', $value);
+
+    // We can't validate values in async mode because allowed values are not stored in $args     
+    if( ! $is_async ) {
+      $values = $this->get_valid_values($values, $args);
+    } 
+
+    if( count($values) === 1 ) return $values[0];
+
+    return array_map(
+      function($item) { 
+        return [ 
+          'id'    => esc_html($item),
+          'value' => esc_html($item) // Default value
+        ];
+      },
+      $values
+    );
   }
 
 }

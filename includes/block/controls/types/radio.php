@@ -4,12 +4,15 @@ namespace Tangible\Blocks\Controls;
 
 defined('ABSPATH') or die();
 
-class Radio extends Base {
+class Radio extends BaseList {
 
   public string $type = 'radio';
 
-  function get_value($formated_value, array $args, string $context) {
-    return esc_html($formated_value);
+  function get_value($value, array $args, string $context) {
+    
+    $choices = $this->get_allowed_choices($args);
+    
+    return in_array($value, $choices) ? esc_html($value) : '';
   }
 
 }

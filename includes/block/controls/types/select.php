@@ -4,22 +4,28 @@ namespace Tangible\Blocks\Controls;
 
 defined('ABSPATH') or die();
 
-class Select extends Base {
+class Select extends BaseList {
 
   public string $type = 'select';
 
   function get_value($value, array $args, string $context) {
 
-    if( ! is_array($value) )return esc_html($value);
+    $values = $this->has_multiple_values($args)
+      ? (is_array($value) ? $value : (array) json_decode($value))
+      : [ $value ];
+
+    $values = $this->get_valid_values($values, $args);
+
+    if( count($values) === 1 ) return $values[0];
 
     return array_map(
       function($item) { 
         return [ 
-          'id'    => $item,
-          'value' => $item // Default value
+          'id'    => esc_html($item),
+          'value' => esc_html($item) // Default value
         ];
       },
-      $value
+      $values
     );
   }
 

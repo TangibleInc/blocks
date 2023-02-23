@@ -14,13 +14,13 @@ class File extends Base {
 
   return $attachement 
     ? [
-        'id'          => $attachement->ID,
-        'url'         => wp_get_attachment_url( $attachement->ID ),
-        'value'       => wp_get_attachment_url( $attachement->ID ), // Default when no field specified
-        'alt'         => get_post_meta( $attachement->ID, '_wp_attachment_image_alt', true ),
-        'title'       => $attachement->post_title,
-        'caption'     => $attachement->post_excerpt,
-        'description' => $attachement->post_content
+        'id'          => (int) $attachement->ID,
+        'url'         => esc_url( wp_get_attachment_url( $attachement->ID ) ),
+        'value'       => esc_url( wp_get_attachment_url( $attachement->ID ) ), // Default when no field specified
+        'alt'         => esc_attr( get_post_meta( $attachement->ID, '_wp_attachment_image_alt', true ) ),
+        'title'       => esc_html( $attachement->post_title ),
+        'caption'     => esc_html( $attachement->post_excerpt ),
+        'description' => esc_html( $attachement->post_content )
       ]
     : [];
   }

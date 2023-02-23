@@ -15,14 +15,14 @@ require_once __DIR__ . '/dimensions.php';
 require_once __DIR__ . '/editor.php';
 require_once __DIR__ . '/field-group.php';
 require_once __DIR__ . '/file.php';
-require_once __DIR__ . '/gradient.php';
 require_once __DIR__ . '/gallery.php';
+require_once __DIR__ . '/gradient.php';
 require_once __DIR__ . '/number.php';
 require_once __DIR__ . '/radio.php';
 require_once __DIR__ . '/repeater.php';
 require_once __DIR__ . '/select.php';
-require_once __DIR__ . '/text-suggestion.php';
 require_once __DIR__ . '/text.php';
+require_once __DIR__ . '/text-suggestion.php';
 require_once __DIR__ . '/toggle.php';
 
 $plugin->register_control( new ButtonGroup );

@@ -52,6 +52,8 @@ class FieldGroup extends Base {
 
     $formated_fields = [];
 
+    if( empty($fields) ) return $formated_fields;
+
     foreach( $fields as $name => $value ) {
       $formated_fields []= $this->get_field_value( $value, $name, $args, $context );
     }
