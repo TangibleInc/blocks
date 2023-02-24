@@ -113,6 +113,7 @@ class Base extends Widget_Base {
      */
     if ( isset($field['conditions']) ) {
       $args['tangible_conditions'] = $field['conditions'];
+      unset($args['conditions']);
     }
 
     $name = static::$control_prefix . $field['name'];
