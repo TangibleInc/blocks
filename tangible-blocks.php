@@ -3,13 +3,13 @@
  * Plugin Name: Tangible Blocks
  * Plugin URI: https://tangibleblocks.com/
  * Description: Tangible Blocks is a system for universal blocks that work in Gutenberg, Elementor, and Beaver Builder
- * Version: 3.1.2
+ * Version: 3.1.4
  * Author: Team Tangible
  * Author URI: https://teamtangible.com
  * License: GPLv2 or later
  */
 
-define( 'TANGIBLE_BLOCKS_VERSION', '3.1.2' );
+define( 'TANGIBLE_BLOCKS_VERSION', '3.1.4' );
 
 require_once __DIR__ . '/vendor/tangible/plugin-framework/index.php';
 require_once __DIR__ . '/vendor/tangible/plugin-updater/index.php';
