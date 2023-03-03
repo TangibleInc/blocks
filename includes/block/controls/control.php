@@ -15,6 +15,20 @@ class Control {
   private $is_custom = false;
   private $context = ['template', 'style', 'script'];
 
+  public array $types;
+  public string $name;
+
+  public $initial_type;
+  public $alias_values;
+
+  public $get_elementor_data;
+  public $get_beaver_builder_data;
+  public $get_gutenberg_data;
+  public $get_enqueue_callback;
+  public $get_sub_value;
+  public $filter_value;
+  public $render;
+
   function __construct(string $name, array $types) {
 
     /*

@@ -15,6 +15,8 @@ $plugin->register_elementor_control = function($config) {
 
   return new class($config) extends \Elementor\Base_Data_Control {
 
+    public $tangible_config;
+
     public function __construct($config) {
 
       $this->tangible_config = $config;
