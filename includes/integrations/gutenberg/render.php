@@ -11,7 +11,7 @@ namespace Tangible\Blocks\Integrations\Gutenberg\Dynamic;
  *
  * @return void
  */
-function render( $attributes, $content, $data ) {
+function render( $attributes, $content ) {
 
   $plugin = tangible_blocks();
 
@@ -21,8 +21,8 @@ function render( $attributes, $content, $data ) {
   $render_data = [
     'content_id'   => $attributes['content_id'],
     'universal_id' => $universal_id,
-    'fields'      => [],
-    'wrapper'     => 'tangible-block-' . $block_id
+    'fields'       => [],
+    'wrapper'      => 'tangible-block-' . $block_id
   ];
 
   /**

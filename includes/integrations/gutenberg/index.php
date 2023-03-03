@@ -51,9 +51,7 @@ $plugin->register_dynamic_blocks = function() use($plugin) {
       $block_type,
       [
         'attributes'      => to_attributes( $block ),
-        'render_callback' => function($attributes, $content) use($block) {
-          return render( $attributes, $content, $block );
-        },
+        'render_callback' => __NAMESPACE__ . '\render',
         'apiVersion'      => 2,
         'editor_script'   => $config['handle'],
       ]

@@ -40,6 +40,7 @@ export const createBlock = data => {
     category: blockConfig.category,
     sections: data.sections,
     icon: blockConfig.icon,
+    usesContext: ['postId'],
 
     edit(props) {
 
@@ -59,13 +60,13 @@ export const createBlock = data => {
 
       // We will need this unique ID in the server-side render function to create a wrapper
       if ( ! block_id ) props.setAttributes({ block_id: props.clientId })
-
+      
       /**
        * Current post ID
        * Used in integrations/gutenberg/render to set loop context
        */
-      if ( !props.attributes.current_post_id ) {
-        props.setAttributes({ current_post_id: blockConfig.current_post_id })
+      if ( ! props.attributes.current_post_id ) {
+        props.setAttributes({ current_post_id: props.context.postId })
       }
 
       return(
