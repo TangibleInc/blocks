@@ -24,6 +24,8 @@ add_action('tangible_enqueue_gutenberg_template_editor', function() use ($plugin
     $plugin->version
   );
 
+  // Add inline dynamic block data
+
   $blocks = $plugin->get_all_blocks();
   $config = $plugin->gutenberg_dynamic_config;
 
@@ -61,10 +63,19 @@ add_action('tangible_enqueue_gutenberg_template_editor', function() use ($plugin
     $plugin->get_all_blocks()
   );
 
-  $config['current_post_id'] = get_the_ID();
   $config['conditions']      = $plugin->block_visibility_conditions;
   $config['controls']        = $plugin->enqueue_controls_data( $config['handle'], 'gutenberg' );
   $config['legacy_controls'] = $plugin->get_legacy_custom_control();
+
+  /**
+   * Ensure the field "current_post_id" is a number, as defined in the schema
+   * for register_block_type() in ./index.php. get_the_ID() can return false,
+   * which makes Gutenberg throw an error, "Invalid parameter(s): attributes".
+   */
+  $id = get_the_ID();
+  if ($id===false) $id = 0;
+
+  $config['current_post_id'] = $id;
 
   wp_add_inline_script(
     $config['handle'],

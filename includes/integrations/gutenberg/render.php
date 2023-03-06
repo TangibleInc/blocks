@@ -9,7 +9,7 @@ namespace Tangible\Blocks\Integrations\Gutenberg\Dynamic;
  * @param string $content
  * @param array $block
  */
-function render( $attributes, $content, $data ) {
+function render( $attributes, $content ) {
 
   $plugin = tangible_blocks();
 
@@ -19,8 +19,8 @@ function render( $attributes, $content, $data ) {
   $render_data = [
     'content_id'   => $attributes['content_id'],
     'universal_id' => $universal_id,
-    'fields'      => [],
-    'wrapper'     => 'tangible-block-' . $block_id
+    'fields'       => [],
+    'wrapper'      => 'tangible-block-' . $block_id
   ];
 
   /**
@@ -47,26 +47,13 @@ function render( $attributes, $content, $data ) {
 
   }
 
+  /**
+   * Use common utility functions for rendering dynamic blocks
+   * @see /vendor/template-system/system/integrations/gutenberg/utils.php
+   */
   $template_system = tangible_template_system();
-  $loop = $template_system->loop;
 
-  /**
-   * Disable links inside Gutenberg editor preview
-   * @see /template-system/system/integrations/gutenberg/disable-links.php
-   */
-  $template_system->start_disable_links_inside_gutenberg_editor();
-
-  /**
-   * Ensure default loop context is set to current post
-   * @see /template-system/loop/context/index.php
-   */
-  if (isset($attributes['current_post_id'])
-    && (!empty($post = get_post($attributes['current_post_id'])))
-  ) {
-    $loop->push_current_post_context($post);
-  } else {
-    $loop->push_current_post_context();
-  }
+  $template_system->before_gutenberg_block_render($attributes);
 
   ob_start(); ?>
     <div class="<?php echo $render_data['wrapper']; ?>">
@@ -74,8 +61,7 @@ function render( $attributes, $content, $data ) {
     </div>
   <?php
 
-  $loop->pop_current_post_context();
-  $template_system->stop_disable_links_inside_gutenberg_editor();
+  $template_system->after_gutenberg_block_render();
 
-  return \ob_get_clean();
+  return $template_system->wrap_gutenberg_block_html( ob_get_clean() );
 }

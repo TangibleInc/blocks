@@ -65,7 +65,7 @@ export const createBlock = data => {
       
       // We will need this unique ID in the server-side render function to create a wrapper
       if ( ! block_id ) props.setAttributes({ block_id: props.clientId })
-
+      
       /**
        * Current post ID
        * Used in integrations/gutenberg/render to set loop context

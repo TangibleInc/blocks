@@ -24,6 +24,8 @@ class Base extends Widget_Base {
   static $plugin;
   static $template_system;
 
+  static $tangible_block;
+
   private function plugin() {
     return tangible_blocks();
   }

@@ -19,6 +19,39 @@ Tags:
 
 == Changelog ==
 
+= 3.1.5 =
+
+Release Date: 2023-03-02
+
+- Calendar loop types
+  - For week number, use Carbon method isoWeek() instead of format('W') which adds unnecessary prefix "0" (zero)
+  - Month loop type: Ensure the "year" attribute is taken into consideration; Organize how the attributes "year", "quarter", "from" and "to" are handled
+- Format tag: Add support for replace/with string that includes HTML
+- Gutenberg integration
+  - Improve content filter logic
+  - Improve getting current post ID when inside builder
+  - Improve workaround for Full-Site Editor bug
+    https://github.com/WordPress/gutenberg/issues/46702
+- Redirect tag: Disable when inside page builder, AJAX, or REST API
+- Switch tag: Improve converting non-default "When" to "Else if"
+- Template post types: Remove max-width to let editor take up the full available width
+- WP Grid Builder integration: Improve compatibility for PHP version before 7.3
+
+= 3.1.3 =
+
+Release Date: 2023-02-27
+
+- Add WP Grid Builder integration with Tangible Template widget
+- Embed module: Use CSS feature for aspect-ratio, and remove padding-top workaround
+- Gutenberg integration
+  - Improve compatibility with Full-Site Editor, which is still in beta stage
+  - Solve issue with shortcode inside pagination loop - Protect template HTML result from Gutenberg applying content filters, such as wptexturize and do_shortcode, after all blocks have been rendered
+- Sass module: Solve issue with first style rule selector - Prevent compiler from adding @charset rule or "byte-order mark", which are only valid for CSS stylesheet as a file, when it detects a multibyte character within the Sass source code
+- Table module: Make column filter case-insensitive, and add support for multibyte characters
+- Template post types
+  - Add support for user option "Disable the visual editor when writing" by preventing it from filtering template content
+  - Improve generating template slug from title, including converting em dash to regular dash
+
 = 3.1.2 =
 
 Release Date: 2023-02-01

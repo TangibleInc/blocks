@@ -17,6 +17,8 @@ return new class($conditions) {
   public $parent_conditions = [];
   public $condition_number  = 0;
 
+  public $stored_conditions;
+
   function __construct( &$conditions ) {
     $this->stored_conditions = &$conditions;
   }

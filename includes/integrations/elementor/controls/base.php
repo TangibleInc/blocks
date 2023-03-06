@@ -19,7 +19,7 @@ $plugin->register_elementor_control = function($control) {
   return new class($control) extends Base_Data_Control {
 
     public function __construct(Base $control) {
-
+   
       $this->type = $control->type;
       $this->prefixed_type = $control->get_prefixed_type();
 
