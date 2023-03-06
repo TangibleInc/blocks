@@ -40,7 +40,6 @@ export const createBlock = data => {
     category: blockConfig.category,
     sections: data.sections,
     icon: blockConfig.icon,
-    usesContext: ['postId'],
 
     edit(props) {
 
@@ -66,7 +65,7 @@ export const createBlock = data => {
        * Used in integrations/gutenberg/render to set loop context
        */
       if ( ! props.attributes.current_post_id ) {
-        props.setAttributes({ current_post_id: props.context.postId })
+        props.setAttributes({ current_post_id: blockConfig.current_post_id })
       }
 
       return(
