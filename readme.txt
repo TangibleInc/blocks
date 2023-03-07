@@ -19,6 +19,15 @@ Tags:
 
 == Changelog ==
 
+= 3.?.? =
+
+Release Date: 2023-03-08
+
+- Block controls:
+  - Introduce new controls
+  - Introduce new syntax for block values
+- Improve compatibility with PHP 8.2
+
 = 3.1.5 =
 
 Release Date: 2023-03-02
