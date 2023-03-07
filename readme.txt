@@ -19,9 +19,9 @@ Tags:
 
 == Changelog ==
 
-= 3.?.? =
+= 3.1.6 =
 
-Release Date: 2023-03-08
+Release Date: 2023-03-07
 
 - Block controls:
   - Introduce new controls
