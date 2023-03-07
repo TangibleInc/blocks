@@ -7,8 +7,6 @@ defined('ABSPATH') or die();
  * @see /vendor/tangible/template-system/system/integrations/gutenberg/enqueue.php
  */
 add_action('tangible_enqueue_gutenberg_template_editor', function() use ($plugin, $fields) {
-
-  $fields->enqueue();
   
   wp_enqueue_script(
     $plugin->gutenberg_dynamic_config['handle'], // See ./index.php
@@ -88,5 +86,7 @@ add_action('tangible_enqueue_gutenberg_template_editor', function() use ($plugin
     'window.Tangible = window.Tangible || {}; window.Tangible.blockConfig = ' . json_encode($config),
     'before'
   );
+
+  $fields->enqueue();
 
 });

@@ -87,7 +87,7 @@ $plugin->register_legacy_control('image', [
         break;
         
       case 'gutenberg':
-        $values = $settings[$field['name']];        
+        $values = $settings[$field['name']];
         $attachment = get_post( $values['id'] ?? '');
         if( empty($attachment) ) return '';
         break;
@@ -109,7 +109,7 @@ $plugin->register_legacy_control('image', [
     $values['title'] = $attachment->post_title;
     $values['caption'] = $attachment->post_excerpt;
     $values['description'] = $attachment->post_content;
-    
-    return $values[$name];
+
+    return $values[$name] ?? '';
   });
 

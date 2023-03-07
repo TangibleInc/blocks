@@ -25,8 +25,13 @@ class Base {
       $args['name'] ?? '', 
       $args, 
       false
-    );
+    ); 
 
+    /**
+     * Load the right field css according to the builder
+     */
+    self::$fields->set_context( $builder === 'gutenberg' ? 'default' : $builder );
+    
     /**
      * When possible, we use the native way to display informations (label, description ...etc) 
      */

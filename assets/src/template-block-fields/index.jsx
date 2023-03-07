@@ -1,9 +1,11 @@
 const getControl = (
   handler, 
   value, 
-  props
+  props,
+  builder
 ) => (
   tangibleFields.render({
+    context: builder === 'gutenberg' ? 'default' : builder,
     onChange: value => handler(
       Array.isArray(value) || typeof value === 'object'
         ? JSON.stringify(value) 
