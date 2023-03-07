@@ -20,18 +20,13 @@ class Base {
   }
 
   function get_control_args(string $builder, array $args) : array {
-
+    
     $args['data'] = self::$fields->format_args(
       $args['name'] ?? '', 
       $args, 
       false
-    ); 
+    );
 
-    /**
-     * Load the right field css according to the builder
-     */
-    self::$fields->set_context( $builder === 'gutenberg' ? 'default' : $builder );
-    
     /**
      * When possible, we use the native way to display informations (label, description ...etc) 
      */

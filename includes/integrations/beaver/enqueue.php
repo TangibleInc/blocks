@@ -21,6 +21,7 @@ add_action('tangible_enqueue_beaver_template_editor', function() use ($plugin, $
     $plugin->version
   );
 
+  $fields->set_context('beaver-builder');
   $fields->enqueue();
 
   $config = $plugin->beaver_dynamic_config;

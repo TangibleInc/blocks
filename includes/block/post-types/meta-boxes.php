@@ -17,8 +17,10 @@ add_action('add_meta_boxes', function() use($plugin, $fields, $legacy_meta_name,
 
   add_meta_box(
     'tangible-block-legacy',
-    __( 'Legacy mode', 'tangible-blocks' ),
+    __( 'New controls', 'tangible-blocks' ),
     function($block) use($plugin, $fields, $legacy_meta_name, $nonce_prefix) {
+
+      $fields->set_context('default');
 
       wp_nonce_field(
         $nonce_prefix . $block->ID, 
@@ -26,11 +28,16 @@ add_action('add_meta_boxes', function() use($plugin, $fields, $legacy_meta_name,
         false
       );
 
-      echo $fields->render_field($legacy_meta_name, [
-        'label' => __( 'Enable new controls for this block', 'tangible-blocks' ),
-        'type'  => 'switch',
-        'value' => $plugin->block_use_new_controls( $block->ID ) ? 'on' : 'off',
-      ]);
+      ?>
+      <!-- Temporary - TODO: move into separate css file -->
+      <style>.tangible-block-new-block-switch .tf-switch { display: flex; justify-content: space-between; align-items: center }</style>
+      <?php echo $fields->render_field($legacy_meta_name, [
+        'label'   => __( 'Enable new controls for this block', 'tangible-blocks' ),
+        'wrapper' => [ 'class' => 'tangible-block-new-block-switch' ],
+        'type'    => 'switch',
+        'value'   => $plugin->block_use_new_controls( $block->ID ) ? 'on' : 'off',
+      ]); ?>
+      <?php
     },
     'tangible_block'
   );

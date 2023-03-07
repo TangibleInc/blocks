@@ -27,6 +27,7 @@ add_action('elementor/editor/before_enqueue_scripts', $interface->register_modul
  */
 add_action('tangible_enqueue_elementor_template_editor', function() use($plugin, $fields) {
 
+  $fields->set_context('elementor');
   $fields->enqueue();
 
   wp_enqueue_script(
