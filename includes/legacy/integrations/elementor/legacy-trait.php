@@ -13,6 +13,8 @@ trait LegacyTrait {
 
     foreach( $fields as $field ) {
 
+      if( ! is_array($field) ) continue;
+
       $args = self::$plugin->get_builder_args( 
         $field, 
         'elementor', 
