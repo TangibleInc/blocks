@@ -59,7 +59,6 @@ $plugin->render = function($post, $data) use($plugin, $html, $template_system) {
       $sass_name = str_replace(' ', '-', $name);
       $sass_type = $plugin->get_sass_variable_type( $control_value, $type );
 
-      tangible()->see($control_value, $type, $sass_type);
       if( $sass_type === 'number' && is_int($control_value) ) {
         $control_value = (string) $control_value;
       }
@@ -123,9 +122,9 @@ $plugin->reset_render = function($post) use($html, $plugin) {
  */
 $plugin->get_sass_variable_type = function($value, $control_type) use($plugin) {
   
-  if( $control_type === 'dimensions' ) return 'dimension';
-  if( $control_type === 'dimension' ) return 'dimension'; // Legacy
-  
+  $is_dimension = in_array($control_type, ['dimension', 'dimensions']);
+  if( $is_dimension && ! empty($value) ) return 'dimension'; 
+
   if( $plugin->is_valid_color($value) ) return 'color';
   if( $plugin->is_valid_gradient($value) ) return 'color';
   
