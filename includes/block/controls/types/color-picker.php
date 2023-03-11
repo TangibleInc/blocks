@@ -12,10 +12,7 @@ class ColorPicker extends Base {
    * @see https://gist.github.com/olmokramer/82ccce673f86db7cda5e
    */
   function is_valid_color(string $color) {
-    return preg_match(
-      '/^(#[0-9a-f]{3}|#(?:[0-9a-f]{2}){2,4}|(rgb|hsl)a?\((-?\d+%?[,\s]+){2,3}\s*[\d\.]+%?\))$/', 
-      strtolower($color)
-    );
+    return static::$plugin->is_valid_color( strtolower($color) );
   }
 
   function get_value($value, array $args, string $context) {

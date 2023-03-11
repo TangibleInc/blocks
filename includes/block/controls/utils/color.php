@@ -47,20 +47,22 @@ $plugin->rgba_to_hex = function($rgba_value) {
 };
 
 $plugin->is_valid_color = function($value) use($plugin) {
-  
-  if( ! is_string($value) ) return $value;
+
+  if( ! is_string($value) ) return false;
   
   // Spaces can make regex check fail (Elementor adds some)
   $value = str_replace(' ', '', $value);
 
   if( empty($value) ) return false;
 
-  if( $plugin->is_rgba($value) || $plugin->is_rgb($value) ) return true;
+  if( $plugin->is_rgba($value) || $plugin->is_rgb($value) || $plugin->is_hsl($value) ) {
+    return true;
+  } 
 
   // If not rgba, only other solution is #HEX value (we don't support full letter colors)
 
   if( substr($value, 0, 1) !== '#' ) return false;
-
+  
   return ctype_xdigit( substr($value, 1) );
 };
 
@@ -74,18 +76,20 @@ $plugin->is_valid_gradient = function(string $value) {
 
   if( empty($value) ) return false;
 
-  if( preg_match('/linear-gradient\([^(]*(\([^)]*\)[^(]*)*[^)]*\)/', $value) ) return true;
-  if( preg_match('/radial-gradient\([^(]*(\([^)]*\)[^(]*)*[^)]*\)/', $value) ) return true;
-
+  if( preg_match('/^linear-gradient\([^(]*(\([^)]*\)[^(]*)*[^)]*\)$/', $value) ) return true;
+  if( preg_match('/^radial-gradient\([^(]*(\([^)]*\)[^(]*)*[^)]*\)$/', $value) ) return true;
+  if( preg_match('/^conic-gradient\([^(]*(\([^)]*\)[^(]*)*[^)]*\)$/', $value) ) return true;
+  
   return false;
 };
 
 $plugin->get_color_format = function($value) use($plugin) {
 
-  if( !$plugin->is_valid_color($value) ) return false;
+  if( ! $plugin->is_valid_color($value) ) return false;
 
   if( $plugin->is_rgb($value) ) return 'rgb';
   if( $plugin->is_rgba($value) ) return 'rgb';
+  if( $plugin->is_hsl($value) ) return 'hsl';
 
   return 'hex';
 };
@@ -97,9 +101,13 @@ $plugin->get_color_format = function($value) use($plugin) {
  */
 
 $plugin->is_rgba = function($value) {
-  return preg_match( '/rgba\((\s*\d+\s*,){3}[\d\.]+\)/', str_replace(' ', '', $value) );
+  return preg_match( '/^rgba\((\s*\d+\s*,){3}[\d\.]+\)$/', str_replace(' ', '', $value) );
 };
 
 $plugin->is_rgb = function($value) {
-  return preg_match( '/rgb\((?:\s*\d+\s*,){2}\s*[\d]+\)/', str_replace(' ', '', $value) );
+  return preg_match( '/^rgb\((?:\s*\d+\s*,){2}\s*[\d]+\)$/', str_replace(' ', '', $value) );
+};
+
+$plugin->is_hsl = function($value) {
+  return preg_match( '/^hsl\((\d+(?:[\.\,]\d+)?),(\d+(?:[\.\,]\d+)?)%,(\d+(?:[\.\,]\d+)?)%\)$/', str_replace(' ', '', $value) );
 };
