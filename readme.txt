@@ -19,6 +19,16 @@ Tags:
 
 == Changelog ==
 
+= 3.1.7 =
+
+Release Date: 2023-03-14
+
+- Gutenberg integration
+  - Improve content filter logic to protect template HTML
+    - Ensure it applies only when inside do_blocks before do_shortcode
+    - Support block themes
+  - Improve getting current post ID when inside builder
+
 = 3.1.6 =
 
 Release Date: 2023-03-07
