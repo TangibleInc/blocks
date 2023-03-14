@@ -28,6 +28,13 @@ Release Date: 2023-03-14
     - Ensure it applies only when inside do_blocks before do_shortcode
     - Support block themes
   - Improve getting current post ID when inside builder
+- Elementor integration:
+  - Fix error when using wrong control name
+- New controls:
+  - Repeater: Add support for nested repeaters
+  - Repeater: Add duplicate button
+  - Gradient: Correct spelling
+- Style variables: Improve variable type detection  
 
 = 3.1.6 =
 
