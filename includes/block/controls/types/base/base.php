@@ -61,7 +61,7 @@ class Base {
     return $value;
   }
 
-  function get_value($formated_value, array $args, string $context) {
+  function get_value($value, array $args, string $context) {
     return $formated_value;
   }
 
@@ -92,7 +92,7 @@ class Base {
     return in_array($context, $this->context);
   }
 
-  function render( $value, array $args, string $context ) {
+  function render($value, array $args, string $context, bool $force_default = false) {
 
     if( ! $this->has_context($context) ) return '';
 
@@ -100,14 +100,62 @@ class Base {
     
     if( ! is_array($value) ) return $value;
 
-    /**
-     * Loopable values will only worked in template. 
-     * 
-     * Return default value (if any) for script and style 
-     */
-    if( $context !== 'template' ) return $value['value'] ?? '';
+    $is_template = $context === 'template'; 
+    $is_sass_map = $context === 'style' && $this->get_sass_type() === 'map';
 
-    return $value;
+    /**
+     * If we can't return all the value, return just the default (if any) 
+     */
+    if( (! $is_template && ! $is_sass_map) || $force_default ) {
+      return $value['value'] ?? '';
+    } 
+    
+    return $is_sass_map
+      ? $this->get_sass_map($value)
+      : $value;
+  }
+
+  function get_js_type() : string {
+    return 'string';
+  }
+
+  /**
+   * If string value will be used inside of quotes
+   * 
+   * If map, each map value type can be defined using the get_sass_map_type method
+   */
+  function get_sass_type() : string {
+    return 'string';
+  }
+
+  /**
+   * When map key value is different than string, it must be defined here
+   */
+  function get_sass_map_types() : array {
+    return [];
+  }
+
+  function get_sass_map_default_type() : string {
+    return $this->get_sass_map_types()['value'] ?? 'string';
+  }
+
+  /**
+   * @see https://sass-lang.com/documentation/values/maps
+   */
+  function get_sass_map(array $values) : string {
+    
+    $types = $this->get_sass_map_types();
+    $map = [];
+
+    foreach( $values as $key => $value ) {
+      
+      $type = $types[ $key ] ?? 'string';
+      $value = $type === 'string' ? '"' . $value .  '"' : $value;
+
+      $map []= '"' . $key . '": ' . $value;
+    }
+
+    return '(' . implode(',', $map) . ')';
   }
 
 }

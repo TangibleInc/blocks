@@ -7,9 +7,24 @@ defined('ABSPATH') or die();
 class Dimensions extends Base {
 
   public string $type = 'dimensions';
-
+  
   function get_units(array $args) : array {
     return $args['units'] ?? ['px'];
+  }
+
+  function get_sass_type() : string {
+    return 'map';
+  }
+
+  function get_sass_map_types() : array {
+    return [
+      'value'   => 'dimension',
+      'top'     => 'number',
+      'right'   => 'number',
+      'bottom'  => 'number',
+      'left'    => 'number',
+      'unit'    => 'unit',
+    ];
   }
 
   function get_value($formated_value, array $args, string $context) {

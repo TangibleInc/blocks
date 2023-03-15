@@ -9,6 +9,7 @@ defined('ABSPATH') or die();
  * - Define subvalues as sass variables
  */
 
+require_once __DIR__ . '/utils.php';
 require_once __DIR__ . '/render.php';
 
 $plugin->init_legacy_render = function($post, $data) use($plugin) {
@@ -71,7 +72,7 @@ $plugin->define_subvalue_variables = function($data) use($plugin, $html) {
       $sub_value_name = $name . '-' . $sub_value_name;
       
       $sass_name = str_replace(' ', '-', $sub_value_name);
-      $sass_type = $plugin->get_sass_variable_type( $sub_value, false );
+      $sass_type = $plugin->get_legacy_sass_variable_type( $sub_value, false );
       
       if( $sass_type === 'number' && is_int($sub_value) ) {
         $sub_value = (string) $sub_value;

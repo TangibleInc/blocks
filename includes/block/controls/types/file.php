@@ -8,12 +8,16 @@ class File extends Base {
 
   public string $type = 'file';
 
+  function get_sass_type() : string {
+    return 'map';
+  }
+
   function get_attachment_data(int $id) : array {
 
-  $attachement = get_post($id);
+    $attachement = get_post($id);
 
-  return $attachement 
-    ? [
+    return $attachement 
+      ? [
         'id'          => (int) $attachement->ID,
         'url'         => esc_url( wp_get_attachment_url( $attachement->ID ) ),
         'value'       => esc_url( wp_get_attachment_url( $attachement->ID ) ), // Default when no field specified
@@ -22,7 +26,7 @@ class File extends Base {
         'caption'     => esc_html( $attachement->post_excerpt ),
         'description' => esc_html( $attachement->post_content )
       ]
-    : [];
+      : [];
   }
 
   function get_value($values, array $args, string $context) {

@@ -8,6 +8,20 @@ class Gradient extends Base {
 
   public string $type = 'gradient';
 
+  function get_sass_type() : string {
+    return 'map';
+  }
+
+  function get_sass_map_types() : array {
+    return [
+      'value'   => 'gradient',
+      'type'    => 'gradient',
+      'angle'   => 'angle',
+      'shape'   => 'gradient',
+      'colors'  => 'colors'
+    ];
+  }
+
   function get_value($value, array $args, string $context) {
 
     if( is_string($value) ) $value = \json_decode($value);
