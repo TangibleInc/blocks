@@ -16,7 +16,7 @@ class Dimensions extends Base {
     return 'map';
   }
 
-  function get_sass_map_types() : array {
+  function get_sass_map_types(array $args) : array {
     return [
       'value'   => 'dimension',
       'top'     => 'number',

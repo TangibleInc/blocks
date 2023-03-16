@@ -64,17 +64,23 @@ $plugin->render = function($post, $data) use($plugin, $html, $template_system) {
         : $control->get_sass_type();
 
       /**
-       * When type is map, 2 variables are defined:
+       * When type is a map or list, 2 variables are defined:
        * - $control-name -> Regular variable with the default value (if any)
-       * - $control-name-map -> Map with all values
+       * - $control-name-{map || list} -> Map or list with all values
        */
-      if( $sass_type === 'map' && ! empty($sass_value) ) {
+      if( in_array($sass_type, ['map', 'list']) ) {
 
-        $sass_map_name = $sass_name . '-map';
+        $sass_map_name = $sass_name . '-'. $sass_type;
         $html->set_sass_variable( $sass_map_name, $sass_value, [ 'type' => $sass_type ]  );
 
-        $sass_value = $control->render( $value, $args, 'style', true );
-        $sass_type = $control->get_sass_map_default_type(); 
+        // Only maps can have a default value
+        if( $sass_type === 'map' ) {
+          $sass_value = $control->render( $value, $args, 'style', true );
+          $sass_type = $control->get_sass_map_default_type($args);
+        } else {
+          $sass_value = '';
+          $sass_type = 'string';
+        }
       }
 
       if( $sass_type === 'number' && is_int($sass_value) ) {

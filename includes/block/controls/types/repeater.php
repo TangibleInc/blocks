@@ -8,6 +8,41 @@ class Repeater extends Base {
 
   public string $type = 'repeater';
 
+  /**
+   * SCSS variable is a list of map
+   */
+
+  function get_sass_type() : string {
+    return 'list';
+  }
+
+  function get_sass_list_item_type() : string {
+    return 'map';
+  }
+
+  function get_sass_map_types(array $args) : array {
+    
+    $controls = $args['controls'] ?? [];
+    $types = [];
+
+    foreach( $controls as $data ) {
+      
+      $control = self::$plugin->get_control( $data['type'] ?? '' );
+      $name = $data['name'] ?? false;
+
+      if( ! $control || ! $name ) continue; 
+      
+      $type = $control->get_sass_type();
+      
+      if( $type === 'map' ) $type = $control->get_sass_map_types([]); // TODO: Pass $args for nested repeater
+      if( $type === 'list' ) $type = $control->get_sass_list_item_type();
+
+      $types[ $name ] = $type; 
+    }
+
+    return $types;
+  }
+
   function get_control_args(string $builder, array $args) : array {
 
     $args = parent::get_control_args($builder, $args);

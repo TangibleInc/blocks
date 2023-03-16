@@ -100,19 +100,28 @@ class Base {
     
     if( ! is_array($value) ) return $value;
 
-    $is_template = $context === 'template'; 
-    $is_sass_map = $context === 'style' && $this->get_sass_type() === 'map';
+    $is_template  = $context === 'template'; 
+    $is_sass_map  = $context === 'style' && $this->get_sass_type() === 'map';
+    $is_sass_list = $context === 'style' && $this->get_sass_type() === 'list';
+
+    $use_multiple_values = $is_template || ($is_sass_map || $is_sass_list); 
 
     /**
      * If we can't return all the value, return just the default (if any) 
      */
-    if( (! $is_template && ! $is_sass_map) || $force_default ) {
+    if( ! $use_multiple_values || $force_default ) {
       return $value['value'] ?? '';
     } 
-    
-    return $is_sass_map
-      ? $this->get_sass_map($value)
-      : $value;
+
+    if( $is_sass_list ) return $this->get_sass_list($value, $args);
+    if( $is_sass_map ) {
+      return $this->get_sass_map(
+        $value, 
+        $this->get_sass_map_types($args)
+      );
+    }
+
+    return $value;
   }
 
   function get_js_type() : string {
@@ -123,6 +132,7 @@ class Base {
    * If string value will be used inside of quotes
    * 
    * If map, each map value type can be defined using the get_sass_map_type method
+   * If list, each list value type can be defined using the get_sass_list_type method
    */
   function get_sass_type() : string {
     return 'string';
@@ -131,31 +141,72 @@ class Base {
   /**
    * When map key value is different than string, it must be defined here
    */
-  function get_sass_map_types() : array {
+  function get_sass_map_types(array $args) : array {
     return [];
   }
 
-  function get_sass_map_default_type() : string {
-    return $this->get_sass_map_types()['value'] ?? 'string';
+  function get_sass_map_default_type(array $args) : string {
+    return $this->get_sass_map_types($args)['value'] ?? 'string';
   }
 
   /**
+   * When list item value is different than string, it must be defined here
+   */
+  function get_sass_list_item_type() : string {
+    return 'string';
+  }
+
+  /**
+   * Used when get_sass_map_types() is map
+   * 
    * @see https://sass-lang.com/documentation/values/maps
    */
-  function get_sass_map(array $values) : string {
+  function get_sass_map(array $values, array $types) : string {
     
-    $types = $this->get_sass_map_types();
     $map = [];
-
+    
     foreach( $values as $key => $value ) {
-      
-      $type = $types[ $key ] ?? 'string';
-      $value = $type === 'string' ? '"' . $value .  '"' : $value;
 
-      $map []= '"' . $key . '": ' . $value;
+      $type = $types[ $key ] ?? 'string';
+      $is_map = ($type === 'map' || is_array($type)) && is_array($value);
+
+      // We can have a map inside of map with the repeater control
+      $value = $is_map
+        ? $this->get_sass_map($value, is_array($type) ? $type : [])
+        : ($type === 'string' 
+          ? '"' . $value .  '"' 
+          : $value
+        );  
+
+      $map []= '"' . $key . '":' . $value;
     }
 
     return '(' . implode(',', $map) . ')';
+  }
+
+  /**
+   * Used when get_sass_map_types() is list
+   * 
+   * @see https://sass-lang.com/documentation/values/lists
+   */
+  function get_sass_list(array $values, array $args) : string {
+    
+    $type = $this->get_sass_list_item_type();
+    $list = [];
+
+    foreach( $values as $value ) {
+
+      $is_map = $type === 'map' && is_array($value);
+
+      $list []= $is_map  
+        ? $this->get_sass_map($value, $this->get_sass_map_types($args))
+        : ($type === 'string' 
+          ? '"' . $value .  '"' 
+          : $value
+        );  
+    }
+    
+    return '(' . implode(',', $list) . ')';
   }
 
 }

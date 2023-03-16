@@ -8,10 +8,18 @@ class File extends Base {
 
   public string $type = 'file';
 
+  /**
+   * SCSS variable is a list of map
+   */
+
   function get_sass_type() : string {
-    return 'map';
+    return 'list';
   }
 
+  function get_sass_list_item_type() : string {
+    return 'map';
+  }
+  
   function get_attachment_data(int $id) : array {
 
     $attachement = get_post($id);
@@ -24,7 +32,7 @@ class File extends Base {
         'alt'         => esc_attr( get_post_meta( $attachement->ID, '_wp_attachment_image_alt', true ) ),
         'title'       => esc_html( $attachement->post_title ),
         'caption'     => esc_html( $attachement->post_excerpt ),
-        'description' => esc_html( $attachement->post_content )
+        'description' => esc_html( apply_filters( 'the_description' , $attachement->post_content ) )
       ]
       : [];
   }
