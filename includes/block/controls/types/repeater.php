@@ -8,8 +8,21 @@ class Repeater extends Base {
 
   public string $type = 'repeater';
 
+  function get_control_args(string $builder, array $args) : array {
+
+    $args = parent::get_control_args($builder, $args);
+
+    /**
+     * TODO: Look how to get directly the right structure from the L&L template?
+     */
+    $args['data']['fields'] = $args['data']['controls'] ?? [];
+    unset($args['data']['controls']);
+
+    return $args;
+  }
+
   /**
-   * SCSS variable is a list of map
+   * SCSS config (variable is a list of map)
    */
 
   function get_sass_type() : string {
@@ -33,28 +46,19 @@ class Repeater extends Base {
       if( ! $control || ! $name ) continue; 
       
       $type = $control->get_sass_type();
-      
+
       if( $type === 'map' ) $type = $control->get_sass_map_types([]); // TODO: Pass $args for nested repeater
       if( $type === 'list' ) $type = $control->get_sass_list_item_type();
 
       $types[ $name ] = $type; 
     }
-
+    
     return $types;
   }
 
-  function get_control_args(string $builder, array $args) : array {
-
-    $args = parent::get_control_args($builder, $args);
-
-    /**
-     * TODO: Look how to get directly the right structure from the L&L template?
-     */
-    $args['data']['fields'] = $args['data']['controls'] ?? [];
-    unset($args['data']['controls']);
-
-    return $args;
-  }
+  /**
+   * Render
+   */
 
   function get_field_control(string $name, array $args) {
     

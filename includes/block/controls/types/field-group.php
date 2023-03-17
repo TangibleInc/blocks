@@ -13,6 +13,45 @@ class FieldGroup extends Base {
     return parent::get_control_args($builder, $args);
   }
 
+  /**
+   * SCSS config
+   */
+
+  function get_sass_type() : string {
+    return 'list';
+  }
+
+  function get_sass_list_item_type() : string {
+    return 'map';
+  }
+
+  function get_sass_map_types(array $args) : array {
+    var_dump($args);
+    $controls = $args['controls'] ?? [];
+    $types = [];
+
+    foreach( $controls as $data ) {
+      
+      $control = self::$plugin->get_control( $data['type'] ?? '' );
+      $name = $data['name'] ?? false;
+
+      if( ! $control || ! $name ) continue; 
+      
+      $type = $control->get_sass_type();
+      
+      if( $type === 'map' ) $type = $control->get_sass_map_types([]); // TODO: Pass $args for nested repeater
+      if( $type === 'list' ) $type = $control->get_sass_list_item_type();
+
+      $types[ $name ] = $type; 
+    }
+    var_dump($types);
+    return $types;
+  }
+
+  /**
+   * Render
+   */
+
   function get_field_control(string $name, array $args) {
     
     $control = array_values(
@@ -55,9 +94,9 @@ class FieldGroup extends Base {
     if( empty($fields) ) return $formated_fields;
 
     foreach( $fields as $name => $value ) {
-      $formated_fields []= $this->get_field_value( $value, $name, $args, $context );
+      $formated_fields[] = $this->get_field_value( $value, $name, $args, $context );
     }
-
+    var_dump($formated_fields);
     return $formated_fields;
   }
 

@@ -124,6 +124,10 @@ class Base {
     return $value;
   }
 
+  /**
+   * SCSS variable methods
+   */
+
   function get_js_type() : string {
     return 'string';
   }
