@@ -26,7 +26,7 @@ class FieldGroup extends Base {
   }
 
   function get_sass_map_types(array $args) : array {
-    var_dump($args);
+
     $controls = $args['controls'] ?? [];
     $types = [];
 
@@ -44,7 +44,7 @@ class FieldGroup extends Base {
 
       $types[ $name ] = $type; 
     }
-    var_dump($types);
+
     return $types;
   }
 
@@ -96,7 +96,7 @@ class FieldGroup extends Base {
     foreach( $fields as $name => $value ) {
       $formated_fields[] = $this->get_field_value( $value, $name, $args, $context );
     }
-    var_dump($formated_fields);
+
     return $formated_fields;
   }
 
