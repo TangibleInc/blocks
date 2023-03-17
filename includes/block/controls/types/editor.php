@@ -8,6 +8,8 @@ class Editor extends Base {
 
   public string $type = 'wysiwyg';
 
+  public array $context = ['template'];
+
   function get_value($formated_value, array $args, string $context) {
     return wp_kses_post($formated_value);
   }
