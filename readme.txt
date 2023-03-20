@@ -19,6 +19,19 @@ Tags:
 
 == Changelog ==
 
+= 3.1.8 =
+
+Release Date: 2023-03-20
+
+- Gutenberg integration
+  - Improve content filter logic to protect template HTML: Handle edge case when a template shortcode is rendered inside an HTML attribute, and its content is a URL
+- SCSS block variables:
+  - Add SCSS maps for controls with multiple values (dimensions and gradients)
+  - Add SCSS list for controls with multiple items (repeater, files, gallery and field_group)
+- New controls:
+  - Gallery: Add clear button
+  - Date: Improve value change from text input
+
 = 3.1.7 =
 
 Release Date: 2023-03-14
