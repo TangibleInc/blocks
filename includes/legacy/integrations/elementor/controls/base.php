@@ -18,6 +18,9 @@ $plugin->register_legacy_elementor_control = function($control, $config) {
 
   return new class($control, $config) extends Base_Data_Control {
 
+    public string $type = '';
+    public string $prefixed_type ='';
+
     public function __construct(Control $control, array $config) {
 
       $this->type = $config['type'];
