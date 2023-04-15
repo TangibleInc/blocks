@@ -47,12 +47,13 @@ class Repeater extends Base {
       
       $type = $control->get_sass_type();
 
-      if( $type === 'map' ) $type = $control->get_sass_map_types([]); // TODO: Pass $args for nested repeater
-      if( $type === 'list' ) $type = $control->get_sass_list_item_type();
-
+      if( $type === 'map' ) {
+        $type = $control->get_sass_map_types([]); // TODO: Pass $args for nested repeater
+      }
+      
       $types[ $name ] = $type; 
     }
-    
+
     return $types;
   }
 
