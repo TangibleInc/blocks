@@ -13,6 +13,20 @@ $plugin->block_use_new_controls = function($block_id) use($legacy_meta_name) {
   return get_post_meta( $block_id, $legacy_meta_name, true ) === 'on';
 };
 
+/**
+ * @see ./vendor/tangible/fields/store.php
+ */
+$plugin->register_block_meta = function($block_id, $name, $args = []) use($fields) {
+  $fields->register_field($name, 
+    $args
+    + $fields->_store_callbacks['meta']('post', $block_id, $prefix = '')
+    + $fields->_permission_callbacks([
+      'store' => ['user_can', 'manage_options'],
+      'fetch' => ['always_allow']
+    ])
+  );
+};
+
 add_action('add_meta_boxes', function() use($plugin, $fields, $legacy_meta_name, $nonce_prefix) {
 
   add_meta_box(
@@ -20,6 +34,7 @@ add_action('add_meta_boxes', function() use($plugin, $fields, $legacy_meta_name,
     __( 'New controls', 'tangible-blocks' ),
     function($block) use($plugin, $fields, $legacy_meta_name, $nonce_prefix) {
 
+      $plugin->register_block_meta($block->ID, $legacy_meta_name);
       $fields->set_context('default');
 
       wp_nonce_field(
@@ -29,22 +44,23 @@ add_action('add_meta_boxes', function() use($plugin, $fields, $legacy_meta_name,
       );
 
       ?>
+
       <!-- Temporary - TODO: move into separate css file -->
       <style>.tangible-block-new-block-switch .tf-switch { display: flex; justify-content: space-between; align-items: center }</style>
+      
       <?php echo $fields->render_field($legacy_meta_name, [
         'label'   => __( 'Enable new controls for this block', 'tangible-blocks' ),
         'wrapper' => [ 'class' => 'tangible-block-new-block-switch' ],
         'type'    => 'switch',
-        'value'   => $plugin->block_use_new_controls( $block->ID ) ? 'on' : 'off',
-      ]); ?>
-      <?php
+        'value'   => $fields->fetch_value($legacy_meta_name),
+      ]);
     },
     'tangible_block'
   );
 
 });
 
-add_action('save_post', function($block_id, $block) use($legacy_meta_name, $nonce_prefix) {
+add_action('save_post', function($block_id, $block) use($legacy_meta_name, $nonce_prefix, $plugin, $fields) {
   
   if( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE ) return;
   if( $block->post_type !== 'tangible_block' ) return;
@@ -60,7 +76,7 @@ add_action('save_post', function($block_id, $block) use($legacy_meta_name, $nonc
 
   if( ! in_array($is_legacy, ['on', 'off']) ) return;
 
-  update_post_meta( $block_id, $legacy_meta_name, $is_legacy );
+  $plugin->register_block_meta( $block->ID, $legacy_meta_name );
+  $fields->store_value( $legacy_meta_name, $is_legacy );
 
 }, 10, 2);
-
