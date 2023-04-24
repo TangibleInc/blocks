@@ -52,6 +52,9 @@ export const createBlock = data => {
       const conditions = blockConfig.conditions[ 
         data.universal_id ? data.universal_id : data.content_id 
       ]
+        // Provide default conditions in case it's undefined
+        || { general: [], repeater: [] }
+
       const visibility = new ControlVisibility(conditions.general)
 
       const getFieldValue = name =>
@@ -127,14 +130,16 @@ export const createBlock = data => {
           </InspectorControls>
 
           <ServerSideRender
+            /**
+             * Note: Ensure props are equal on every render - for example,
+             * don't create new function here because it fetches on prop change.
+             */
             block={ blockType }
             attributes={ props.attributes }
             httpMethod={ 'POST' }
             EmptyResponsePlaceholder={ EmptyLoopBlock }
             LoadingResponsePlaceholder={ EmptyLoopBlock }
-            onFetchResponseRendered={el => {
-              moduleLoader(el)
-            }}
+            onFetchResponseRendered={ moduleLoader }
           />
         </>
       )
