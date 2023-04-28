@@ -10,13 +10,13 @@ class Repeater extends Base {
 
   function get_control_args(string $builder, array $args) : array {
 
-    $args = parent::get_control_args($builder, $args);
-
     /**
      * TODO: Look how to get directly the right structure from the L&L template?
      */
-    $args['data']['fields'] = $args['data']['controls'] ?? [];
-    unset($args['data']['controls']);
+    $args['fields'] = $args['controls'] ?? [];
+    unset($args['controls']);
+
+    $args = parent::get_control_args($builder, $args);
 
     return $args;
   }
