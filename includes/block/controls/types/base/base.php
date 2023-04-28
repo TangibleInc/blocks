@@ -168,20 +168,27 @@ class Base {
   function get_sass_map(array $values, array $types) : string {
     
     $map = [];
-    
+
     foreach( $values as $key => $value ) {
 
       $type = $types[ $key ] ?? 'string';
       $is_map = ($type === 'map' || is_array($type)) && is_array($value);
+      $is_list = $type === 'list' && is_array($value);
 
-      // We can have a map inside of map with the repeater control
-      $value = $is_map
-        ? $this->get_sass_map($value, is_array($type) ? $type : [])
-        : ($type === 'string' 
-          ? '"' . $value .  '"' 
-          : $value
-        );  
-
+      // We can have a map/list inside of map with the repeater control
+      if( $is_map ) {
+        $value = $this->get_sass_map($value, is_array($type) ? $type : []);
+      }
+      else if( $is_list ) {
+        $value = $this->get_sass_list($value, $types);
+      } else {
+        $value = ! is_array($value) 
+          ? ($type === 'string' 
+            ? '"' . $value .  '"' 
+            : $value)
+          : '""';
+      }
+      
       $map []= '"' . $key . '":' . $value;
     }
 
@@ -194,7 +201,7 @@ class Base {
    * @see https://sass-lang.com/documentation/values/lists
    */
   function get_sass_list(array $values, array $args) : string {
-    
+
     $type = $this->get_sass_list_item_type();
     $list = [];
 

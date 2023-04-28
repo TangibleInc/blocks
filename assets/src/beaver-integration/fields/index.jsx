@@ -13,7 +13,7 @@ const {
   } 
 } = Tangible
 
-  const $ = jQuery
+const $ = jQuery
 
 $(() => {
 
