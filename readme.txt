@@ -21,7 +21,7 @@ Tags:
 
 = 3.2.0 =
 
-Release Date: 2023-04-26
+Release Date: 2023-04-28
 
 - Add JSON-LD tag: Create a map and generate script tag for [JSON Linked Data](https://json-ld.org/)
 - Add Raw tag: Prevents parsing its inner content; Useful for passing literal text, such as HTML, to other tags and tag attributes
@@ -43,6 +43,16 @@ Release Date: 2023-04-26
 - Url tag
   - Add attribute "query=true" to include all query parameters in current URL
   - Add attributes "include" and "exclude" to selectively pass query parameters by name; Accepts comma-separated list for multiple names
+- New controls
+  - SASS variable: Add support for lists inside maps
+  - Repeater: Fix issue with repeater fields not being formated properly
+  - Repeater: Add confirmation prompt before deleting an item
+  - Gallery: Fix issue with image preview
+  - Gallery and File: Fix issue that happens after closing the media library
+  - Color picker: Add text input to directly set a color value
+- Blocks
+  - Gutenberg: Avoid unnecessary re-render while editing blocks
+- Improve PHP 7.4 compatibility
 
 = 3.1.9 =
 
