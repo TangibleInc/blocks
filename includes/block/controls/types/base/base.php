@@ -50,6 +50,21 @@ class Base {
      */
     if( isset($args['multiple']) ) unset($args['multiple']);
 
+    /**
+     * For now, we don't rely on tangible-fields visibility conditions in the blocks plugin, 
+     * and still rely on plugin specific code for this
+     * 
+     * Conditions evaluated by the blocks plugin are defined under $args['conditions']), while tangible-fields
+     * conditions are declared under $args['condition'])
+     * 
+     * To prevent any confusion or conflict, we will remove any tangible fields condition defined until it's
+     * ready to fully replace the block conditional visbility system
+     * 
+     * @see Block visibility: ./assets/src/template-control-visibility
+     * @see Fields visibility: ./vendor/tangible/fields/assets/src/visibility
+     */
+    if( isset($args['condition']) ) unset($args['condition']);
+
     return $args;
   }
 
