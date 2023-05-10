@@ -28,11 +28,23 @@ $plugin->register_block_meta = function($block_id, $name, $args = []) use($field
   );
 };
 
+$plugin->get_block_meta_value = function($block_id, $name) use($fields) {
+
+  $old_block_value = get_post_meta( $block_id, 'tangible_blocks_use_new_controls', true );
+  if ( $old_block_value && !get_post_meta( $block_id, $name, true ) ) {
+
+    if ( $old_block_value === 'off' ) return 'on';
+    return 'off';
+  }
+
+  return $fields->fetch_value($name);
+};
+
 add_action('add_meta_boxes', function() use($plugin, $fields, $legacy_meta_name, $nonce_prefix) {
 
   add_meta_box(
     'tangible-block-legacy',
-    __( 'New controls', 'tangible-blocks' ),
+    __( 'Legacy controls', 'tangible-blocks' ),
     function($block) use($plugin, $fields, $legacy_meta_name, $nonce_prefix) {
 
       $plugin->register_block_meta($block->ID, $legacy_meta_name);
@@ -52,7 +64,7 @@ add_action('add_meta_boxes', function() use($plugin, $fields, $legacy_meta_name,
         'label'   => __( 'Enable legacy controls for this block', 'tangible-blocks' ),
         'wrapper' => [ 'class' => 'tangible-block-legacy-controls-switch' ],
         'type'    => 'switch',
-        'value'   => $fields->fetch_value($legacy_meta_name),
+        'value'   => $plugin->get_block_meta_value($block->ID, $legacy_meta_name),
       ]);
     },
     'tangible_block'
