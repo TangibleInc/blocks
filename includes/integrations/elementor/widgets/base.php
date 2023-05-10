@@ -46,6 +46,13 @@ class Base extends Widget_Base {
     return static::$tangible_block['label'];
   }
 
+  public function get_script_depends() {
+    return \Elementor\Plugin::$instance->preview->is_preview_mode()
+      ? [ 'tangible-module-loader' ]
+      : []
+    ;
+  }
+
   public function use_legacy_controls() {
     return static::$plugin->block_use_new_controls( $this->get_post_id() ) === false;
   }
