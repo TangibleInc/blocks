@@ -6,12 +6,11 @@ defined('ABSPATH') or die();
  * Metabox to enable new block render/controls  
  */
 
-$legacy_meta_name = 'tangible_blocks_use_legacy_controls';
+$legacy_meta_name = 'tangible_blocks_use_new_controls';
 $nonce_prefix = 'tangible_blocks_legacy_metabox_';
 
 $plugin->block_use_new_controls = function($block_id) use($legacy_meta_name) {
-  return get_post_meta( $block_id, $legacy_meta_name, true ) === 'off' || 
-  get_post_meta( $block_id, 'tangible_blocks_use_new_controls', true ) === 'on';
+  return get_post_meta( $block_id, 'tangible_blocks_use_new_controls', true ) === 'on';
 };
 
 /**
@@ -28,23 +27,11 @@ $plugin->register_block_meta = function($block_id, $name, $args = []) use($field
   );
 };
 
-$plugin->get_block_meta_value = function($block_id, $name) use($fields) {
-
-  $old_block_value = get_post_meta( $block_id, 'tangible_blocks_use_new_controls', true );
-  if ( $old_block_value && !get_post_meta( $block_id, $name, true ) ) {
-
-    if ( $old_block_value === 'off' ) return 'on';
-    return 'off';
-  }
-
-  return $fields->fetch_value($name);
-};
-
 add_action('add_meta_boxes', function() use($plugin, $fields, $legacy_meta_name, $nonce_prefix) {
 
   add_meta_box(
     'tangible-block-legacy',
-    __( 'Legacy controls', 'tangible-blocks' ),
+    __( 'New controls', 'tangible-blocks' ),
     function($block) use($plugin, $fields, $legacy_meta_name, $nonce_prefix) {
 
       $plugin->register_block_meta($block->ID, $legacy_meta_name);
@@ -59,12 +46,12 @@ add_action('add_meta_boxes', function() use($plugin, $fields, $legacy_meta_name,
       ?>
 
       <!-- Temporary - TODO: move into separate css file -->
-      <style>.tangible-block-legacy-controls-switch .tf-switch { display: flex; justify-content: space-between; align-items: center }</style>
+      <style>.tangible-block-new-block-switch .tf-switch { display: flex; justify-content: space-between; align-items: center }</style>
       <?php echo $fields->render_field($legacy_meta_name, [
-        'label'   => __( 'Enable legacy controls for this block', 'tangible-blocks' ),
-        'wrapper' => [ 'class' => 'tangible-block-legacy-controls-switch' ],
+        'label'   => __( 'Enable new controls for this block', 'tangible-blocks' ),
+        'wrapper' => [ 'class' => 'tangible-block-new-block-switch' ],
         'type'    => 'switch',
-        'value'   => $plugin->get_block_meta_value($block->ID, $legacy_meta_name),
+        'value'   => $fields->fetch_value($legacy_meta_name) ? $fields->fetch_value($legacy_meta_name) : 'on',
       ]);
     },
     'tangible_block'
