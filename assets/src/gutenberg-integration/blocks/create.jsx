@@ -7,7 +7,7 @@ const {
   blockEditor: { InspectorControls },
   blocks: { registerBlockType },
   components: { Panel, PanelBody, PanelRow },
-  element: { useState, createContext },
+  element: { useState, createContext, useEffect },
   i18n: { __ },
   serverSideRender: _ServerSideRender
 } = wp
@@ -23,6 +23,8 @@ const {
 } = Tangible
 
 export const BlockContext = createContext()
+
+const uniqueIds = []
 
 export const createBlock = data => {
 
@@ -47,6 +49,20 @@ export const createBlock = data => {
     edit(props) {
 
       const { block_id } = props.attributes
+      const { block_loaded } = props.attributes ?? false
+
+      useEffect(() => {
+        let id = block_id
+
+        // We will need this unique ID in the server-side render function to create a wrapper
+        if (!id || uniqueIds.includes(id)) {
+          id = props.clientId
+          props.setAttributes({ block_id: id })
+        }
+
+        if ( !uniqueIds.includes(id) ) uniqueIds.push(id)
+        props.setAttributes({ block_loaded: true })
+      }, [])
       const [activeTab, setActiveTab] = useState(data.tabs[0])
 
       const conditions = blockConfig.conditions[ 
@@ -66,9 +82,6 @@ export const createBlock = data => {
         visibility.evaluateConditions(conditions, getFieldValue)
       )
       
-      // We will need this unique ID in the server-side render function to create a wrapper
-      if ( ! block_id ) props.setAttributes({ block_id: props.clientId })
-      
       /**
        * Current post ID
        * Used in integrations/gutenberg/render to set loop context
@@ -77,72 +90,74 @@ export const createBlock = data => {
         props.setAttributes({ current_post_id: blockConfig.current_post_id })
       }
 
-      return(
-        <>
-          <InspectorControls>
-
-            { data.tabs.length > 1 &&
-              <div className='tangible-block-editor-tabs'>
-                { data.tabs.map(tab =>
-                  (tab.name === activeTab.name // Active tab is always visible
-                    || isVisible(tab.conditions)
-                  ) &&
-                  <div key={`tab-${tab.name}`}
-                    className={ "tangible-block-editor-tab components-button edit-post-sidebar__panel-tab"
-                      +(tab.name === activeTab.name ? ' is-active' : '')
-                    }
-                    onClick={ () => setActiveTab(tab) }
-                  >
-                    <p>{ tab.label === 'default' ? 'Content' : tab.label }</p>
-                  </div>
+      if ( block_loaded ) {
+        return(
+          <>
+            <InspectorControls>
+  
+              { data.tabs.length > 1 &&
+                <div className='tangible-block-editor-tabs'>
+                  { data.tabs.map(tab =>
+                    (tab.name === activeTab.name // Active tab is always visible
+                      || isVisible(tab.conditions)
+                    ) &&
+                    <div key={`tab-${tab.name}`}
+                      className={ "tangible-block-editor-tab components-button edit-post-sidebar__panel-tab"
+                        +(tab.name === activeTab.name ? ' is-active' : '')
+                      }
+                      onClick={ () => setActiveTab(tab) }
+                    >
+                      <p>{ tab.label === 'default' ? 'Content' : tab.label }</p>
+                    </div>
+                  ) }
+                </div>
+              }
+  
+              <BlockContext.Provider value={{ 
+                id: block_id, 
+                conditions: conditions
+              }}>
+                { activeTab.sections.map((section, index) =>
+                  isVisible(section.conditions) &&
+                    <Panel key={`${section.name}-panel-${index}`} className={ 'tangible-block-editor-section' }>
+                      <PanelBody title={ section.label } initialOpen={ index === 0 }>
+                        { section.fields.map( item =>
+                          isVisible(item.conditions) && 
+                            <PanelRow>
+                              { data.legacy_controls
+                                ? getLegacyField(
+                                    item, 
+                                    props
+                                  )
+                                : getField(
+                                    item, 
+                                    props.attributes[item.name], 
+                                    props.setAttributes
+                                  ) }
+                            </PanelRow>
+                        ) }
+                      </PanelBody>
+                    </Panel>
                 ) }
-              </div>
-            }
-
-            <BlockContext.Provider value={{ 
-              id: block_id, 
-              conditions: conditions
-            }}>
-              { activeTab.sections.map((section, index) =>
-                isVisible(section.conditions) &&
-                  <Panel key={`${section.name}-panel-${index}`} className={ 'tangible-block-editor-section' }>
-                    <PanelBody title={ section.label } initialOpen={ index === 0 }>
-                      { section.fields.map( item =>
-                        isVisible(item.conditions) && 
-                          <PanelRow>
-                            { data.legacy_controls
-                              ? getLegacyField(
-                                  item, 
-                                  props
-                                )
-                              : getField(
-                                  item, 
-                                  props.attributes[item.name], 
-                                  props.setAttributes
-                                ) }
-                          </PanelRow>
-                      ) }
-                    </PanelBody>
-                  </Panel>
-              ) }
-            </BlockContext.Provider>
-
-          </InspectorControls>
-
-          <ServerSideRender
-            /**
-             * Note: Ensure props are equal on every render - for example,
-             * don't create new function here because it fetches on prop change.
-             */
-            block={ blockType }
-            attributes={ props.attributes }
-            httpMethod={ 'POST' }
-            EmptyResponsePlaceholder={ EmptyLoopBlock }
-            LoadingResponsePlaceholder={ EmptyLoopBlock }
-            onFetchResponseRendered={ moduleLoader }
-          />
-        </>
-      )
+              </BlockContext.Provider>
+  
+            </InspectorControls>
+  
+            <ServerSideRender
+              /**
+               * Note: Ensure props are equal on every render - for example,
+               * don't create new function here because it fetches on prop change.
+               */
+              block={ blockType }
+              attributes={ props.attributes }
+              httpMethod={ 'POST' }
+              EmptyResponsePlaceholder={ EmptyLoopBlock }
+              LoadingResponsePlaceholder={ EmptyLoopBlock }
+              onFetchResponseRendered={ moduleLoader }
+            />
+          </>
+        )
+      }
     },
 
     save() {
