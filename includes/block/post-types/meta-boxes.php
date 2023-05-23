@@ -10,7 +10,7 @@ $legacy_meta_name = 'tangible_blocks_use_new_controls';
 $nonce_prefix = 'tangible_blocks_legacy_metabox_';
 
 $plugin->block_use_new_controls = function($block_id) use($legacy_meta_name) {
-  return get_post_meta( $block_id, 'tangible_blocks_use_new_controls', true ) === 'on';
+  return get_post_meta( $block_id, $legacy_meta_name, true ) === 'on';
 };
 
 /**
