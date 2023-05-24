@@ -182,7 +182,8 @@ class Base extends Widget_Base {
       'content_id'   => $block_id,
       'universal_id' => $universal_id,
       'fields'       => [],
-      'wrapper'      => 'elementor-element-' . $this->get_id()
+      'wrapper'      => 'elementor-element-' . $this->get_id(),
+      'builder'      => 'elementor'
     ];
 
     $fields = self::$plugin->get_block_controls( $render_data );
