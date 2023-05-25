@@ -104,6 +104,10 @@ $plugin->render = function($post, $data) use($plugin, $html, $template_system) {
 
   }
 
+  foreach ($fields as $key => &$field) {
+    if ( !empty( json_decode($field['value']) ) ) $field['value'] = json_decode($field['value']);
+  }
+
   $html->set_js_variable('block', json_encode([
     'controls'      => $fields,
     'wrapper'       => $data['wrapper'],
