@@ -20,7 +20,8 @@ function render( $attributes, $content ) {
     'content_id'   => $attributes['content_id'],
     'universal_id' => $universal_id,
     'fields'       => [],
-    'wrapper'      => 'tangible-block-' . $block_id
+    'wrapper'      => 'tangible-block-' . $block_id,
+    'builder'      => 'gutenberg'
   ];
 
   /**

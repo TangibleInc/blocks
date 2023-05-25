@@ -18,7 +18,7 @@ defined('ABSPATH') or die();
  */
 
 $plugin->render = function($post, $data) use($plugin, $html, $template_system) {
-  
+
   $post = $plugin->init_render( $post, $data );
 
   $fields = $data['fields'] ?? [];
@@ -103,6 +103,14 @@ $plugin->render = function($post, $data) use($plugin, $html, $template_system) {
     }
 
   }
+
+  $html->set_js_variable('block', json_encode([
+    'controls'      => $fields,
+    'wrapper'       => $data['wrapper'],
+    'post_id'       => $data['content_id'],
+    'universal_id'  => $data['universal_id'],
+    'builder'       => $data['builder']
+  ]), [ 'type' => 'object' ] );
   
   $template_output = $template_system->render_template_post( $post, $data );
 
