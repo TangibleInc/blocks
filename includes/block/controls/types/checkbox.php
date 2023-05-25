@@ -9,7 +9,7 @@ class Checkbox extends Base {
   public string $type = 'checkbox';
 
   function get_value($value, array $args, string $context) {
-    return $value === '1' ? '1' : '0';
+    return in_array($value, ['1', 'true']) ? '1' : '0';
   }
 
 }

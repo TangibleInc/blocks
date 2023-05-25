@@ -6,7 +6,8 @@ $render_data = [
   'content_id'    => $module::$tangible_block['content_id'],
   'universal_id'  => $module::$tangible_block['universal_id'] ?? '',
   'fields'        => [],
-  'wrapper'       => 'fl-node-' . $module->node
+  'wrapper'       => 'fl-node-' . $module->node,
+  'builder'       => 'beaver-builder'
 ];
 
 $plugin = tangible_blocks();
