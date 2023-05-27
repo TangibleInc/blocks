@@ -19,12 +19,14 @@ Tags:
 
 == Changelog ==
 
-= 3.2.4 =
+= 3.2.5 =
 
-Release Date: 2023-05-24
+Release Date: 2023-05-27
 
 - Elementor integration: Improve dynamic module loader by removing AJAX library from dependency list of Template Editor script
-- Post loop: Improve handling when called directly without "type" or "post_type" parameter
+- Post loop
+  - Improve handling when called directly without "type" or "post_type" parameter
+  - For loop types that inherit from post loop, such as attachment, ensure backward compatibility with deprecated query parameter "type"
 - Blocks
   - Define a "block" variable to access the current block information form the JavaScript context (builder, post_id, controls, universal_id, wrapper) 
   - Set new blocks to new controls by default
