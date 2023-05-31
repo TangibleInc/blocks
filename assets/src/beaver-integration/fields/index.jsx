@@ -34,10 +34,14 @@ $(() => {
  */
 
 const initControl = control => {
-  
+
   FLBuilder.addHook('didShowLightbox', () => {
 
-    const controlContainers = document.getElementsByClassName(`${control.prefixed_type}-container`)
+    /**
+     * We use window.parent.document instead of document because since beaver-builder 2.7 the editor is
+     * inside an iframe
+     */
+    const controlContainers = window.parent.document.getElementsByClassName(`${control.prefixed_type}-container`)
     
     if( controlContainers.length === 0 ) return;
     
@@ -47,7 +51,7 @@ const initControl = control => {
       const $input = $(container).next()
 
       const data = JSON.parse(container.getAttribute('data-field'))
-      
+
       if( ! control.popup ) {
         render( initComponent(control, $input, data), container )
         continue;
@@ -88,7 +92,7 @@ const initControl = control => {
    */
   FLBuilder.addHook('settings-lightbox-closed', () => {
 
-    const controlContainers = document.getElementsByClassName(`tangible-block-control-${control.prefixed_type}-container`)
+    const controlContainers = window.parent.document.getElementsByClassName(`tangible-block-control-${control.prefixed_type}-container`)
 
     if( controlContainers.length === 0 ) return;
 
