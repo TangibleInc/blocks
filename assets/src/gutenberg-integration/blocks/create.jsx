@@ -49,7 +49,7 @@ export const createBlock = data => {
     edit(props) {
 
       const { block_id } = props.attributes
-      const { block_loaded } = props.attributes ?? false
+      const [block_loaded, setBlockLoaded] = useState(false)
 
       useEffect(() => {
         let id = block_id
@@ -61,7 +61,7 @@ export const createBlock = data => {
         }
 
         if ( !uniqueIds.includes(id) ) uniqueIds.push(id)
-        props.setAttributes({ block_loaded: true })
+        setBlockLoaded(true)
       }, [])
       const [activeTab, setActiveTab] = useState(data.tabs[0])
 
