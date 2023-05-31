@@ -16,7 +16,7 @@ const initLegacyControl = control => {
   
   FLBuilder.addHook('didShowLightbox', () => {
 
-    const controlContainers = document.getElementsByClassName(`${control.prefixed_type}-container`)
+    const controlContainers = window.parent.document.getElementsByClassName(`${control.prefixed_type}-container`)
 
     if( controlContainers.length === 0 ) return;
     
@@ -67,7 +67,7 @@ const initLegacyControl = control => {
    */
   FLBuilder.addHook('settings-lightbox-closed', () => {
 
-    const controlContainers = document.getElementsByClassName(`tangible-block-control-${control.prefixed_type}-container`)
+    const controlContainers = window.parent.document.getElementsByClassName(`tangible-block-control-${control.prefixed_type}-container`)
 
     if( controlContainers.length === 0 ) return;
 
