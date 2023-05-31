@@ -19,6 +19,13 @@ Tags:
 
 == Changelog ==
 
+= 3.2.6 =
+
+Release Date: 2023-05-31
+
+- Beaver integration: Fix issue with BeaverBuilder 2.7 and above preventing control to be initialized in the editor
+- Controls: Add new alignment_matrix control
+
 = 3.2.5 =
 
 Release Date: 2023-05-27
