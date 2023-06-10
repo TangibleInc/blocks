@@ -27,7 +27,7 @@ $plugin->render = function($post, $data) use($plugin, $html, $template_system) {
   /**
    * For each field register sass, js and control variable in template system
    */
-  foreach( $fields as $field ) {
+  foreach( $fields as &$field ) {
     
     if( empty($field) ) continue;
     
@@ -42,6 +42,8 @@ $plugin->render = function($post, $data) use($plugin, $html, $template_system) {
       : $plugin->get_control( $type ); 
 
     if( $control === false ) continue;
+
+    $field['value'] = $control->get_value( $field['value'], $args, 'template');
     
     /**
      * @see ./vendor/tangible/template-system/template/tags/get-set/control
