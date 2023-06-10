@@ -4,12 +4,12 @@ namespace Tangible\Blocks\Controls;
 
 defined('ABSPATH') or die();
 
-class Checkbox extends Base {
+class AlignmentMatrix extends BaseList {
 
-  public string $type = 'checkbox';
+  public string $type = 'alignment_matrix';
 
   function get_value($value, array $args, string $context) {
-    return in_array($value, ['1', 'true']) ? '1' : '0';
+    return esc_html( $value );
   }
 
 }

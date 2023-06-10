@@ -19,6 +19,29 @@ Tags:
 
 == Changelog ==
 
+= 3.2.6 =
+
+Release Date: 2023-05-31
+
+- Beaver integration: Fix issue with BeaverBuilder 2.7 and above preventing control to be initialized in the editor
+- Controls: Add new alignment_matrix control
+
+= 3.2.5 =
+
+Release Date: 2023-05-27
+
+- Elementor integration: Improve dynamic module loader by removing AJAX library from dependency list of Template Editor script
+- Post loop
+  - Improve handling when called directly without "type" or "post_type" parameter
+  - For loop types that inherit from post loop, such as attachment, ensure backward compatibility with deprecated query parameter "type"
+- Blocks
+  - Define a "block" variable to access the current block information form the JavaScript context (builder, post_id, controls, universal_id, wrapper) 
+  - Set new blocks to new controls by default
+- Controls
+  - Number: If defined, "min" attribute will be used as default if no value set
+  - Editor: Switch from TinyMCE to ProseMirror - Can still use TinyMCE by adding editor="tinymce"
+  - Repeater: Block layout - Add support for bulk actions
+
 = 3.2.3 =
 
 Release Date: 2023-05-18

@@ -6,6 +6,7 @@ defined('ABSPATH') or die();
 
 require_once __DIR__ . '/base/index.php';
 
+require_once __DIR__ . '/alignment-matrix.php';
 require_once __DIR__ . '/button-group.php';
 require_once __DIR__ . '/checkbox.php';
 require_once __DIR__ . '/color-picker.php';
@@ -25,6 +26,7 @@ require_once __DIR__ . '/text.php';
 require_once __DIR__ . '/text-suggestion.php';
 require_once __DIR__ . '/toggle.php';
 
+$plugin->register_control( new AlignmentMatrix );
 $plugin->register_control( new ButtonGroup );
 $plugin->register_control( new Checkbox );
 $plugin->register_control( new ColorPicker );

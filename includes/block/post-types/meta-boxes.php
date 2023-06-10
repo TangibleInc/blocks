@@ -47,12 +47,11 @@ add_action('add_meta_boxes', function() use($plugin, $fields, $legacy_meta_name,
 
       <!-- Temporary - TODO: move into separate css file -->
       <style>.tangible-block-new-block-switch .tf-switch { display: flex; justify-content: space-between; align-items: center }</style>
-      
       <?php echo $fields->render_field($legacy_meta_name, [
         'label'   => __( 'Enable new controls for this block', 'tangible-blocks' ),
         'wrapper' => [ 'class' => 'tangible-block-new-block-switch' ],
         'type'    => 'switch',
-        'value'   => $fields->fetch_value($legacy_meta_name),
+        'value'   => $fields->fetch_value($legacy_meta_name) ? $fields->fetch_value($legacy_meta_name) : 'on',
       ]);
     },
     'tangible_block'
