@@ -15,11 +15,13 @@ const $ = jQuery
 const initLegacyControl = control => {
   
   FLBuilder.addHook('didShowLightbox', () => {
-
+    
     const controlContainers = window.parent.document.getElementsByClassName(`${control.prefixed_type}-container`)
 
     if( controlContainers.length === 0 ) return;
     
+    document.body.classList.add('tangible-block-legacy-is-edited')
+
     for (let i = 0; i < controlContainers.length; i++) {
 
       const container = controlContainers[ i ]
@@ -47,9 +49,12 @@ const initLegacyControl = control => {
         
         unmountComponentAtNode(popupContainer)
         
+        document.body.classList.add('tangible-block-legacy-popup-is-open')
+        const onClose = () => document.body.classList.remove('tangible-block-legacy-popup-is-open')
+
         render( 
-          initComponent(control, $input, data), 
-          popupContainer 
+          initComponent(control, $input, data, onClose), 
+          popupContainer
         )
       }
 
@@ -59,7 +64,6 @@ const initLegacyControl = control => {
         </button>
       , container)
     }
-
   })
 
   /**
@@ -67,10 +71,12 @@ const initLegacyControl = control => {
    */
   FLBuilder.addHook('settings-lightbox-closed', () => {
 
+    document.body.classList.remove('tangible-block-legacy-is-edited')
+
     const controlContainers = window.parent.document.getElementsByClassName(`tangible-block-control-${control.prefixed_type}-container`)
 
     if( controlContainers.length === 0 ) return;
-
+  
     for (let i = 0; i < controlContainers.length; i++) {
       unmountComponentAtNode(controlContainers[i])
     }
@@ -84,9 +90,16 @@ const initLegacyControl = control => {
     }
   })
 
+  /**
+   * Remove edit class when change edited widget without closing lightbox
+   */
+  FLBuilder.addHook('hideContentPanel', () => {
+    document.body.classList.remove('tangible-block-legacy-is-edited')
+  })
+
 }
 
-const initComponent = (control, $input, field) => (
+const initComponent = (control, $input, field, onPopupClose = false) => (
   <LegacyControl
     config={ control }
     initialValue={ $input.val() }
@@ -96,6 +109,7 @@ const initComponent = (control, $input, field) => (
       $input.val(value)
       $input.trigger('change')
     }}
+    onPopupClose={ onPopupClose }
   />
 )
 

@@ -28,17 +28,9 @@ $modal-select-height: 27px;
 }
 
 /*
-
 Basic fix to make select2 work in BeaverBuilder (there are syle conflicts)
-
-We can't add too much style here because the select2 dropdown is created outside of the select2 
-DOM element (directly inside <body>), which means our css will also affect select2 instances from
-other modules
-
-TODO: Ask a frontend dev to look into it
-
 */
-.fl-builder-edit {
+.fl-builder-edit .tangible-block-legacy-is-edited.tangible-block-legacy-popup-is-open {
 
   select {
     width: 100%;

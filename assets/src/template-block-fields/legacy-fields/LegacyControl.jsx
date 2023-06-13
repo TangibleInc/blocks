@@ -18,6 +18,13 @@ const LegacyControl = props => {
   useEffect(() => props.save(saved), [saved])
   useEffect(() => { isPopup && isOpen ? setValue(saved) : null }, [isOpen])
 
+  /**
+   * Needed to remove class we add on body when popup open (beaver-builder fix to handle conflict with select2)
+   */
+  useEffect(() => {
+    if( ! isOpen && props.onPopupClose ) props.onPopupClose()  
+  }, [isOpen])
+
   const labelStyle = { display: 'flex', marginBottom: '10px' }
 
   const control =
