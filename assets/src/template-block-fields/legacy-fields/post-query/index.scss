@@ -32,12 +32,6 @@ Basic fix to make select2 work in BeaverBuilder (there are syle conflicts)
 */
 .fl-builder-edit .tangible-block-legacy-is-edited.tangible-block-legacy-popup-is-open {
 
-  select {
-    width: 100%;
-    max-width: 100%;
-    min-height: $modal-select-height;
-  }
-
   span.select2-container {
     z-index: 9999999999;
 
