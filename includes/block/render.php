@@ -43,13 +43,11 @@ $plugin->render = function($post, $data) use($plugin, $html, $template_system) {
 
     if( $control === false ) continue;
 
-    $field['value'] = $control->get_value( $field['value'], $args, 'template');
-    
     /**
      * @see ./vendor/tangible/template-system/template/tags/get-set/control
      */
     if( $control->has_context('template') ) {
-      $control_value = $control->render( $value, $args, 'template' );
+      $field['value'] = $control_value = $control->render( $value, $args, 'template' );
       $html->set_control_variable( $name, $control_value );
     }
 
@@ -73,7 +71,10 @@ $plugin->render = function($post, $data) use($plugin, $html, $template_system) {
       if( in_array($sass_type, ['map', 'list']) ) {
 
         $sass_map_name = $sass_name . '-'. $sass_type;
-        $html->set_sass_variable( $sass_map_name, $sass_value, [ 'type' => $sass_type ]  );
+        $html->set_sass_variable( $sass_map_name, $sass_value, [
+          'type'   => $sass_type, 
+          'render' => false
+        ]);
 
         // Only maps can have a default value
         if( $sass_type === 'map' ) {
@@ -90,7 +91,10 @@ $plugin->render = function($post, $data) use($plugin, $html, $template_system) {
       }
       
       $sass_type = ! empty($control_value) ? $sass_type : 'string';
-      $html->set_sass_variable( $sass_name, $sass_value, [ 'type' => $sass_type ]  );
+      $html->set_sass_variable( $sass_name, $sass_value, [
+        'type'   => $sass_type, 
+        'render' => false
+      ]);
     }
     
     /**
@@ -101,18 +105,27 @@ $plugin->render = function($post, $data) use($plugin, $html, $template_system) {
       $js_type = $is_legacy ? 'string' : $control->get_js_type();
       $js_value = $control->render( $value, $args, 'script' );
 
-      $html->set_js_variable( $name, $js_value, [ 'type' => $js_type ] );
+      $html->set_js_variable( $name, $js_value, [
+        'type'   => $js_type,
+        'render' => false
+      ]);
     }
 
   }
 
-  $html->set_js_variable('block', json_encode([
-    'controls'      => $fields,
-    'wrapper'       => $data['wrapper'],
-    'post_id'       => $data['content_id'],
-    'universal_id'  => $data['universal_id'],
-    'builder'       => $data['builder']
-  ]), [ 'type' => 'object' ] );
+  $html->set_js_variable('block',
+    json_encode([
+      'controls'      => $fields,
+      'wrapper'       => $data['wrapper'],
+      'post_id'       => $data['content_id'],
+      'universal_id'  => $data['universal_id'],
+      'builder'       => $data['builder']
+    ]),
+    [
+      'type'   => 'object',
+      'render' => false,
+    ]
+  );
   
   $template_output = $template_system->render_template_post( $post, $data );
 
