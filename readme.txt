@@ -19,6 +19,31 @@ Tags:
 
 == Changelog ==
 
+= 3.2.8 =
+
+- Date module: Upgrade Carbon date library to version 2.68.1 with better PHP 8.x compatibility
+- Format tag
+  - Add list and string format methods
+    - index, offset, length, words - Cut a piece of string by position
+    - split, join - Split string to list, and back
+    - trim, trim_left, trim_right - Remove whitespace or given characters from start/end 
+    - prefix, suffix - Add string before or after
+    - reverse - Reverse a string or list
+  - Regular expressions - replace_pattern, match_pattern
+  - Multibyte string: uppercase, lowercase, capital, capital_words
+  - Format list
+    - Format every item in a list
+    - Nested list formats
+- If tag
+  - Add comparison "matches_pattern" to match value to regular expression
+  - Improve comparison "includes" to support a List loop instance, for example: `<If acf_checkbox=field_name includes value=some_value>`
+
+= 3.2.7 =
+
+Release Date: 2023-06-01
+
+- Link tags: Ensure any null is converted to empty string before passing to str_replace - Compatibility with PHP 8.x
+
 = 3.2.6 =
 
 Release Date: 2023-05-31
