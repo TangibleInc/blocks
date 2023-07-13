@@ -37,6 +37,21 @@ Tags:
 - If tag
   - Add comparison "matches_pattern" to match value to regular expression
   - Improve comparison "includes" to support a List loop instance, for example: `<If acf_checkbox=field_name includes value=some_value>`
+- Blocks variables
+  - Disabled template render on SCSS and JavaScript variables
+  - Added more data in JS block variable regarding control values
+- BeaverBuilder: Fixed CSS conflicts with legacy controls in the editor
+- Gutenberg: Fixed wrapper ID being the same when cloning an existing block
+- Controls
+  - Improved CSS for default and wp contexts
+  - Fields:
+    - Number: Added support for string values
+    - Repeater: Added bulk action for table layout
+    - ComboBox: Added support for placeholder in single value
+  - Implemented dynamic value feature
+    - Added post category: post_id, post_meta
+    - Added user category: user_id, user_meta
+    - Supported field types: color_picker, date_picker, number, text
 
 = 3.2.7 =
 
