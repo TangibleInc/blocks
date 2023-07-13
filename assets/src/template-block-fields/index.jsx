@@ -5,7 +5,7 @@ const getControl = (
   builder
 ) => (
   tangibleFields.render({
-    context: builder === 'gutenberg' ? 'default' : builder,
+    context: builder === 'gutenberg' ? 'wp' : builder,
     onChange: value => handler(
       Array.isArray(value) || typeof value === 'object'
         ? JSON.stringify(value) 

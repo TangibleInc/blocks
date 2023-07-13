@@ -87,7 +87,7 @@ add_action('tangible_enqueue_gutenberg_template_editor', function() use ($plugin
     'before'
   );
 
-  $fields->set_context('default');
+  $fields->set_context('wp');
   $fields->enqueue();
 
 });
