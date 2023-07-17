@@ -19,6 +19,15 @@ Tags:
 
 == Changelog ==
 
+= 3.2.9 =
+
+Release Date: 2023-07-17
+
+- Format tag
+  - Format list index: Fix warning from array_shift()
+  - Support capture groups for replace_pattern, for example: replace_pattern="/(\d{3})/" with="$1"
+  - When invalid regular expression is passed, emit a warning instead of throwing an error
+
 = 3.2.8 =
 
 - Date module: Upgrade Carbon date library to version 2.68.1 with better PHP 8.x compatibility
