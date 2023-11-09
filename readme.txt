@@ -19,6 +19,13 @@ Tags:
 
 == Changelog ==
 
+= 3.3.1 =
+
+Release Date: 2023-11-09
+
+- Admin menu: For multisite installs, register menus per site, not network admin, because post types are site-specific and not shared across sites
+- Remove use of deprecated function setImmediate when loading Select2; Fixes issue on import/export page
+
 = 3.3.0 =
 
 Release Date: 2023-11-02
