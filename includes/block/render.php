@@ -2,6 +2,8 @@
 
 defined('ABSPATH') or die();
 
+use Tangible\Blocks\Sass as sass;
+
 /**
  * Note about legacy render/new controls:
  * 
@@ -126,7 +128,20 @@ $plugin->render = function($post, $data) use($plugin, $html, $template_system) {
       'render' => false,
     ]
   );
-  
+
+  $html->set_sass_variable('block',
+    sass\to_map([
+      'wrapper'       => $data['wrapper'],
+      'post_id'       => $data['content_id'],
+      'universal_id'  => $data['universal_id'],
+      'builder'       => $data['builder']
+    ]),
+    [ 
+      'type'   => 'map', 
+      'render' => false 
+    ]
+  );
+
   $template_output = $template_system->render_template_post( $post, $data );
 
   $plugin->reset_render( $post );

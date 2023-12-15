@@ -4,6 +4,8 @@ namespace Tangible\Blocks\Controls;
 
 defined('ABSPATH') or die();
 
+use Tangible\Blocks\Sass as sass;
+
 class Base {
 
   use Elementor;
@@ -181,33 +183,7 @@ class Base {
    * @see https://sass-lang.com/documentation/values/maps
    */
   function get_sass_map(array $values, array $types) : string {
-    
-    $map = [];
-
-    foreach( $values as $key => $value ) {
-
-      $type = $types[ $key ] ?? 'string';
-      $is_map = ($type === 'map' || is_array($type)) && is_array($value);
-      $is_list = $type === 'list' && is_array($value);
-
-      // We can have a map/list inside of map with the repeater control
-      if( $is_map ) {
-        $value = $this->get_sass_map($value, is_array($type) ? $type : []);
-      }
-      else if( $is_list ) {
-        $value = $this->get_sass_list($value, $types);
-      } else {
-        $value = ! is_array($value) 
-          ? ($type === 'string' 
-            ? '"' . $value .  '"' 
-            : $value)
-          : '""';
-      }
-      
-      $map []= '"' . $key . '":' . $value;
-    }
-
-    return '(' . implode(',', $map) . ')';
+    return sass\to_map($values, $types);
   }
 
   /**
@@ -216,23 +192,11 @@ class Base {
    * @see https://sass-lang.com/documentation/values/lists
    */
   function get_sass_list(array $values, array $args) : string {
-
-    $type = $this->get_sass_list_item_type();
-    $list = [];
-
-    foreach( $values as $value ) {
-
-      $is_map = $type === 'map' && is_array($value);
-
-      $list []= $is_map  
-        ? $this->get_sass_map($value, $this->get_sass_map_types($args))
-        : ($type === 'string' 
-          ? '"' . $value .  '"' 
-          : $value
-        );  
-    }
-    
-    return '(' . implode(',', $list) . ')';
+    return sass\to_list(
+      $values, 
+      $types,
+      $this->get_sass_map_types($args) 
+    );
   }
 
 }
