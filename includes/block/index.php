@@ -9,5 +9,3 @@ require_once __DIR__.'/render.php';
 
 require_once __DIR__.'/post-types/index.php';
 require_once __DIR__.'/controls/index.php';
-require_once __DIR__.'/index.php';
-
