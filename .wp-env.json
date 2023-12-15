@@ -1,0 +1,9 @@
+{
+  "core": "WordPress/WordPress",
+  "phpVersion": "8.2",
+  "plugins": [
+    ".",
+    "elementor/elementor",
+    "../bb-plugin"
+  ]
+}

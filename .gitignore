@@ -7,3 +7,12 @@ node_modules
 composer.lock
 package-lock.json
 yarn.lock
+
+# Testing
+/.phpunit.cache
+/wordpress-develop
+/coverage
+.wp-env.override.json
+/test-results
+
+*.swp
