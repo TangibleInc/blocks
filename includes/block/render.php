@@ -26,6 +26,15 @@ $plugin->render = function($post, $data) use($plugin, $html, $template_system) {
   $fields = $data['fields'] ?? [];
   $is_legacy = $plugin->block_use_new_controls( $post->ID ) !== true;
 
+  if( $is_legacy ) {
+    $message = (
+      'Block "' . get_the_title( $post->ID ) . '" is using legacy controls. ' .
+      'Legacy controls are deprecated since version 3.1.6 and won\'t be supported in the future.<br />' .
+      'Learn how to update legacy controls: https://docs.loopsandlogic.com/tangible-blocks/block-controls/#transitioning-from-legacy-controls'
+    );
+    trigger_error($message, E_USER_DEPRECATED);
+  }
+
   /**
    * For each field register sass, js and control variable in template system
    */

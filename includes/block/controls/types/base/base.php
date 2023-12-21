@@ -4,8 +4,6 @@ namespace Tangible\Blocks\Controls;
 
 defined('ABSPATH') or die();
 
-use Tangible\Blocks\Sass as sass;
-
 class Base {
 
   use Elementor;

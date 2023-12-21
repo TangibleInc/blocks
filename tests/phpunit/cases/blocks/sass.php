@@ -217,8 +217,4 @@ class Sass_Test extends WP_UnitTestCase {
     ];
   }
 
-  function _test_array_to_sass_list_conversion_data() {
-
-  }
-
 }
