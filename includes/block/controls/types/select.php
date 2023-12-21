@@ -8,6 +8,18 @@ class Select extends BaseList {
 
   public string $type = 'select';
 
+  /**
+   * @see ./includes/block/sass.php
+   */
+  function get_sass_variable_definition($value, array $args) : array {
+    return [
+      'type'  => 'string',
+      'value' => is_array($value) 
+        ? implode(',', array_map(function($item) { return $item['id']; }, $value )) // multiple => true
+        : $value
+    ];
+  }
+
   function get_value($value, array $args, string $context) {
 
     $values = $this->has_multiple_values($args)

@@ -114,89 +114,80 @@ class Base {
     if( ! $this->has_context($context) ) return '';
 
     $value = $this->get_value( $value, $args, $context );
-    
+
+    if( $context === 'style' ) {
+      return $this->get_sass_variable_definition( $value, $args );
+    }
+
     if( ! is_array($value) ) return $value;
 
-    $is_template  = $context === 'template'; 
-    $is_sass_map  = $context === 'style' && $this->get_sass_type() === 'map';
-    $is_sass_list = $context === 'style' && $this->get_sass_type() === 'list';
-
-    $use_multiple_values = $is_template || ($is_sass_map || $is_sass_list); 
+    $use_multiple_values = $context === 'template';
 
     /**
      * If we can't return all the value, return just the default (if any) 
      */
     if( ! $use_multiple_values || $force_default ) {
       return $value['value'] ?? '';
-    } 
-
-    if( $is_sass_list ) return $this->get_sass_list($value, $args);
-    if( $is_sass_map ) {
-      return $this->get_sass_map(
-        $value, 
-        $this->get_sass_map_types($args)
-      );
     }
 
     return $value;
   }
-
-  /**
-   * SCSS variable methods
-   */
 
   function get_js_type() : string {
     return 'string';
   }
 
   /**
-   * If string value will be used inside of quotes
+   * Returns an array with the arguments needed to define the type of variable we need in 
+   * sass, will be a simple string if not defined by child class
    * 
-   * If map, each map value type can be defined using the get_sass_map_type method
-   * If list, each list value type can be defined using the get_sass_list_type method
+   * @see ./includes/blocks/sass.php
    */
-  function get_sass_type() : string {
-    return 'string';
+  function get_sass_variable_definition($value, array $args) : array {
+    return [ 
+      'type' => 'string', 
+      'value' => $value
+    ];
   }
 
   /**
-   * When map key value is different than string, it must be defined here
+   * Three possible variables:
+   * - default - ${name}: Always defined, but if list will be empty and if map will attempt to use a default value
+   * - map     - ${name}-map: Only defined when map type
+   * - list    - ${name}-list: Only defined when list type
    */
-  function get_sass_map_types(array $args) : array {
-    return [];
-  }
+  function get_sass_variables(array $definition) : array {
 
-  function get_sass_map_default_type(array $args) : string {
-    return $this->get_sass_map_types($args)['value'] ?? 'string';
-  }
+    $variables = [];
+    $type = $definition['type'] ?? 'string';
+    $value = $definition['value'] ?? '';
 
-  /**
-   * When list item value is different than string, it must be defined here
-   */
-  function get_sass_list_item_type() : string {
-    return 'string';
-  }
-
-  /**
-   * Used when get_sass_map_types() is map
-   * 
-   * @see https://sass-lang.com/documentation/values/maps
-   */
-  function get_sass_map(array $values, array $types) : string {
-    return sass\to_map($values, $types);
-  }
-
-  /**
-   * Used when get_sass_map_types() is list
-   * 
-   * @see https://sass-lang.com/documentation/values/lists
-   */
-  function get_sass_list(array $values, array $args) : string {
-    return sass\to_list(
-      $values, 
-      $types,
-      $this->get_sass_map_types($args) 
-    );
+    if( $type === 'list' ) {
+      $variables['list'] = $definition;
+      $variables['default'] = [
+        'type'  => 'string',
+        'value' => ''
+      ];
+    }
+    else if( $type === 'map' ) {
+      $variables['map'] = $definition;
+      $default = $value['value'] ?? false;
+      $default = ! in_array($default['type'], ['map', 'list']) ? $default : false;
+      $variables['default'] = $default 
+        ? [
+            'type'  => $default['type'],
+            'value' => (string) $default['value']
+          ]
+        : [
+          'type'  => 'string',
+          'value' => ''
+        ];
+    }
+    else {
+      $variables['default'] = $definition;
+    }
+    
+    return $variables;
   }
 
 }

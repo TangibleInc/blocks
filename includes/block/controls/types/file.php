@@ -9,17 +9,52 @@ class File extends Base {
   public string $type = 'file';
 
   /**
-   * SCSS variable is a list of map
+   * @see ./includes/block/sass.php
    */
-
-  function get_sass_type() : string {
-    return 'list';
+  function get_sass_variable_definition($images, array $args) : array {
+    return [
+      'type'  => 'list',
+      'value' => array_map(
+        function($image) {
+          return [
+            'type'  => 'map',
+            'value' => [
+              'id' => [
+                'value' => $image['id'] ?? '',
+                'type'  => 'string'
+              ],
+              'url' => [
+                'value' => $image['url'] ?? '',
+                'type'  => 'string'
+              ],
+              'value' => [
+                'value' => $image['value'] ?? '',
+                'type'  => 'string'
+              ],
+              'alt' => [
+                'value' => $image['alt'] ?? '',
+                'type'  => 'string'
+              ],
+              'title' => [
+                'value' => $image['title'] ?? '',
+                'type'  => 'string'
+              ],
+              'caption' => [
+                'value' => $image['caption'] ?? '',
+                'type'  => 'string'
+              ],
+              'description' => [
+                'value' => $image['description'] ?? '',
+                'type'  => 'string'
+              ]
+            ]
+          ];
+        },
+        $images
+      )
+    ];
   }
 
-  function get_sass_list_item_type() : string {
-    return 'map';
-  }
-  
   function get_attachment_data(int $id) : array {
 
     $attachement = get_post($id);

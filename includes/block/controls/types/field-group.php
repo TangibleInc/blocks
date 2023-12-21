@@ -8,63 +8,46 @@ class FieldGroup extends Base {
 
   public string $type = 'field_group';
 
-  function get_control_args(string $builder, array $args): array {
-    $args['fields'] = $args['controls']; 
-    return parent::get_control_args($builder, $args);
-  }
-
   /**
-   * SCSS config
+   * @see ./includes/block/sass.php
    */
+  function get_sass_variable_definition($fields, array $args) : array {
+    
+    $sub_values = [];
+    foreach( $fields as $name => $value ) {
 
-  function get_sass_type() : string {
-    return 'list';
-  }
+      $control_args = $this->get_fields_args( $name, $args );
+      $control = self::$plugin->get_control( $control_args['type'] ?? '' );
 
-  function get_sass_list_item_type() : string {
-    return 'map';
-  }
+      if( $control === false ) continue;
 
-  function get_sass_map_types(array $args) : array {
-
-    $controls = $args['controls'] ?? [];
-    $types = [];
-
-    foreach( $controls as $data ) {
-      
-      $control = self::$plugin->get_control( $data['type'] ?? '' );
-      $name = $data['name'] ?? false;
-
-      if( ! $control || ! $name ) continue; 
-      
-      $type = $control->get_sass_type();
-      
-      if( $type === 'map' ) $type = $control->get_sass_map_types([]); // TODO: Pass $args for nested repeater
-      if( $type === 'list' ) $type = $control->get_sass_list_item_type();
-
-      $types[ $name ] = $type; 
+      $sub_values[ $name ] = $control->get_sass_variable_definition( 
+        $control->get_value( $value, $control_args, 'style' ),
+        $control_args 
+      );
     }
 
-    return $types;
+    return [
+      'type'  => 'map',
+      'value' => $sub_values
+    ];
   }
 
-  /**
-   * Render
-   */
-
-  function get_field_control(string $name, array $args) {
-    
-    $control = array_values(
+  function get_fields_args(string $name, array $args) : array {
+    return array_values(
       array_filter(
-        $args['controls'] ?? [],
+        $args['fields'] ?? [],
         function($control) use($name) {
           return ($control['name'] ?? '') === $name;
         }
       )
-    )[0] ?? false;
+    )[0] ?? [];
+  }
 
-    return ! empty($control)
-      ? self::$plugin->get_control( $control['type'] ?? '' )
+  function get_field_control(string $name, array $args) {
+    $control_args = $this->get_fields_args($name, $args);
+    return ! empty($control_args)
+      ? self::$plugin->get_control( $control_args['type'] ?? '' )
       : false
     ;
   }
@@ -75,9 +58,12 @@ class FieldGroup extends Base {
 
     if( empty($control) ) return [ 'value' => '' ];
     
-    $value = $control->get_value( $value, $args, $context );
+    $field_args = $this->get_fields_args( $name, $args );
+    $value = $control->get_value( $value, $field_args, $context );
 
-    if( ! is_array($value) ) $value  = [ 'value' => $value ];
+    if( ! is_array($value) || ! isset($value['value']) ) {
+      $value = [ 'value' => $value ];
+    } 
 
     $value['type'] = $control->type;
     $value['name'] = $name;
@@ -88,11 +74,13 @@ class FieldGroup extends Base {
   function get_value($fields, array $args, string $context) {
 
     if( is_string($fields) ) $fields = json_decode($fields);
+    if( $context === 'style' ) return (array) $fields;
 
     $formated_fields = [];
 
     if( empty($fields) ) return $formated_fields;
 
+    // Maybe it makes more sense to return an associative array for this?
     foreach( $fields as $name => $value ) {
       $formated_fields[] = $this->get_field_value( $value, $name, $args, $context );
     }

@@ -58,45 +58,36 @@ $plugin->render = function($post, $data) use($plugin, $html, $template_system) {
      */
     if( $control->has_context('style') ) {
 
-      $sass_value = $control->render( $value, $args, 'style' );
+      if( $is_legacy ) {
+        $sass_value = $control->render( $value, $args, 'style' );
+        $variables = [
+          'default' => [ 
+            'type'  => $plugin->get_legacy_sass_variable_type( $sass_value, $type ), 
+            'value' => $sass_value
+          ]
+        ]; 
+      }
+      else {
+        $variables = $control->get_sass_variables( 
+          $control->render( $value, $args, 'style' ),
+        );
+      }
+
+      foreach( $variables as $suffix => $variable ) {
         
-      $sass_name = str_replace(' ', '-', $name);
-      $sass_type = $is_legacy
-        ? $plugin->get_legacy_sass_variable_type( $sass_value, $type )
-        : $control->get_sass_type();
+        $sass_name = str_replace(' ', '-', $name);
+        $sass_name = $suffix !== 'default' 
+          ? $sass_name . '-' . $suffix
+          : $sass_name;
 
-      /**
-       * When type is a map or list, 2 variables are defined:
-       * - $control-name -> Regular variable with the default value (if any)
-       * - $control-name-{map || list} -> Map or list with all values
-       */
-      if( in_array($sass_type, ['map', 'list']) ) {
+        $sass_type = ! empty($control_value) ? $variable['type'] : 'string'; // TODO: See if we really need this
+        $sass_value = sass\to_variable( $variable );
 
-        $sass_map_name = $sass_name . '-'. $sass_type;
-        $html->set_sass_variable( $sass_map_name, $sass_value, [
+        $html->set_sass_variable( $sass_name, $sass_value, [
           'type'   => $sass_type, 
           'render' => false
         ]);
-
-        // Only maps can have a default value
-        if( $sass_type === 'map' ) {
-          $sass_value = $control->render( $value, $args, 'style', true );
-          $sass_type = $control->get_sass_map_default_type($args);
-        } else {
-          $sass_value = '';
-          $sass_type = 'string';
-        }
       }
-
-      if( $sass_type === 'number' && is_int($sass_value) ) {
-        $sass_value = (string) $sass_value;
-      }
-      
-      $sass_type = ! empty($control_value) ? $sass_type : 'string';
-      $html->set_sass_variable( $sass_name, $sass_value, [
-        'type'   => $sass_type, 
-        'render' => false
-      ]);
     }
     
     /**
@@ -117,11 +108,11 @@ $plugin->render = function($post, $data) use($plugin, $html, $template_system) {
 
   $html->set_js_variable('block',
     json_encode([
-      'controls'      => $fields,
-      'wrapper'       => $data['wrapper'],
-      'post_id'       => $data['content_id'],
-      'universal_id'  => $data['universal_id'],
-      'builder'       => $data['builder']
+      'controls'     => $fields,
+      'wrapper'      => $data['wrapper'],
+      'post_id'      => $data['content_id'],
+      'universal_id' => $data['universal_id'],
+      'builder'      => $data['builder']
     ]),
     [
       'type'   => 'object',
@@ -130,11 +121,23 @@ $plugin->render = function($post, $data) use($plugin, $html, $template_system) {
   );
 
   $html->set_sass_variable('block',
-    sass\to_map([
-      'wrapper'       => $data['wrapper'],
-      'post_id'       => $data['content_id'],
-      'universal_id'  => $data['universal_id'],
-      'builder'       => $data['builder']
+    $test = sass\to_map([
+      'wrapper' => [
+        'value' => $data['wrapper'],
+        'type'  => 'string',
+      ],
+      'post_id' => [
+        'value' => $data['content_id'],
+        'type'  => 'string',
+      ],
+      'universal_id' => [
+        'value' => $data['universal_id'],
+        'type'  => 'string',
+      ],
+      'builder' => [
+        'value' => $data['builder'],
+        'type'  => 'string',
+      ],
     ]),
     [ 
       'type'   => 'map', 

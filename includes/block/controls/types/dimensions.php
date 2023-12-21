@@ -12,18 +12,38 @@ class Dimensions extends Base {
     return $args['units'] ?? ['px'];
   }
 
-  function get_sass_type() : string {
-    return 'map';
-  }
-
-  function get_sass_map_types(array $args) : array {
+  /**
+   * @see ./includes/block/sass.php
+   */
+  function get_sass_variable_definition($value, array $args) : array {
     return [
-      'value'   => 'dimension',
-      'top'     => 'number',
-      'right'   => 'number',
-      'bottom'  => 'number',
-      'left'    => 'number',
-      'unit'    => 'unit',
+      'type'  => 'map',
+      'value' => [
+        'value' => [ 
+          'value' => $value['value'], 
+          'type'  => 'dimension'
+        ],
+        'top' => [ 
+          'value' => $value['top'], 
+          'type'  => 'number'
+        ],
+        'right' => [ 
+          'value' => $value['right'], 
+          'type'  => 'number'
+        ],
+        'bottom' => [ 
+          'value' => $value['bottom'], 
+          'type'  => 'number'
+        ],
+        'left' => [ 
+          'value' => $value['left'], 
+          'type'  => 'number'
+        ],
+        'unit' => [ 
+          'value' => $value['unit'], 
+          'type'  => 'unit'
+        ],
+      ],
     ];
   }
 

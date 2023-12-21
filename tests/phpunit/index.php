@@ -27,6 +27,12 @@ $_PLUGIN_ENTRYPOINT = __DIR__ . '/../../tangible-blocks.php';
 require_once $_WORDPRESS_TESTS_DIR . '/includes/functions.php';
 
 tests_add_filter('muplugins_loaded', function() use ($_PLUGIN_ENTRYPOINT) {
+
+  /**
+   * Require helpers files 
+   */
+  require_once __DIR__ . '/cases/blocks/controls/types/sass-helper.php';
+
 	require $_PLUGIN_ENTRYPOINT;
 });
 

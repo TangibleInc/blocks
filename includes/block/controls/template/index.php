@@ -20,9 +20,10 @@ foreach ([
       // Create a map
 
       $is_repeater = $property_name === 'controls' && $atts['type'] === 'repeater';
+      $is_field_group = $property_name === 'controls' && $atts['type'] === 'field_group';
 
       if( $is_repeater ) $visibility->start_repeater( $atts['name'] );
-      
+
       $html->map_tag([ 'keys' => ['_current'] ], $nodes);
       
       if( $is_repeater ) $visibility->end_repeater( $atts['name'] );
@@ -55,6 +56,12 @@ foreach ([
       // Visibility conditions for this tab/section/control
       if ( $visibility->has_conditions() ) {
         $item['conditions'] = $visibility->active_conditions();
+      }
+
+      // Tangible fields definition expect fields instead of controls for subfields
+      if( $is_repeater || $is_field_group ) {
+        $item['fields'] = $item['controls'] ?? [];
+        unset($item['controls']);
       }
 
       $html->current_map[ $property_name ] []= $item;

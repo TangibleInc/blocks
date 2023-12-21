@@ -8,72 +8,56 @@ class Repeater extends Base {
 
   public string $type = 'repeater';
 
-  function get_control_args(string $builder, array $args) : array {
-
-    /**
-     * TODO: Look how to get directly the right structure from the L&L template?
-     */
-    $args['fields'] = $args['controls'] ?? [];
-    unset($args['controls']);
-
-    $args = parent::get_control_args($builder, $args);
-
-    return $args;
-  }
-
   /**
-   * SCSS config (variable is a list of map)
+   * @see ./includes/block/sass.php
    */
+  function get_sass_variable_definition($items, array $args) : array {
+    return [
+      'type'  => 'list',
+      'value' => array_map(
+        function($item) use($args) {   
+          foreach( $args['fields'] as $data ) {
 
-  function get_sass_type() : string {
-    return 'list';
+            if( ! ( $name = $data['name'] ?? false ) ) continue;
+
+            $value = $item[ $name ] ?? '';
+            $control_args = $this->get_fields_args( $name, $args );
+
+            if( ! ( $control = self::$plugin->get_control( $control_args['type'] ?? '' ) ) ) {
+              continue;
+            }
+
+            $map[ $name ] = $control->get_sass_variable_definition( 
+              $value,
+              $control_args
+            );
+          }
+
+          return [
+            'type'  => 'map',
+            'value' => $map
+          ];
+        },
+        $items,
+      )
+    ];
   }
 
-  function get_sass_list_item_type() : string {
-    return 'map';
-  }
-
-  function get_sass_map_types(array $args) : array {
-    
-    $controls = $args['controls'] ?? [];
-    $types = [];
-
-    foreach( $controls as $data ) {
-      
-      $control = self::$plugin->get_control( $data['type'] ?? '' );
-      $name = $data['name'] ?? false;
-
-      if( ! $control || ! $name ) continue; 
-      
-      $type = $control->get_sass_type();
-
-      if( $type === 'map' ) {
-        $type = $control->get_sass_map_types([]); // TODO: Pass $args for nested repeater
-      }
-      
-      $types[ $name ] = $type; 
-    }
-
-    return $types;
-  }
-
-  /**
-   * Render
-   */
-
-  function get_field_control(string $name, array $args) {
-    
-    $control = array_values(
+  function get_fields_args(string $name, array $args) : array {
+    return array_values(
       array_filter(
-        $args['controls'] ?? [],
+        $args['fields'] ?? [],
         function($control) use($name) {
           return ($control['name'] ?? '') === $name;
         }
       )
-    )[0] ?? false;
+    )[0] ?? [];
+  }
 
-    return ! empty($control)
-      ? self::$plugin->get_control( $control['type'] ?? '' )
+  function get_field_control(string $name, array $args) {
+    $control_args = $this->get_fields_args($name, $args);
+    return ! empty($control_args)
+      ? self::$plugin->get_control( $control_args['type'] ?? '' )
       : false
     ;
   }
@@ -83,8 +67,12 @@ class Repeater extends Base {
     $control = $this->get_field_control( $name, $args );
 
     if( empty($control) ) return [ 'value' => '' ];
-    
-    return $control->get_value( $value, $args, $context );
+
+    return $control->get_value( 
+      $value, 
+      $this->get_fields_args($name, $args), 
+      $context 
+    );
   }
 
   function get_item_values(object $item, array $args, string $context) {
@@ -94,7 +82,7 @@ class Repeater extends Base {
     foreach( $item as $name => $value ) {
 
       if( $name === 'key' ) continue;
-      
+
       $values[ $name ] = $this->get_item_value( $value, $name, $args, $context );
     }
 
@@ -107,7 +95,6 @@ class Repeater extends Base {
     if( ! is_array($items) ) return [];
 
     $item_values = [];
-
     foreach( $items as $item ) {
       $item_values []= $this->get_item_values( $item, $args, $context );
     }

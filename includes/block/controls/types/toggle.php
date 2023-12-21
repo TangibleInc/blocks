@@ -8,8 +8,11 @@ class Toggle extends Base {
 
   public string $type = 'switch';
 
-  function get_value($formated_value, array $args, string $context) {
-    return esc_html($formated_value);
+  /**
+   * TODO: Validate returned value according to $args (eyes/no by default, but can be changed)
+   */
+  function get_value($value, array $args, string $context) {
+    return esc_html($value);
   }
 
 }

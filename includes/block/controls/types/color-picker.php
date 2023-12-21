@@ -8,8 +8,14 @@ class ColorPicker extends Base {
 
   public string $type = 'color_picker';
 
-  function get_sass_type() : string {
-    return 'color';
+  /**
+   * @see ./includes/block/sass.php
+   */
+  function get_sass_variable_definition($value, array $args) : array {
+    return [
+      'type'  => 'color',
+      'value' => $value
+    ];
   }
 
   /**

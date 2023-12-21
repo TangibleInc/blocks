@@ -7,55 +7,80 @@ defined('ABSPATH') or die();
 use Tangible\Blocks\Sass as sass;
 
 /**
+ * Example of expected arguments to convert to a sass variable:
+ * 
+ * - Simple variable (no type, default to string)
+ * $args = [ 'value' => 'value'];
+ * 
+ * - Simple variable, integer
+ * $args = [ 
+ *   'type' => 'integer' // string, integer, map, list
+ *   'value' => '0', 
+ * ];
+ * 
+ * - Map variable
+ * $args = [ 
+ *   'type'  => 'map',
+ *   'value' => [ 
+ *     'name_1' => [ 'value' => 'value' ], 
+ *     'name_2' => [ 'type' => 'integer', 'value' => '0' ]
+ *   ],
+ * ];
+ * 
+ * - List variable
+ * $args = [ 
+ *   'type'  => 'list',
+ *   'value' => [ 
+ *     [ 'value' => '0' ], 
+ *     [ 'value' => '5' ]
+ *   ],
+ * ];
+ */
+
+function to_variable(array $definition) : string {
+  $type = $definition['type'] ?? 'string';
+  switch($type) {
+    case 'integer':
+      return (string) $definition['value'] ?? '0';
+    case 'map':
+      return sass\to_map($definition['value'] ?? []);
+    case 'list':
+      return sass\to_list($definition['value'] ?? []);
+    case 'string':
+    default:
+      return (string) $definition['value'] ?? '';
+  }
+}
+
+/**
  * @see https://sass-lang.com/documentation/values/lists
  */
-function to_list(array $values, string $type = 'string', array $map_types = []) : string {
+function to_list(array $definition) : string {
 
   $list = [];
 
-  foreach( $values as $value ) {
-
-    $is_map = $type === 'map' && is_array($value);
-
-    $list []= $is_map  
-      ? sass\to_map($value, $map_types)
-      : ($type === 'string' 
-        ? '"' . $value .  '"' 
-        : $value
-      );
+  foreach( $definition as $name => $args ) {
+    $list []= $args['type'] === 'string' 
+      ? '"' . sass\to_variable($args) .  '"'
+      : sass\to_variable($args);  
   }
-  
+
   return '(' . implode(',', $list) . ')';
 }
 
 /**
  * @see https://sass-lang.com/documentation/values/maps
  */
-function to_map(array $values, array $types = []) : string {
+function to_map(array $definition) : string {
   
   $map = [];
 
-  foreach( $values as $key => $value ) {
+  foreach( $definition as $name => $args ) {
+    $value = $args['type'] === 'string' 
+      ? '"' . sass\to_variable($args) .  '"'
+      : sass\to_variable($args);  
 
-    $type = $types[ $key ] ?? 'string';
-    $is_map = ($type === 'map' || is_array($type)) && is_array($value);
-    $is_list = $type === 'list' && is_array($value);
-
-    // We can have a map/list inside of map with the repeater control
-    if( $is_map ) {
-      $value = sass\to_map($value, is_array($type) ? $type : []);
-    }
-    else if( $is_list ) {
-      $value = sass\to_list($value, $types);
-    } else {
-      $value = ! is_array($value) 
-        ? ($type === 'string' 
-          ? '"' . $value .  '"' 
-          : $value)
-        : '""';
-    }
-    
-    $map []= '"' . $key . '":' . $value;
+    $map []= '"' . $name . '":' . $value;
   }
 
   return '(' . implode(',', $map) . ')';

@@ -8,8 +8,15 @@ class Number extends Base {
 
   public string $type = 'number';
 
-  function get_sass_type() : string {
-    return 'number';
+
+  /**
+   * @see ./includes/block/sass.php
+   */
+  function get_sass_variable_definition($value, array $args) : array {
+    return [
+      'type'  => 'number',
+      'value' => $value
+    ];
   }
 
   function get_value($value, array $args, string $context) {

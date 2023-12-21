@@ -8,6 +8,18 @@ class ComboBox extends BaseList {
 
   public string $type = 'combo_box';
 
+  /**
+   * @see ./includes/block/sass.php
+   */
+  function get_sass_variable_definition($value, array $args) : array {
+    return [
+      'type'  => 'string',
+      'value' => is_array($value) 
+        ? implode(',', array_map(function($item) { return $item['id']; }, $value )) // multiple => true
+        : $value
+    ];
+  }
+
   function has_async_choices(array $args) : bool {
     return isset($args['is_async']) && $args['is_async'] === 'true';
   }
