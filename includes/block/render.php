@@ -80,8 +80,8 @@ $plugin->render = function($post, $data) use($plugin, $html, $template_system) {
           ? $sass_name . '-' . $suffix
           : $sass_name;
 
-        $sass_type = ! empty($control_value) ? $variable['type'] : 'string'; // TODO: See if we really need this
         $sass_value = sass\to_variable( $variable );
+        $sass_type = $sass_value !== '' ? $variable['type'] : 'string'; // TODO: See if we really need this
 
         $html->set_sass_variable( $sass_name, $sass_value, [
           'type'   => $sass_type, 
