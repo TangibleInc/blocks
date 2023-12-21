@@ -121,7 +121,7 @@ $plugin->render = function($post, $data) use($plugin, $html, $template_system) {
   );
 
   $html->set_sass_variable('block',
-    $test = sass\to_map([
+    sass\to_map([
       'wrapper' => [
         'value' => $data['wrapper'],
         'type'  => 'string',
