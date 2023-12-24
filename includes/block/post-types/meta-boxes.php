@@ -54,7 +54,8 @@ add_action('add_meta_boxes', function() use($plugin, $fields, $legacy_meta_name,
         'value'   => $fields->fetch_value($legacy_meta_name) ? $fields->fetch_value($legacy_meta_name) : 'on',
       ]);
     },
-    'tangible_block'
+    'tangible_block',
+    'side'
   );
 
 });
