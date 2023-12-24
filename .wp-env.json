@@ -3,7 +3,7 @@
   "phpVersion": "8.2",
   "plugins": [
     ".",
-    "elementor/elementor",
-    "../bb-plugin"
+    "https://downloads.wordpress.org/plugin/elementor.latest-stable.zip",
+    "https://downloads.wordpress.org/plugin/beaver-builder-lite-version.latest-stable.zip"
   ]
 }

@@ -10,9 +10,10 @@ yarn.lock
 
 # Testing
 /.phpunit.cache
-/wordpress-develop
+/.wp-env.override.json
+/artifacts
 /coverage
-.wp-env.override.json
 /test-results
+/wordpress-develop
 
 *.swp
