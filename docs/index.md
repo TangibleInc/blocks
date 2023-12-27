@@ -73,3 +73,57 @@ To “destroy” and remove cache:
 ```
 npm run env:destroy
 ```
+
+### End-to-end tests
+
+The folder `/tests/e2e` contains end-to-end-tests using [Playwright](https://playwright.dev/docs/intro) and [WordPress E2E Testing Utils](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-e2e-test-utils-playwright/).
+
+#### Run
+
+Run the tests. This will start the local WordPress environment with `wp-env` as needed. Then Playwright starts a browser engine to interact with the test site.
+
+```sh
+npm run test:e2e
+```
+
+The first time you run it, it will prompt you to install the browser engine (Chromium).
+
+```sh
+npx playwright install
+```
+
+#### Watch mode
+
+There is a "Watch mode", where it will watch the test files for changes and re-run them. 
+This provides a helpful feedback loop when writing tests, as a kind of test-driven development. Press CTRL + C to stop the process.
+
+```sh
+npm run test:e2e:watch  # Shortcut: npm run tdd
+```
+
+A common usage is to have terminal sessions open with `npm run dev` (build assets and watch to rebuild) and `npm run tdd` (run tests and watch to re-run).
+
+#### UI mode
+
+There's also "UI mode" that opens a browser interface to see the tests run.
+
+```sh
+npm run test:e2e:ui
+```
+
+#### Utilities
+
+Here are the common utilities used to write the tests.
+
+- `test` - https://playwright.dev/docs/api/class-test
+- `expect` - https://playwright.dev/docs/api/class-genericassertions
+- `admin` - https://github.com/WordPress/gutenberg/tree/trunk/packages/e2e-test-utils-playwright/src/admin
+- `page` - https://playwright.dev/docs/api/class-page
+- `request` - https://playwright.dev/docs/api/class-apirequestcontext
+
+#### References
+
+Examples of how to write end-to-end tests:
+
+- WordPress E2E tests - https://github.com/WordPress/wordpress-develop/blob/trunk/tests/e2e
+- Gutenberg E2E tests - https://github.com/WordPress/gutenberg/tree/trunk/test/e2e
