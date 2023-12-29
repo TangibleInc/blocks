@@ -6,7 +6,7 @@
     },
     {
       "type": "vcs",
-      "url": "https://github.com/tangibleinc/template-system"
+      "url": "git@github.com:tangibleinc/template-system.git"
     },
     {
       "type": "vcs",
