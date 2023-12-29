@@ -11,7 +11,6 @@
 
 define( 'TANGIBLE_BLOCKS_VERSION', '3.3.1' );
 
-require_once __DIR__ . '/vendor/tangible/plugin-framework/index.php';
 require_once __DIR__ . '/vendor/tangible/plugin-updater/index.php';
 require_once __DIR__ . '/vendor/tangible/template-system/index.php';
 require_once __DIR__ . '/vendor/tangible/fields/index.php';
@@ -26,8 +25,7 @@ function tangible_blocks($instance = false) {
 
 add_action('plugins_loaded', function() {
 
-  $framework = tangible();
-  $plugin    = $framework->register_plugin([
+  $plugin    = tangible\framework\register_plugin([
     'name'           => 'tangible-blocks',
     'title'          => 'Tangible Blocks',
     'setting_prefix' => 'tangible_blocks',
@@ -48,7 +46,7 @@ add_action('plugins_loaded', function() {
     // 'license' => ''
   ]);
 
-  // Features loaded will have in their local scope: $framework, $plugin, ...
+  // Features loaded will have in their local scope: $plugin
 
   $template_system = tangible_template_system();
 
