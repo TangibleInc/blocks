@@ -1,7 +1,7 @@
 === Tangible Blocks ===
 Stable tag: trunk
 Requires at least: 6.0
-Tested up to: 6.3
+Tested up to: 6.4
 Requires PHP: 7.4
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -18,6 +18,34 @@ Tags:
 1. Install & activate in the admin: *Plugins -&gt; Add New -&gt; Upload Plugins*
 
 == Changelog ==
+
+= 4.0.0 =
+
+Release Date: 2024-01-03
+
+- [Documentation](https://docs.loopsandlogic.com/reference/template-system): Reference pages for developers and contributors, with technical details of how the codebase is organized.
+- [Editor](https://docs.loopsandlogic.com/reference/template-system/editor/): New code editor based on CodeMirror 6 is enabled by default for template post types, Gutenberg, and ACF Template field. The old editor is still used for Elementor and Beaver Builder until integration is complete.
+- Framework and Modules: Features have been organized into modules which can be independently built, documented, tested, and optionally published. This replaces the previous Plugin Framework and Interface module.
+- [GitHub repository](https://github.com/tangibleinc/template-system): New home of the Template System source code and project, with better developer experience and social collaboration. Welcome to start new issues, pull requests, and discussions.
+- Testing: Improve coverage of unit tests, and prepare foundation for end-to-end tests with headless browser and WordPress environment in Docker. This is an on-going effort to exercise and verify all features of the plugin.
+
+Other improvements:
+
+- ACF integration: Add Field tag attribute "acf_textarea" to apply formatting based on field settings
+- Archive screen: Add bulk action to move selected posts to trash
+- Assets edit screen: Improve documentation
+- Atomic CSS: Generate CSS utility classes on demand.
+  Similar to Tailwind, this feature uses a style engine called [UnoCSS](https://unocss.dev/) to generate CSS rules from utility classes found in an HTML template, every time it is saved. On the frontend, the generated styles are minified together, removing any redundant rules. Enable in plugin settings.
+- Edit screen: Add Preview pane with auto-refresh
+- Editor: Hyperlink extension - Add clickable link icon next to a valid URL; Improve color picker
+- Import/Export
+  - Add export rule to include/exclude template categories
+  - Update PNG Compressor with better support for Firefox
+  - Use compressed format (PNG) by default
+- Show admin menu, edit screens, and template editor (Gutenberg, Elementor, Beaver) only to admins with `unfiltered_html` capability. On multisite installs, by default only network admins have this capability, not subsite admins.
+- Update included libraries
+  - HJSON, Select2, Chart.js, Mermaid, ..
+  - Prism: Update library to 1.29.0 - Replace Clipboard.js with browser-native `navigator.clipboard`
 
 = 3.3.1 =
 
