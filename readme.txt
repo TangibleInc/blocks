@@ -46,6 +46,18 @@ Other improvements:
 - Update included libraries
   - HJSON, Select2, Chart.js, Mermaid, ..
   - Prism: Update library to 1.29.0 - Replace Clipboard.js with browser-native `navigator.clipboard`
+- Blocks
+  - Sass variables: Rewrite and improve sass variable logic
+  - Add a new sass map called "blocks", that contains blocks related data (wrapper, post_id, universal_id and builder)
+- Controls
+  - Repeaters and Field groups: Allows multiple level of nesting for visibility conditions and dependent values
+  - Field groups: Fix unwanted re-render
+  - Accordions: Fix content visibility being changed when using header switch
+  - Text: Add support for read_only parameter
+  - Button groups: Add support for read_only parameter
+  - Select: Add support for read_only parameter
+  - File: Improve styling for delete button
+  - Beaver builder: Various style improvements in beaver-builder editor
 
 = 3.3.1 =
 
