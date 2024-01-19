@@ -25,6 +25,14 @@ class Sass_Test extends WP_UnitTestCase {
         ],
       ],
 
+      'Simple unit variable' => [
+        'unquote("%")',
+        [ 
+          'value' => '%',
+          'type'  => 'unit'
+        ],
+      ],
+
       'Map with string values only' => [
         '("key1":"value1","key2":"value2")',
         [ 

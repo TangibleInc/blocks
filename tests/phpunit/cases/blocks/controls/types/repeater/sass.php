@@ -61,7 +61,7 @@ class Repeater_Sass_Test extends WP_UnitTestCase {
       ],
 
       'Repeater with an map value' => [ 
-        '(("field1":"value1","field2":("value":0px 0px 0px 0px,"top":0,"right":0,"bottom":0,"left":0,"unit":px)))',
+        '(("field1":"value1","field2":("value":0px 0px 0px 0px,"top":0,"right":0,"bottom":0,"left":0,"unit":unquote("px"))))',
         '[{"field1":"value1","field2":{"top":0,"left":0,"right":0,"bottom":0,"unit":"px","isLinked":false}}]',
         [ 
           'type'   => 'repeater',

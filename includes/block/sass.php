@@ -46,6 +46,9 @@ function to_variable(array $definition) : string {
       return sass\to_map($definition['value'] ?? []);
     case 'list':
       return sass\to_list($definition['value'] ?? []);
+    case 'unit':
+      // % is not a valid value, but will work if used with unquote()
+      return 'unquote("' . ($definition['value'] ?? '') . '")';
     case 'string':
     default:
       return (string) $definition['value'] ?? '';
