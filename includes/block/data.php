@@ -50,7 +50,7 @@ $plugin->get_block_data = function($template) use ($plugin) {
    * Get JSON from controls template - Accepts Human JSON for backward compatibility
    */
   $data = ($controls_template[0]==='{' || $controls_template[0]==='[')
-    ? tangible_hjson()->parse($controls_template)
+    ? tangible\hjson\parse($controls_template)
     : $plugin->get_block_controls_template_json($controls_template, $post_id)
   ;
 
