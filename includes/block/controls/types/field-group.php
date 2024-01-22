@@ -19,7 +19,7 @@ class FieldGroup extends Base {
       $control_args = $this->get_fields_args( $name, $args );
       $control = self::$plugin->get_control( $control_args['type'] ?? '' );
 
-      if( $control === false ) continue;
+      if( $control === false || ! $control->has_context('style') ) continue;
 
       $sub_values[ $name ] = $control->get_sass_variable_definition( 
         $control->get_value( $value, $control_args, 'style' ),

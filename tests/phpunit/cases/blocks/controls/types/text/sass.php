@@ -35,6 +35,12 @@ class Text_Sass_Test extends WP_UnitTestCase {
         false,
         ['type' => 'text' ] 
       ],
+
+      'Simple test with quotes' => [ 
+        'a&quot;a',
+        'a"a',
+        ['type' => 'text' ] 
+      ],
       
     ];
   }

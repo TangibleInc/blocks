@@ -27,6 +27,10 @@ class Repeater extends Base {
               continue;
             }
 
+            if( ! $control->has_context('style') ) {
+              continue;
+            }
+
             $map[ $name ] = $control->get_sass_variable_definition( 
               $value,
               $control_args
