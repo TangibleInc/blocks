@@ -12,7 +12,10 @@ const getControl = (
         : String(value)
     ),
     ...props,
-    value: value // Important: Value must not be overwrited by props 
+    value: value, // Important: Value must not be overwrited by props 
+    portalContainer: builder === 'beaver-builder' 
+      ? window.parent.document.body
+      : document.body
   })
 )
 
