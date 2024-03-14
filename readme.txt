@@ -46,6 +46,12 @@ Release Date: 2024-03-12
 - Taxonomy term loop: Ensure "post" attribute accepts list variable
 - Template post types: Ensure templates always have a universal ID assigned, during post save and before exporting. This improves how duplicate templates are handled during import.
 - Template tag/shortcode: Ensure no post matches if attribute "name" is an empty string - See [WP_Query matches *any* post when query parameter "name" is an empty string](https://core.trac.wordpress.org/ticket/60468)
+- Blocks
+  - Sass variables: Improve variable formatting, and make it possible to use % as a value
+- Controls
+  - Repeater and field group: Exclude control types with no style context for sass map
+  - BeaverBuilder: Resolve popover issues when using the responsive iframe UI
+  - Repeater, ComboBox, Editor and Text: Various style improvements
 
 = 4.0.2 =
 
