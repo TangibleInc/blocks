@@ -19,6 +19,17 @@ Tags:
 
 == Changelog ==
 
+= 4.1.2 =
+
+Release Date: 2024-03-15
+
+- ACF integration
+  - Date field types: Ensure unformatted value is passed to date conditions
+  - Group, Flexible Content, Repeater: Correctly set up subfield loop after change to List loop type to support extended parameters such as offset/count/sort/filter
+- Post loop: Handle case when extended query parameter for post/user/category/tag slug is not array
+- Sass module: Revert to SCSS-PHP 1.11.1 to keep compatibility with PHP 7.4
+- Taxonomy term loop: Correctly pass post object IDs to query
+
 = 4.1.0 =
 
 Release Date: 2024-03-12
