@@ -28,6 +28,10 @@ Release Date: 2024-03-22
 - Beaver integration: Ensure Template module restores current post in context
 - Taxonomy term loop: Handle case when include/exclude is given as integer ID
 - Template save and format slugify: Use remove_accents() to convert all accent characters to ASCII characters, before creating slug with sanitize_title_with_dashes()
+- Controls
+  - Gradient: Fix sass variable definition
+  - Field group: Fix value not being saved when repeater used inside a field group
+  - Elementor: Various style improvements
 
 = 4.1.2 =
 
