@@ -8,17 +8,31 @@ class Gradient extends Base {
 
   public string $type = 'gradient';
 
-  function get_sass_type() : string {
-    return 'map';
-  }
-
-  function get_sass_map_types(array $args) : array {
+  function get_sass_variable_definition($value, array $args) : array {
     return [
-      'value'   => 'gradient',
-      'type'    => 'gradient',
-      'angle'   => 'angle',
-      'shape'   => 'gradient',
-      'colors'  => 'colors'
+      'type'  => 'map',
+      'value' => [
+        'value' => [
+          'value' => $value['value'],
+          'type'  => 'color'
+        ],
+        'type' => [
+          'value' => $value['type'],
+          'type'  => 'string'
+        ],
+        'angle' => [
+          'value' => $value['angle'],
+          'type'  => 'number'
+        ],
+        'shape' => [
+          'value' => $value['shape'],
+          'type'  => 'string'
+        ],
+        'colors' => [
+          'value' => $value['colors'],
+          'type'  => 'string'
+        ]
+      ],
     ];
   }
 
