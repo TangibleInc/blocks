@@ -10,7 +10,11 @@
     },
     {
       "type": "vcs",
-      "url": "git@bitbucket.org:/tangibleinc/tangible-fields-module.git"
+      "url": "git@github.com:tangibleinc/framework.git"
+    },
+    {
+      "type": "vcs",
+      "url": "git@github.com:tangibleinc/fields.git"
     }
   ],
   "require": {
