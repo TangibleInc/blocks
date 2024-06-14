@@ -23,6 +23,9 @@ Tags:
 
 Release Date: 2024-06-13
 
+- Controls
+  - ComboBox: In async mode, add a message when no results
+  - Text: Fix placeholder
 - Editor and language integration
   - New HTML and CSS engines, linter, formatter
   - Organize general-purpose editor and template language features independent of WordPress
