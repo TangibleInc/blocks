@@ -114,7 +114,7 @@ class Field_Group_Sass_Test extends WP_UnitTestCase {
         ] 
       ],
 
-      'Field group with a repeater with a nested field group' => [ 
+      'Field group with a repeater with a nested field group' => [
         '("field1":"value1","field2":(("field3":31,"field4":("field5":"value5-1","field6":61)),("field3":32,"field4":("field5":"value5-2","field6":62))))',
         '{
           "field1":"value1",
@@ -153,6 +153,60 @@ class Field_Group_Sass_Test extends WP_UnitTestCase {
                   ]
                 ]
               ]
+            ]
+          ]
+        ]
+      ],
+
+      'Field group with file and gallery as subvalue, the initial value being not set' => [ 
+        '("field1":(),"field2":())',
+        '{}',
+        [ 
+          'type'   => 'field_group',
+          'fields' => [
+            [
+              'name' => 'field1',
+              'type' => 'file'
+            ],
+            [
+              'name' => 'field2',
+              'type' => 'gallery'
+            ]
+          ]
+        ] 
+      ],
+
+      'Field group with file and gallery as subvalue, the initial value being an empty string' => [ 
+        '("field1":(),"field2":())',
+        '{"field1":"","field2":""}',
+        [ 
+          'type'   => 'field_group',
+          'fields' => [
+            [
+              'name' => 'field1',
+              'type' => 'file'
+            ],
+            [
+              'name' => 'field2',
+              'type' => 'gallery'
+            ]
+          ]
+        ] 
+      ],
+
+      'Field group with file and gallery as subvalue, the initial value an empty array' => [ 
+        '("field1":(),"field2":())',
+        '{"field1":"[]","field2":"[]"}',
+        [ 
+          'type'   => 'field_group',
+          'fields' => [
+            [
+              'name' => 'field1',
+              'type' => 'file'
+            ],
+            [
+              'name' => 'field2',
+              'type' => 'gallery'
             ]
           ]
         ] 

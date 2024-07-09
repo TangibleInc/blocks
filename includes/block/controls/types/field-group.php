@@ -11,12 +11,15 @@ class FieldGroup extends Base {
   /**
    * @see ./includes/block/sass.php
    */
-  function get_sass_variable_definition($fields, array $args) : array {
-    
-    $sub_values = [];
-    foreach( $fields as $name => $value ) {
+  function get_sass_variable_definition($values, array $args) : array {
 
-      $control_args = $this->get_fields_args( $name, $args );
+    $sub_values = [];
+    foreach( $args['fields'] ?? [] as $field ) {
+
+      if( ! ( $name = $field['name'] ?? false ) ) continue;
+
+      $value = $values[ $name ] ?? '';
+      $control_args = $this->get_field_args( $name, $args );
       $control = self::$plugin->get_control( $control_args['type'] ?? '' );
 
       if( $control === false || ! $control->has_context('style') ) continue;
@@ -33,7 +36,7 @@ class FieldGroup extends Base {
     ];
   }
 
-  function get_fields_args(string $name, array $args) : array {
+  function get_field_args(string $name, array $args) : array {
     return array_values(
       array_filter(
         $args['fields'] ?? [],
@@ -45,7 +48,7 @@ class FieldGroup extends Base {
   }
 
   function get_field_control(string $name, array $args) {
-    $control_args = $this->get_fields_args($name, $args);
+    $control_args = $this->get_field_args($name, $args);
     return ! empty($control_args)
       ? self::$plugin->get_control( $control_args['type'] ?? '' )
       : false
@@ -73,7 +76,7 @@ class FieldGroup extends Base {
 
   function get_value($fields, array $args, string $context) {
 
-    if( is_string($fields) ) $fields = json_decode($fields);
+    if( is_string($fields) ) $fields = json_decode( $fields, true );
     if( $context === 'style' ) return (array) $fields;
 
     $formated_fields = [];

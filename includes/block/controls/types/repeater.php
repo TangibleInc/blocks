@@ -31,8 +31,8 @@ class Repeater extends Base {
               continue;
             }
 
-            $map[ $name ] = $control->get_sass_variable_definition( 
-              $value,
+            $map[ $name ] = $control->get_sass_variable_definition(
+              $control->get_value( $value, $control_args, 'style' ),
               $control_args
             );
           }
@@ -79,7 +79,7 @@ class Repeater extends Base {
     );
   }
 
-  function get_item_values(object $item, array $args, string $context) {
+  function get_item_values(array $item, array $args, string $context) {
 
     $values = [];
     
@@ -95,7 +95,7 @@ class Repeater extends Base {
 
   function get_value($items, array $args, string $context) {
 
-    if( is_string($items) ) $items = json_decode($items);
+    if( is_string($items) ) $items = json_decode( $items, true );
     if( ! is_array($items) ) return [];
 
     $item_values = [];

@@ -7,7 +7,7 @@ use Tangible\Blocks\Sass as sass;
 /**
  * Note about legacy render/new controls:
  * 
- * If new controls are not actvated for the current block:
+ * If new controls are not activated for the current block:
  * - The old {{ control-name }} syntax works
  * - Old controls are used to render values
  * - New syntax can also be used:

@@ -135,6 +135,28 @@ class Repeater_Sass_Test extends WP_UnitTestCase {
               ]
             ]
           ]
+        ]
+      ],
+
+      'Repeater with file and gallery as subvalue, the initial value being not set, an empty string or an empty array' => [ 
+        '(("field1":(),"field2":()),("field1":(),"field2":()),("field1":(),"field2":()))',
+        '[
+          {},
+          {"field1":"","field2":""},
+          {"field1":"[]","field2":"[]"}
+        ]',
+        [ 
+          'type'   => 'repeater',
+          'fields' => [
+            [
+              'name' => 'field1',
+              'type' => 'file'
+            ],
+            [
+              'name' => 'field2',
+              'type' => 'gallery'
+            ]
+          ]
         ] 
       ],
       

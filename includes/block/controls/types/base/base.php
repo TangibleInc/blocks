@@ -122,7 +122,7 @@ class Base {
     $use_multiple_values = $context === 'template';
 
     /**
-     * If we can't return all the value, return just the default (if any) 
+     * If we can't return all the values, return just the default (if any) 
      */
     if( ! $use_multiple_values || $force_default ) {
       return $value['value'] ?? '';
