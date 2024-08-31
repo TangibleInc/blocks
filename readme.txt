@@ -19,6 +19,12 @@ Tags:
 
 == Changelog ==
 
+= 4.1.5 =
+
+Release Date: 2024-08-31
+
+- Fix XSS vulnerability when visiting admin settings page URL
+
 = 4.1.4 =
 
 Release Date: 2024-06-13
