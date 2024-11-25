@@ -15,7 +15,7 @@ class Repeater extends Base {
     return [
       'type'  => 'list',
       'value' => array_map(
-        function($item) use($args) {   
+        function($item) use($args) {
           foreach( $args['fields'] as $data ) {
 
             if( ! ( $name = $data['name'] ?? false ) ) continue;
@@ -72,17 +72,17 @@ class Repeater extends Base {
 
     if( empty($control) ) return [ 'value' => '' ];
 
-    return $control->get_value( 
-      $value, 
-      $this->get_fields_args($name, $args), 
-      $context 
+    return $control->get_value(
+      $value,
+      $this->get_fields_args($name, $args),
+      $context
     );
   }
 
   function get_item_values(array $item, array $args, string $context) {
 
     $values = [];
-    
+
     foreach( $item as $name => $value ) {
 
       if( $name === 'key' ) continue;
@@ -100,7 +100,7 @@ class Repeater extends Base {
 
     $item_values = [];
     foreach( $items as $item ) {
-      $item_values []= $this->get_item_values( $item, $args, $context );
+      $item_values []= $this->get_item_values( (array) $item, $args, $context );
     }
 
     return $item_values;
