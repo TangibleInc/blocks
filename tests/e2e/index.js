@@ -1,4 +1,4 @@
-import { test, expect } from '@wordpress/e2e-test-utils-playwright'
+import { describe, test, expect } from '../../vendor/tangible/template-system/framework/playwright/index.js'
 
 /**
  * Tests to exercise the frontend and admin features of Tangible Blocks.
@@ -11,7 +11,7 @@ import { test, expect } from '@wordpress/e2e-test-utils-playwright'
  * @see https://www.w3.org/TR/html-aria/#docconformance
  */
 
-test.describe('Admin', () => {
+describe('Admin', () => {
   test('Dashboard', async ({ admin, page }) => {
     await admin.visitAdminPage('/')
     const heading = page.getByRole('heading', {
@@ -23,6 +23,8 @@ test.describe('Admin', () => {
 
   const plugins = [
     ['Tangible Blocks', 'tangible-blocks/tangible-blocks'],
+    ['Tangible Blocks Editor', 'tangible-blocks-editor/tangible-blocks-editor'],
+    ['E2E', 'e2e-plugin/index'],
     ['Elementor', 'elementor/elementor'],
     ['Beaver Builder', 'beaver-builder-lite-version/fl-builder']
   ]
@@ -84,7 +86,7 @@ test.describe('Admin', () => {
   }
 })
 
-test.describe('Admin menu', () => {
+describe('Admin menu', () => {
   test('Exists', async ({ admin, page }) => {
     await admin.visitAdminPage('/')
     expect(page.getByRole('navigation', { name: 'Main menu' })).toHaveCount(1)
@@ -113,7 +115,7 @@ test.describe('Admin menu', () => {
   })
 })
 
-test.describe('Block post type', () => {
+describe('Block post type', () => {
   test('Archive', async ({ admin, page }) => {
     await admin.visitAdminPage('/edit.php?post_type=tangible_block')
     const heading = await page.getByRole('heading', {

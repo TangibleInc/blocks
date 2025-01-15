@@ -87,8 +87,6 @@ Here is the different type of controls implemented:
 - [Text](#text)
 - [User select](#user-select)
 
-<a name=ajax-select></a>
-
 #### Ajax select
 
 ```json
@@ -100,8 +98,6 @@ Here is the different type of controls implemented:
 }
 ```
 
-<a name=align></a>
-
 #### Align
 
 ```json
@@ -112,8 +108,6 @@ Here is the different type of controls implemented:
   "default": "right" // Optional - Accepted value: right, center, left 
 }
 ```
-
-<a name=color></a>
 
 #### Color
 
@@ -127,8 +121,6 @@ Here is the different type of controls implemented:
 }
 ```
 
-<a name=date></a>
-
 #### Date
 
 ```json
@@ -139,8 +131,6 @@ Here is the different type of controls implemented:
   "format": "d/m/Y g:i a" // Optional
 }
 ```
-
-<a name=dimension></a>
 
 #### Dimension
 
@@ -156,8 +146,6 @@ Here is the different type of controls implemented:
 }
 ```
 
-<a name=editor></a>
-
 #### Editor
 
 ```json
@@ -168,8 +156,6 @@ Here is the different type of controls implemented:
   "default": "Some <strong>text</strong>" // Optional
 }
 ```
-
-<a name=gallery></a>
 
 #### Gallery
 
@@ -183,8 +169,6 @@ Here is the different type of controls implemented:
 }
 ```
 
-<a name=gradient></a>
-
 #### Gradient
 
 ```json
@@ -194,8 +178,6 @@ Here is the different type of controls implemented:
   "label": "Gradient"
 }
 ```
-
-<a name=image></a>
 
 #### Image
 
@@ -207,8 +189,6 @@ Here is the different type of controls implemented:
   "default": "1" // Optional - Attachment ID or URL
 }
 ```
-
-<a name=number></a>
 
 #### Number
 
@@ -223,8 +203,6 @@ Here is the different type of controls implemented:
 }
 ```
 
-<a name=post-query></a>
-
 #### Post query
 
 ```json
@@ -235,8 +213,6 @@ Here is the different type of controls implemented:
   "include_fields": "taxonomy, type, order, orderby", // Optional - Default type, order, orderby 
 }
 ```
-
-<a name=post-select></a>
 
 #### Post select
 
@@ -253,8 +229,6 @@ Here is the different type of controls implemented:
 }
 ```
 
-<a name=post-types></a>
-
 #### Post types
 
 ```json
@@ -266,8 +240,6 @@ Here is the different type of controls implemented:
   "default": "post" // Optional
 }
 ```
-
-<a name=select></a>
 
 #### Select
 
@@ -286,8 +258,6 @@ Here is the different type of controls implemented:
 }
 ```
 
-<a name=select2></a>
-
 #### Select2
 
 ```json
@@ -305,8 +275,6 @@ Here is the different type of controls implemented:
 }
 ```
 
-<a name=switch></a>
-
 #### Switch
 
 ```json
@@ -322,8 +290,6 @@ Here is the different type of controls implemented:
 }
 ```
 
-<a name=text></a>
-
 #### Text
 
 ```json
@@ -334,8 +300,6 @@ Here is the different type of controls implemented:
   "default": "default text" // Optional
 }
 ```
-
-<a name=user-select></a>
 
 #### User select
 
@@ -354,7 +318,7 @@ Here is the different type of controls implemented:
 
 ## Control values
 
-We can use a control value in templates, scripts and styles by adding {{ control-name }}.
+We can use a control value in templates, scripts and styles by adding `{{ control-name }}`.
 
 ## Full example
 
