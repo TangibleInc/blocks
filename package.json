@@ -3,8 +3,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "start": "concurrently --raw 'roll dev' 'wp-now start --blueprint=blueprint.dev.json'",
-    "dev": "roll dev",
+    "start": "wp-now start --blueprint=blueprint.dev.json",
+    "dev": "concurrently --raw 'roll dev' 'npm run start'",
     "build": "roll build",
     "format": "roll format",
     "postinstall": "roll install",
