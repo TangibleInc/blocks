@@ -44,5 +44,79 @@ export default {
   format: [
     'includes',
     'assets/src'
+  ],
+  archive: {
+    root: 'tangible-blocks',
+    src: [
+      '*.php',
+      'assets/**',
+      'includes/**',
+      'vendor/tangible/**',
+      'readme.txt'
+    ],
+    dest: 'publish/tangible-blocks.zip',
+    exclude: [
+      'assets/src',
+      'docs',
+      '**/tests',
+      '**/*.scss',
+      '**/*.jsx',
+      '**/*.ts',
+      '**/*.tsx'
+    ],
+    configs: [
+      './vendor/tangible/template-system/tangible.config.js'
+    ]
+  },
+  /**
+   * Dependencies for production are installed in `vendor/tangible`,
+   * included in the zip package to publish. Those for development are
+   * in `tangible-dev`, excluded from the archive.
+   * 
+   * In `.wp-env.json`, these folders are mounted to the virtual file
+   * system for local development and testing.
+   */
+  install: [
+    {
+      git: 'git@github.com:tangibleinc/fields',
+      dest: 'vendor/tangible/fields',
+      branch: 'main',
+    },
+    {
+      git: 'git@github.com:tangibleinc/framework',
+      dest: 'vendor/tangible/framework',
+      branch: 'main',
+    },
+    {
+      git: 'git@github.com:tangibleinc/template-system',
+      dest: 'vendor/tangible/template-system',
+      branch: 'main',
+    },
+    {
+      git: 'git@github.com:tangibleinc/updater',
+      dest: 'vendor/tangible/updater',
+      branch: 'main',
+    },
+  ],
+  installDev: [
+    {
+      git: 'git@github.com:tangibleinc/blocks-editor',
+      dest: 'vendor/tangible-dev/blocks-editor',
+      branch: 'main',
+    },
+
+    // Third-party plugins
+    {
+      zip: 'https://downloads.wordpress.org/plugin/advanced-custom-fields.latest-stable.zip',
+      dest: 'vendor/tangible-dev/advanced-custom-fields',
+    },
+    {
+      zip: 'https://downloads.wordpress.org/plugin/beaver-builder-lite-version.latest-stable.zip',
+      dest: 'vendor/tangible-dev/beaver-builder-lite-version',
+    },
+    {
+      zip: 'https://downloads.wordpress.org/plugin/elementor.latest-stable.zip',
+      dest: 'vendor/tangible-dev/elementor',
+    },
   ]
 }

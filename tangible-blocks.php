@@ -8,12 +8,19 @@
  * Author URI: https://teamtangible.com
  * License: GPLv2 or later
  */
+use tangible\framework;
+use tangible\updater;
 
 define( 'TANGIBLE_BLOCKS_VERSION', '4.1.5' );
 
-require_once __DIR__ . '/vendor/tangible/plugin-updater/index.php';
-require_once __DIR__ . '/vendor/tangible/template-system/index.php';
-require_once __DIR__ . '/vendor/tangible/fields/index.php';
+$module_path = is_dir(
+  ($path = __DIR__ . '/../../tangible') // Module
+) ? $path : __DIR__ . '/vendor/tangible'; // Plugin
+
+require_once $module_path . '/framework/index.php';
+require_once $module_path . '/template-system/index.php';
+require_once $module_path . '/fields/index.php';
+require_once $module_path . '/updater/index.php';
 
 /**
  * Get plugin instance
@@ -25,7 +32,7 @@ function tangible_blocks($instance = false) {
 
 add_action('plugins_loaded', function() {
 
-  $plugin    = tangible\framework\register_plugin([
+  $plugin    = framework\register_plugin([
     'name'           => 'tangible-blocks',
     'title'          => 'Tangible Blocks',
     'setting_prefix' => 'tangible_blocks',
@@ -40,7 +47,7 @@ add_action('plugins_loaded', function() {
 
   tangible_blocks( $plugin );
 
-  tangible_plugin_updater()->register_plugin([
+  updater\register_plugin([
     'name' => $plugin->name,
     'file' => __FILE__,
     // 'license' => ''

@@ -1,0 +1,9 @@
+{
+  "mappings": {
+    "wp-content/plugins/tangible-blocks": "../..",
+    "wp-content/plugins/e2e-plugin": "../../vendor/tangible/template-system/framework/env/e2e-plugin",
+    "wp-content/plugins/beaver-builder-lite-version": "../../vendor/tangible-dev/beaver-builder-lite-version",
+    "wp-content/plugins/elementor": "../../vendor/tangible-dev/elementor",
+    "wp-content/plugins/tangible-blocks-editor": "../../vendor/tangible-dev/blocks-editor"
+  }
+}
