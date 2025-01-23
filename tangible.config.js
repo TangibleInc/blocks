@@ -56,13 +56,19 @@ export default {
     ],
     dest: 'publish/tangible-blocks.zip',
     exclude: [
+      '.git',
+      '**/artifacts',
+      '**/publish',
+      '**/node_modules',
       'assets/src',
       'docs',
       '**/tests',
       '**/*.scss',
       '**/*.jsx',
       '**/*.ts',
-      '**/*.tsx'
+      '**/*.tsx',
+      'vendor/tangible/*/vendor',
+      'vendor/tangible-dev/'
     ],
     configs: [
       './vendor/tangible/template-system/tangible.config.js'

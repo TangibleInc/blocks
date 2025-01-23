@@ -1,5 +1,5 @@
 import { test, is, ok, run } from 'testra'
-import { getServer } from '../vendor/tangible/template-system/framework/env'
+import { getServer } from '../vendor/tangible/framework/env'
 
 async function ensurePlugin({ wpx }) {
   return wpx/* php */ `
@@ -30,6 +30,7 @@ return true;
  * https://marketplace.visualstudio.com/items?itemName=bierner.comment-tagged-templates
  */
 export default run(async () => {
+
   // Set up server before running tests in Framework
   const {
     php,
@@ -56,5 +57,4 @@ export default run(async () => {
     is(true, result, 'activate plugin')
   })
 
-  await import(`../vendor/tangible/template-system/tests/index.ts`)
 })

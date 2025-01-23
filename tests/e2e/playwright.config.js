@@ -1,6 +1,6 @@
 import path from 'node:path'
 import { fileURLToPath } from 'url'
-import { createConfig } from '../../vendor/tangible/template-system/framework/playwright/config.js'
+import { createConfig } from '../../vendor/tangible/framework/playwright/config.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
