@@ -1,5 +1,5 @@
 import { test, is, ok, run } from 'testra'
-import { getServer } from '../vendor/tangible/framework/env'
+import { getServer } from '@tangible/env'
 
 async function ensurePlugin({ wpx }) {
   return wpx/* php */ `
@@ -40,7 +40,7 @@ export default run(async () => {
     setSiteTemplate,
     resetSiteTemplate,
   } = await getServer({
-    phpVersion: process.env.PHP_VERSION || '7.4',
+    phpVersion: process.env.PHP_VERSION || '8.2',
     mappings: process.env.TEST_ARCHIVE
       ? {
           'wp-content/plugins/tangible-blocks':

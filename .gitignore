@@ -6,6 +6,7 @@ node_modules
 *.local.js
 
 # Ignore lock files to allow any package manager
+bun.lock
 bun.lockb
 composer.lock
 package-lock.json

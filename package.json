@@ -2,6 +2,10 @@
   "name": "tangible-blocks",
   "private": true,
   "type": "module",
+  "homepage": "https://github.com/tangibleinc/blocks",
+  "repository": {
+    "url": "git+ssh://git@github.com/tangibleinc/blocks.git"
+  },
   "scripts": {
     "start": "wp-now start --blueprint=blueprint.dev.json",
     "dev": "concurrently --raw 'roll dev' 'npm run start'",
@@ -40,8 +44,9 @@
     "react-stately": "^3.35.0"
   },
   "devDependencies": {
-    "@playwright/test": "^1.49.1",
-    "@tangible/now": "^2.0.0",
+    "@playwright/test": "^1.50.0",
+    "@tangible/env": "^2025.1.27",
+    "@tangible/now": "^2.0.2",
     "@tangible/roller": "^2.1.4",
     "@wordpress/e2e-test-utils-playwright": "^1.16.0",
     "@wordpress/env": "^10.16.0",
@@ -49,7 +54,6 @@
     "concurrently": "^9.1.2",
     "testra": "^2.1.4"
   },
-  "homepage": "",
   "author": "Team Tangible",
   "license": "MIT",
   "keywords": []
