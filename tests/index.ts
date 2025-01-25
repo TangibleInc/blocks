@@ -30,7 +30,6 @@ return true;
  * https://marketplace.visualstudio.com/items?itemName=bierner.comment-tagged-templates
  */
 export default run(async () => {
-
   // Set up server before running tests in Framework
   const {
     php,
@@ -43,8 +42,7 @@ export default run(async () => {
     phpVersion: process.env.PHP_VERSION || '8.2',
     mappings: process.env.TEST_ARCHIVE
       ? {
-          'wp-content/plugins/tangible-blocks':
-            '../publish/tangible-blocks',
+          'wp-content/plugins/tangible-blocks': '../publish/tangible-blocks',
         }
       : {},
     reset: true,
@@ -56,5 +54,4 @@ export default run(async () => {
     let result = await ensurePlugin({ wpx })
     is(true, result, 'activate plugin')
   })
-
 })

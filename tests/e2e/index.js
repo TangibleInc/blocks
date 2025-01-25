@@ -1,4 +1,4 @@
-import { describe, test, expect } from '@tangible/env/playwright/index.js'
+import { describe, test, expect } from '@tangible/env/playwright'
 
 /**
  * Tests to exercise the frontend and admin features of Tangible Blocks.
@@ -26,7 +26,7 @@ describe('Admin', () => {
     ['Tangible Blocks Editor', 'tangible-blocks-editor/tangible-blocks-editor'],
     ['Tangible E2E', 'tangible-e2e-plugin/index'],
     ['Elementor', 'elementor/elementor'],
-    ['Beaver Builder', 'beaver-builder-lite-version/fl-builder']
+    ['Beaver Builder', 'beaver-builder-lite-version/fl-builder'],
   ]
 
   for (const [pluginTitle, pluginBasename] of plugins) {

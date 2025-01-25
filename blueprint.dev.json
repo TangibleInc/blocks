@@ -17,8 +17,7 @@
     },
     {
       "step": "login",
-      "username": "admin",
-      "password": "password"
+      "username": "admin"
     },
     {
       "step": "activatePlugin",
