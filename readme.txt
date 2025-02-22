@@ -19,6 +19,13 @@ Tags:
 
 == Changelog ==
 
+= 4.1.6 =
+
+Release Date: 2025-02-22
+
+- Improve compatibility with PHP 8.4
+- Improve dev/build/test setup and release pipeline
+
 = 4.1.5 =
 
 Release Date: 2024-08-31
