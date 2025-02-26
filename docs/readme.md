@@ -2,11 +2,6 @@
 
 Repository: https://github.com/tangibleinc/blocks
 
-## Table of Contents
-
-- [Architecture](architecture)
-- [Block controls](block-controls)
-
 ## Develop
 
 Prerequisites: [Git](https://git-scm.com/), [Node](https://nodejs.org/en/) (version 18 and above)
