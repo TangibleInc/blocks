@@ -41,7 +41,7 @@ npm run format
 Start a local dev site using [`wp-now`](https://github.com/WordPress/playground-tools/blob/trunk/packages/wp-now/README.md).
 
 ```sh
-npm run start
+npm run now
 ```
 
 The default user is `admin` with `password`.
@@ -83,7 +83,7 @@ This plugin comes with a suite of unit and integration tests.
 The test environment is started by running:
 
 ```sh
-npm run env:start
+npm run start
 ```
 
 This uses [`wp-env`](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-env/) to quickly spin up a local dev and test environment, optionally switching between multiple PHP versions. It requires **Docker** to be installed. There are instructions available for installing Docker on [Windows](https://docs.docker.com/desktop/install/windows-install/), [macOS](https://docs.docker.com/desktop/install/mac-install/), and [Linux](https://docs.docker.com/desktop/install/linux-install/).
@@ -101,7 +101,7 @@ Composer will add and remove folders in the `vendor` folder, based on `composer.
 Run the tests:
 
 ```sh
-npm run env:test
+npm run test
 ```
 
 For each PHP version:
@@ -116,7 +116,7 @@ The version-specific commands take a while to start, but afterwards you can run 
 To stop the Docker process:
 
 ```sh
-npm run env:stop
+npm run stop
 ```
 
 To remove Docker containers, volumes, images associated with the test environment.
@@ -150,7 +150,7 @@ The folder `/tests/e2e` contains end-to-end-tests using [Playwright](https://pla
 Before the first time you run it, install the browser engine.
 
 ```sh
-npx playwright install chromium
+npm run e2e:install
 ```
 
 #### Run
@@ -158,7 +158,7 @@ npx playwright install chromium
 Run the tests. This will start the local WordPress environment with `wp-env` as needed. Then Playwright starts a browser engine to interact with the test site.
 
 ```sh
-npm run test:e2e
+npm run e2e
 ```
 
 #### Watch mode
@@ -167,7 +167,7 @@ There is a "Watch mode", where it will watch the test files for changes and re-r
 This provides a helpful feedback loop when writing tests, as a kind of test-driven development. Press CTRL + C to stop the process.
 
 ```sh
-npm run test:e2e:watch
+npm run e2e:watch
 ```
 
 A common usage is to have terminal sessions open with `npm run dev` (build assets and watch to rebuild) and `npm run tdd` (run tests and watch to re-run).
@@ -177,7 +177,7 @@ A common usage is to have terminal sessions open with `npm run dev` (build asset
 There's also "UI mode" that opens a browser interface to see the tests run.
 
 ```sh
-npm run test:e2e:ui
+npm run e2e:ui
 ```
 
 #### Utilities
