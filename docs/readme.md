@@ -93,7 +93,7 @@ Visit [http://localhost:8888](http://localhost:8888) to see the dev site, and [h
 Before running tests, install PHPUnit as a dev dependency using Composer inside the container.
 
 ```sh
-npm run env:composer:install
+npm run composer:install
 ```
 
 Composer will add and remove folders in the `vendor` folder, based on `composer.json` and `composer.lock`. If you have any existing Git repositories, ensure they don't have any work in progress before running the above command.

@@ -1,4 +1,6 @@
-import { describe, test, expect } from '@tangible/env/playwright'
+import { test, expect } from '@wordpress/e2e-test-utils-playwright'
+
+const { describe } = test
 
 /**
  * Tests to exercise the frontend and admin features of Tangible Blocks.
@@ -24,7 +26,6 @@ describe('Admin', () => {
   const plugins = [
     ['Tangible Blocks', 'tangible-blocks/tangible-blocks'],
     ['Tangible Blocks Editor', 'tangible-blocks-editor/tangible-blocks-editor'],
-    ['Tangible E2E', 'tangible-e2e-plugin/index'],
     ['Elementor', 'elementor/elementor'],
     ['Beaver Builder', 'beaver-builder-lite-version/fl-builder'],
   ]

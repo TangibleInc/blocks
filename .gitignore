@@ -4,6 +4,7 @@
 node_modules
 *.log
 *.local.js
+.htaccess
 
 # Ignore lock files to allow any package manager
 bun.lock

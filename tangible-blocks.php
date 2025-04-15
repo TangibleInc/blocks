@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Tangible Blocks
  * Plugin URI: https://tangibleblocks.com/
- * Description: Tangible Blocks is a system for universal blocks that work in Gutenberg, Elementor, and Beaver Builder
+ * Description: Tangible Blocks is a system for universal blocks that work in Gutenberg, Elementor, Beaver Builder and beyond
  * Version: 4.1.8
  * GitHub URI: TangibleInc/blocks
  * Author: Team Tangible

@@ -21,10 +21,6 @@
     },
     {
       "step": "activatePlugin",
-      "pluginPath": "/var/www/html/wp-content/plugins/tangible-e2e-plugin"
-    },
-    {
-      "step": "activatePlugin",
       "pluginPath": "/var/www/html/wp-content/plugins/tangible-blocks-editor"
     }
   ]
