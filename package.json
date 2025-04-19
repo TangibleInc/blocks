@@ -47,21 +47,20 @@
     "e2e:watch": "chokidar 'tests/e2e/**/*.js' --initial -c 'npm run e2e -- --retries=0'"
   },
   "dependencies": {
-    "@codemirror/view": "^6.36.2",
-    "@react-aria/color": "^3.0.3",
-    "react-aria": "^3.37.0",
-    "react-stately": "^3.35.0"
+    "@codemirror/view": "^6.36.5",
+    "@react-aria/color": "^3.0.6",
+    "react-aria": "^3.39.0",
+    "react-stately": "^3.37.0"
   },
   "devDependencies": {
-    "@playwright/test": "^1.50.0",
-    "@tangible/env": "^2025.1.30",
-    "@tangible/now": "^2.0.3",
+    "@playwright/test": "^1.52.0",
+    "@tangible/now": "3.0.2",
     "@tangible/roller": "^2.1.4",
-    "@wordpress/e2e-test-utils-playwright": "^1.16.0",
-    "@wordpress/env": "^10.16.0",
+    "@wordpress/e2e-test-utils-playwright": "^1.22.0",
+    "@wordpress/env": "^10.22.0",
     "chokidar-cli": "^3.0.0",
     "concurrently": "^9.1.2",
-    "testra": "^2.1.4"
+    "testra": "^2.1.5"
   },
   "author": "Team Tangible",
   "license": "MIT",
