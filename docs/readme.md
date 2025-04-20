@@ -1,10 +1,61 @@
 # Tangible Blocks
 
-Repository: https://github.com/tangibleinc/blocks
+Tangible Blocks is a system for creating universal dynamic content blocks with HTML-based templates and Sass styling language. It can be integrated with WordPress site and page builders, as well as React applications.
+
+**Source code**: https://github.com/tangibleinc/blocks
+
+**Documentation**: https://docs.tangible.one/plugins/blocks/
+
+**Website**: https://tangibleblocks.com
+
+## Plugins
+
+The project consists of a set of plugins.
+
+- [Tangible Blocks](https://github.com/tangibleinc/blocks)
+- [Tangible Blocks Editor](https://github.com/tangibleinc/blocks-editor) - Enable block template editing in the admin
+- [Tangible Blocks Pro](https://github.com/tangibleinc/blocks-pro)
+- [Loops & Logic](https://github.com/tangibleinc/loops-and-logic) - Basic variant with all template types except blocks. Published in the official plugin directory on `wp.org`.
+- [Loops & Logic Pro](https://github.com/tangibleinc/loops-and-logic-pro)
+
+## Themes
+
+- [Tangible Blocks Theme](https://github.com/tangibleinc/blocks-theme)
+
+## Modules
+
+Modules are common features shared by plugins.
+
+- [BetterDash](https://github.com/tangibleinc/betterdash-module) - Utilities for LearnDash
+- [BetterLifter](https://github.com/tangibleinc/betterlifter-module) - Utilities for LifterLMS
+- [Fields](https://github.com/tangibleinc/fields) - React-based form fields library
+- [Fields Pro](https://github.com/tangibleinc/fields-pro)
+- [Framework](https://github.com/tangibleinc/framework) - Commonly used features like logging, date formatting
+- [Template System](https://github.com/tangibleinc/template-system) - Template parser, renderer, language definition (dynamic tags), frontend modules (JS & CSS), admin features
+- [Template System Pro](https://github.com/tangibleinc/template-system-pro)
+- [Updater](https://github.com/tangibleinc/updater) - Provide plugin updates from self-hosted [update server](https://github.com/tangibleinc/update-server)
+
+## Third-party plugins
+
+Blocks and L&L integrate with the following third-party plugins.
+
+- Advanced Custom Fields
+- Beaver Builder
+- Elementor
+
+The Pro variants add support for more.
+
+- Easy Digital Downloads
+- Gravity Forms
+- LearnDash
+- LifterLMS
+- The Events Calendar
+- WooCommerce
+
 
 ## Develop
 
-Prerequisites: [Git](https://git-scm.com/), [Node](https://nodejs.org/en/) (version 18 and above)
+Prerequisites: Linux, macOS, or Windows ([WSL](https://learn.microsoft.com/en-us/windows/wsl/about)); [Git](https://git-scm.com/), [Node](https://nodejs.org/en/) (version 20 and above)
 
 Clone the repository and install dependencies.
 
@@ -44,9 +95,7 @@ Start a local dev site using [`wp-now`](https://github.com/WordPress/playground-
 npm run now
 ```
 
-The default user is `admin` with `password`.
-
-Press CTRL + C to stop.
+The default user is `admin` with `password`. Press CTRL + C to stop.
 
 #### Dev dependencies
 
@@ -107,11 +156,17 @@ npm run test
 For each PHP version:
 
 ```sh
-npm run env:test:7.4
-npm run env:test:8.2
+npm run test:7.4
+npm run test:8.2
 ```
 
-The version-specific commands take a while to start, but afterwards you can run `npm run env:test` to re-run tests in the same environment.
+The version-specific commands take a while to start, but afterwards you can run `npm run test` to re-run tests in the same environment.
+
+Run tests for all PHP versions and end-to-end tests (see below).
+
+```sh
+npm run test:all
+```
 
 To stop the Docker process:
 
