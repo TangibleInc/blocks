@@ -17,7 +17,7 @@
     "update": "roll update",
     "install:dev": "roll install --dev",
     "update:dev": "roll update --dev",
-    "archive": "roll archive && rm -rf publish/tangible-blocks && unzip publish/tangible-blocks.zip -d publish/ && npm run now:test:archive",
+    "archive": "roll archive -y && rm -rf publish/tangible-blocks && unzip publish/tangible-blocks.zip -d publish/ && npm run now:test:archive",
     "now": "wp-now start --blueprint=blueprint.dev.json",
     "now:dev": "concurrently --raw 'roll dev' 'npm run now'",
     "now:test": "roll run tests/now/index.ts",
