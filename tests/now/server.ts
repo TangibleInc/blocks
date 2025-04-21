@@ -64,9 +64,7 @@ export function createRequest(siteUrl: string): Requester {
       }
     }
 
-    return await (await fetch(url, options))[
-      format
-    ]()
+    return await (await fetch(url, options))[format]()
   }
 
   request.token = undefined
@@ -81,6 +79,8 @@ const silentConsole = {
   log() {},
   warn() {},
   error() {},
+  info() {},
+  assert() {},
 }
 export const originalConsole = globalThis.console
 
@@ -93,8 +93,7 @@ export const enableConsole = () => {
   globalThis.console = originalConsole
 }
 
-
-let serverInstance: Server | null
+// let serverInstance: Server | null
 
 export type Server = {
   php: PHP
@@ -114,6 +113,8 @@ export type Server = {
   resetSiteTemplate: () => void
 
   onMessage: (callback: Listener) => void
+
+  template: (code: string | TemplateStringsArray, ...args: string[]) => any
 }
 
 export type Listener = (message: any) => void
@@ -131,9 +132,9 @@ export async function getServer(
     reset?: boolean
   } = {},
 ): Promise<Server> {
-  if (serverInstance) {
-    if (!options.restart) return serverInstance
-    await serverInstance.stopServer()
+  if (globalThis.serverInstance) {
+    if (!options.restart) return globalThis.serverInstance
+    await globalThis.serverInstance.stopServer()
   }
 
   const {
@@ -150,7 +151,7 @@ export async function getServer(
       path: projectPath,
       blueprint,
       env,
-        // @ts-ignore
+      // @ts-ignore
       mappings,
     })),
 
@@ -163,10 +164,7 @@ export async function getServer(
   } as WPNowOptions)
 
   const { php, stopServer } = server
-  const {
-    port = 3000,
-    documentRoot = '/var/www/html'
-  } = server.options
+  const { port = 3000, documentRoot = '/var/www/html' } = server.options
 
   /**
    * PHP-WASM provides a function post_message_to_js() to send messages from PHP to JS.
@@ -192,8 +190,8 @@ export async function getServer(
       const message = JSON.parse(data)
       for (const listener of phpListeners) {
         listener(message)
-      }  
-    } catch(e) {
+      }
+    } catch (e) {
       console.error(e)
     }
   })
@@ -210,7 +208,10 @@ export async function getServer(
    *
    * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals#tagged_templates
    */
-  const phpx = async (code: string | TemplateStringsArray, ...args: string[]) => {
+  const phpx = async (
+    code: string | TemplateStringsArray,
+    ...args: string[]
+  ) => {
     if (Array.isArray(code)) {
       code = code.reduce(
         (prev, now, index) => prev + now + (args[index] ?? ''),
@@ -243,7 +244,10 @@ export async function getServer(
    * const result = wpx`return 'hi';`
    * ```
    */
-  const wpx = async (code: string | TemplateStringsArray, ...args: string[]) => {
+  const wpx = async (
+    code: string | TemplateStringsArray,
+    ...args: string[]
+  ) => {
     if (Array.isArray(code)) {
       code = code.reduce(
         (prev, now, index) => prev + now + (args[index] ?? ''),
@@ -257,13 +261,13 @@ export async function getServer(
 
     for (const line of (code as string).split('\n')) {
       if (line.trim().startsWith('use ')) {
-        useNamespace += line + '\n';
+        useNamespace += line + '\n'
       } else {
         filteredCode += line + '\n'
       }
     }
 
-const result = await phpx/* php */`
+    const result = await phpx/* php */ `
 ${useNamespace}
 include 'wp-load.php';
 echo json_encode((function() {
@@ -321,7 +325,7 @@ HTML);
 
   const siteUrl = `http://localhost:${port}`
 
-  return (serverInstance = {
+  return (globalThis.serverInstance = {
     php,
     port,
     console: originalConsole,
@@ -332,11 +336,26 @@ HTML);
     phpx,
     wpx,
     async stopServer() {
-      serverInstance = null
+      globalThis.serverInstance = null
       await stopServer()
     },
     onMessage,
     setSiteTemplate,
     resetSiteTemplate,
+
+    async template(code: string | TemplateStringsArray, ...args: string[]) {
+      if (Array.isArray(code)) {
+        code = code.reduce(
+          (prev, now, index) => prev + now + (args[index] ?? ''),
+          '',
+        )
+      }
+      return (
+        await wpx/* php */ `
+return tangible_template(<<<'HTML'
+${code}
+HTML);`
+      ).trim()
+    },
   })
 }

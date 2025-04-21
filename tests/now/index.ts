@@ -31,15 +31,26 @@ export default run(async () => {
   test('Plugin', async () => {
 
     result = await wpx`return test\\get_active_plugins();`
-    console.log('Active plugins', result)
+    // console.log('Active plugins', result)
     is(true, result.includes('now/plugin.php'), 'test plugin is active')
 
     result = await wpx`return test\\get_all_plugins();`
-    console.log('All plugins', result)
+    // console.log('All plugins', result)
 
     result = await wpx`return test\\activate_dependency_plugins();`
     is(true, result, 'activate dependency plugins')
   })
+
+  await import(`../../vendor/tangible/framework/tests/index.ts`)
+
+  for (const key of [
+    'loop',
+    'logic',
+    'language',
+    'admin',
+  ]) {
+    await import(`../../vendor/tangible/template-system/tests/${key}/index.ts`)
+  }
 })
 
 type PluginInfos = {
