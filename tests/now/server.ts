@@ -138,7 +138,7 @@ export async function getServer(
   }
 
   const {
-    path: projectPath = path.join(process.cwd(), 'tests'),
+    path: projectPath = path.join(process.cwd(), 'tests', 'now'),
     reset = true,
     blueprint,
     env,

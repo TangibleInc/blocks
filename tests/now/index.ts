@@ -1,6 +1,6 @@
 import path from 'node:path'
 import { test, is, ok, run } from 'testra'
-import { getServer } from './server.ts' // @tangible/env
+import { getServer } from './server.ts'
 
 /**
  * For syntax highlight of PHP in template strings, install:
