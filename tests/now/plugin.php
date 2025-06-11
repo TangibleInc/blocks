@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Test plugin
  */
-namespace test;
+namespace test\blocks;
 
 /**
  * Get all plugins
@@ -36,6 +36,9 @@ function activate_dependency_plugins() {
     }
     $result = activate_plugin(ABSPATH . 'wp-content/plugins/tangible-blocks/tangible-blocks.php');
     if (is_wp_error($result)) return $result;
+  
+    // Framework test plugin
+    $result = activate_plugin(ABSPATH . 'wp-content/plugins/tangible-framework-test-plugin/index.php');
   }
   
   if ( !get_option('site_init_done') ) {

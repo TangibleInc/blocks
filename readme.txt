@@ -19,6 +19,20 @@ Tags:
 
 == Changelog ==
 
+= 4.2.3 =
+
+Release Date: 2025-06-11
+
+- ACF Repeater: Improve support for sort/filter by field
+  - Translate internal keys used by ACF to actual field names
+  - For field value comparison, ACF Date field is in format "Y-m-d" and DateTime field is "Y-m-d H:i:s"
+
+= 4.2.2 =
+
+Release Date: 2025-04-25
+
+- Object cache: Support inline templates by not prepending metadata comment to cached content
+
 = 4.2.1 =
 
 Release Date: 2025-04-21

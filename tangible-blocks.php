@@ -3,7 +3,7 @@
  * Plugin Name: Tangible Blocks
  * Plugin URI: https://tangibleblocks.com/
  * Description: Tangible Blocks is a system for universal blocks that work in Gutenberg, Elementor, Beaver Builder and beyond
- * Version: 4.2.1
+ * Version: 4.2.3
  * GitHub URI: TangibleInc/blocks
  * Author: Team Tangible
  * Author URI: https://teamtangible.com
@@ -12,7 +12,7 @@
 use tangible\framework;
 use tangible\updater;
 
-define( 'TANGIBLE_BLOCKS_VERSION', '4.2.1' );
+define( 'TANGIBLE_BLOCKS_VERSION', '4.2.3' );
 
 $module_path = is_dir(
   ($path = __DIR__ . '/../../tangible') // Module
@@ -33,6 +33,9 @@ function tangible_blocks($instance = false) {
 
 add_action('plugins_loaded', function() {
 
+  // See https://github.com/TangibleInc/framework/#note-on-plugin-activation
+  if (defined('WP_SANDBOX_SCRAPING')) return;
+
   $plugin    = framework\register_plugin([
     'name'           => 'tangible-blocks',
     'title'          => 'Tangible Blocks',
@@ -48,11 +51,7 @@ add_action('plugins_loaded', function() {
 
   tangible_blocks( $plugin );
 
-  updater\register_plugin([
-    'name' => $plugin->name,
-    'file' => __FILE__,
-    // 'license' => ''
-  ]);
+  updater\register_plugin( $plugin );
 
   // Features loaded will have in their local scope: $plugin
 
