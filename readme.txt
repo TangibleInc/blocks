@@ -19,11 +19,11 @@ Tags:
 
 == Changelog ==
 
-= 4.2.4 =
+= 4.2.5 =
 
 Release Date: 2025-08-26
 
-- File and Gallery control types: Improve enqueue WP media uploader - Fixes related issue with featured image in classic editor
+- File and Gallery control types: Improve enqueue WP media uploader to support all contexts: site frontend, admin, and login page. Fixes related issue with featured image in classic editor
 
 = 4.2.3 =
 
