@@ -93,7 +93,7 @@ describe('Admin menu', () => {
     expect(page.getByRole('navigation', { name: 'Main menu' })).toHaveCount(1)
   })
 
-  test('Tangbile', async ({ admin, page }) => {
+  test('Tangible', async ({ admin, page }) => {
     await admin.visitAdminPage('/')
     expect(
       page
@@ -103,7 +103,7 @@ describe('Admin menu', () => {
     ).toHaveCount(1)
   })
 
-  test('Tangbile -> Blocks', async ({ admin, page }) => {
+  test('Tangible -> Blocks', async ({ admin, page }) => {
     await admin.visitAdminPage('/')
     expect(
       page
