@@ -19,6 +19,17 @@ Tags:
 
 == Changelog ==
 
+= 4.2.6 =
+
+Release Date: 2026-06-08
+
+- Editor: Save - Add missing capability check in the AJAX action
+- FieldGroup tag: Start support of ACF and Tangible Fields
+- Form:
+  - Capture any unexpected output while processing form
+  - Correct enqueue path
+- WP Grid Builder: Improve facet integration with support for User Queries; Thanks to @zackpyle!
+
 = 4.2.5 =
 
 Release Date: 2025-08-26
