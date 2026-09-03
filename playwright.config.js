@@ -29,7 +29,7 @@ export default (function createConfig() {
   // https://playwright.dev/docs/test-global-setup-teardown
   const globalSetup = path.join(__dirname, 'playwright.setup.js')
 
-  let testSitePort = readJson('.wp-env.json').testsPort || 8881
+  let testSitePort = readJson('.wp-env.json').testsPort || 8889
   try {
     testSitePort = readJson('.wp-env.override.json').testsPort || testSitePort
   } catch (e) {}

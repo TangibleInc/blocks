@@ -1,3 +1,4 @@
+import path from 'node:path'
 import { test, expect } from '@wordpress/e2e-test-utils-playwright'
 
 const { describe } = test
@@ -23,8 +24,10 @@ describe('Admin', () => {
     await expect(heading).toBeVisible()
   })
 
+  const pluginFolder = path.basename(process.cwd())
+
   const plugins = [
-    ['Tangible Blocks', 'tangible-blocks/tangible-blocks'],
+    ['Tangible Blocks', `${pluginFolder}/tangible-blocks`],
     ['Tangible Blocks Editor', 'tangible-blocks-editor/tangible-blocks-editor'],
     ['Elementor', 'elementor/elementor'],
     ['Beaver Builder', 'beaver-builder-lite-version/fl-builder'],
