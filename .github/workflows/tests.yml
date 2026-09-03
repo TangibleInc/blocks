@@ -26,6 +26,10 @@ jobs:
         run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
       - name: Install Composer dependencies
         run: composer install --no-interaction --no-progress --optimize-autoloader
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 26
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
       - name: Install dependencies
@@ -35,7 +39,7 @@ jobs:
           bun install
           rm -rf ${HOME}/.git-credentials
       - name: Install dev plugins
-        run: bun --bun run install:dev
+        run: bun run install:dev
       - name: Install playwright
         run: bun run e2e:install
       - name: PHPUnit - Run tests for PHP 7.4
