@@ -30,6 +30,7 @@
     "test": "FOLDER=`basename $(realpath $PWD)`; wp-env run tests-wordpress /var/www/html/wp-content/plugins/$FOLDER/vendor/bin/phpunit --testdox -c /var/www/html/wp-content/plugins/$FOLDER/phpunit.xml --verbose",
     "test:7.4": "WP_ENV_PHP_VERSION=7.4 wp-env start && npm run test",
     "test:8.2": "WP_ENV_PHP_VERSION=8.2 wp-env start && npm run test",
+    "test:8.4": "WP_ENV_PHP_VERSION=8.4 wp-env start && npm run test",
     "test:all": "npm run test:7.4 && npm run test:8.2 && npm run e2e",
     "env:destroy": "wp-env destroy",
     "env:clean": "wp-env clean all",
