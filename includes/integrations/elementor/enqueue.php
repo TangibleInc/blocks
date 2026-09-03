@@ -30,6 +30,12 @@ add_action('tangible_enqueue_elementor_template_editor', function() use($plugin,
   $fields->set_context('elementor');
   $fields->enqueue();
 
+  /**
+   * Fields assume ReactJSXRuntime is enqueud but it's not in Elementor
+   * @todo Fix in fields directly
+   */
+  wp_enqueue_script('react-jsx-runtime');
+
   wp_enqueue_script(
     $plugin->elementor_dynamic_config['handle'], // See ./index.php
     $plugin->url . 'assets/build/elementor-integration.min.js',
