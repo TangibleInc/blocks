@@ -35,7 +35,7 @@ jobs:
           bun install
           rm -rf ${HOME}/.git-credentials
       - name: Install dev plugins
-        run: bun run install:dev
+        run: bun --bun run install:dev
       - name: Install playwright
         run: bun run e2e:install
       - name: PHPUnit - Run tests for PHP 7.4
