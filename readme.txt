@@ -19,6 +19,18 @@ Tags:
 
 == Changelog ==
 
+= 4.3.3 =
+
+Release Date: 2026-10-07
+
+- ACF Group loop: Fix acf_ fields returning empty
+- Improve support for templates with HTML entities when rendering from an ajax request
+- Security:
+  - Pagination: Sign the full template of paginated loops in ajax requests
+  - Table: Improve handling of attributes that rely on user input
+- Development:
+  - Tests: E2E - Improve ajax requests coverage
+
 = 4.3.2 =
 
 Release Date: 2026-09-17
